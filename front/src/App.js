@@ -2,9 +2,11 @@ import React from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 
+import { BrowserRouter as Router } from "react-router-dom"; // Route
+
 function App() {
 	return (
-		<div className="App">
+		<Router>
 			<Canvas>
 				<OrbitControls autoRotate={true} />
 				<mesh>
@@ -14,7 +16,7 @@ function App() {
 					<meshStandardMaterial attach="material" color={505050} />
 				</mesh>
 			</Canvas>
-		</div>
+		</Router>
 	);
 }
 
