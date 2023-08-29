@@ -1,6 +1,8 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 
+import PassportIcon from "../../components/PassportIcon";
+
 export default function Main () {
     return (
 		<div className="App">
@@ -13,6 +15,7 @@ export default function Main () {
 					<meshStandardMaterial attach="material" color={505050} />
 				</mesh>
 			</Canvas>
+			<PassportIcon />
 		</div>
 	);
 }
