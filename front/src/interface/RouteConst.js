@@ -2,7 +2,7 @@ export const RouteConst = {
     main:'/',
     mypage:'/mypage',
     mystamp:'/mystamps',
-    mylog:'./mylogs',
+    myblog:'/myblogs',
     mybookmark:'/mybookmarks',
     mymission:'/mymissions'
 }

@@ -1,7 +1,7 @@
 import LeftSidebar from '../../components/mypage/LeftSidebar';
 import RightSidebar from '../../components/mypage/RightSidebar';
 
-export default function MyMission() {
+export default function MyBlog() {
   const footer =
     'M A R B L E U S < < U S E R < < < < < < < < < < < < < < < < < < < < < < < < < < S E B 4 5 < < < 2 0 2 3 0 8 2 4 2 0 2 3 0 9 2 2 < < < A L L R I G H T S R E S E R V E D';
   return (
@@ -11,7 +11,7 @@ export default function MyMission() {
         <div className="flex flex-col border-b-1 border-black h-[25rem]">
           <div className="flex p-4 w-[50rem] h-[25rem] rounded-t-3xl justify-center bg-white">
             <div className="flex w-[20rem] rounded-l-2xl bg-white items-center border-1 border-black text-lg font-bold px-2">
-              미션페이지
+              글목록페이지
             </div>
             <div className="flex w-[20rem] rounded-r-2xl bg-white items-center border-1 border-black text-lg font-bold px-2">
               This passport is only valid on this site unless otherwise endorsed.
