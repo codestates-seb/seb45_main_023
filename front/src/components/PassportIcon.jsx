@@ -36,7 +36,11 @@ export default function PassportIcon() {
 						</Link>
 					)}
 				</div>
-				<i className="fa-solid fa-house-user ml-auto w-4 h-4 mr-0.5"></i>
+				{isLoggedIn ? (
+					<i className="fa-solid fa-house-user ml-auto w-4 h-4 mr-0.5"></i>
+				) : (
+					<i className="fa-solid fa-right-to-bracket ml-auto w-4 h-4 mr-0.5"></i>
+				)}
 			</section>
 		</div>
 	);
