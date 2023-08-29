@@ -33,7 +33,7 @@ public class MemberDetailService implements UserDetailsService {
 
     private class MemberDetails extends Member implements UserDetails {
         public MemberDetails(Member findMember) {
-                setMemberId(findMember.getMemberId());
+                setId(findMember.getId());
                 setEmail(findMember.getEmail());
                 setPassword(findMember.getPassword());
                 setRoles(findMember.getRoles());
