@@ -7,6 +7,7 @@ import MyBookmark from './pages/mypage/MyBookmark';
 import MyLog from './pages/mypage/MyLog';
 import MyMission from './pages/mypage/MyMission';
 import MyStamp from './pages/mypage/MyStamp';
+import Jeju from './pages/blog/Jeju';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path={RouteConst.mylog} element={<MyLog />} />
         <Route path={RouteConst.mymission} element={<MyMission />} />
         <Route path={RouteConst.mystamp} element={<MyStamp />} />
+        <Route path={RouteConst.jeju} element={<Jeju />} />
       </Routes>
     </BrowserRouter>
   );
