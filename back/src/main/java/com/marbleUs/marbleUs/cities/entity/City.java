@@ -1,6 +1,7 @@
 package com.marbleUs.marbleUs.cities.entity;
 
 import com.marbleUs.marbleUs.audit.Auditable;
+import com.marbleUs.marbleUs.blog.entity.Blog;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,14 +27,14 @@ public class City extends Auditable implements CityEntity{
     @Column(length = 20, nullable = false)
     private String engName;
 
-    @Column(length = 200,nullable = false)
+    //@Column(length = 200,nullable = false)
     private String img;
 
     @Column(length = 1000, nullable = false)
     private String description;
 
-//    @OneToMany(mappedBy = "city")
-//    private List<Blog> blogs= new ArrayList();
+    @OneToMany(mappedBy = "city")
+    private List<Blog> blogs = new ArrayList();
 
 //    @OneToMany(mappedBy = "city")
 //    private List<CityMission> cityMissions = new ArrayList();

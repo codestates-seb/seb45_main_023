@@ -35,8 +35,7 @@ public class CityController {
     }
     @PatchMapping("/{city-id}")
     public ResponseEntity patchCity(@RequestBody CityDto.Patch patch,
-                                   @Positive @PathVariable("city-id") Long cityId
-                                   ){
+                                   @Positive @PathVariable("city-id") Long cityId){
 
         City city = service.update(mapper.patchToCity(patch),cityId);
 

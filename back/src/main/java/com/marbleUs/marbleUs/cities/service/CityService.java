@@ -63,7 +63,7 @@ public class CityService {
 
     }
 
-    @Transactional(readOnly = true)
+   @Transactional(readOnly = true)
     public City findVerifiedCity(Long id) {
         Optional<City> optionalCity =
                 repository.findById(id);
