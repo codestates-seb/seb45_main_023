@@ -2,6 +2,7 @@ import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 
 import PassportIcon from "../../components/PassportIcon";
+import Modal from "../../components/Modal/ModalFrame";
 
 import {
 	Button,
@@ -29,6 +30,9 @@ export default function Main() {
 					<meshStandardMaterial attach="material" color={505050} />
 				</mesh>
 			</Canvas>
+
+			<Modal />
+
 			<Button text={"로그아웃"} />
 			<Button text={"개인정보수정"} />
 			<GreenButton text={"인증글 쓰러가기"} />

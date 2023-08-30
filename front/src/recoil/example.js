@@ -9,3 +9,8 @@ export const isLoggedInState = atom({
 	key: "isLoggedIn",
 	default: false,
 });
+
+export const isModalOpenState = atom({
+	key: "isModalOpenState",
+	default: false,
+});
