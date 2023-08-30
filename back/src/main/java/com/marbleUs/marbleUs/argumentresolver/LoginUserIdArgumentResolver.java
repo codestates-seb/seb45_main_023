@@ -17,7 +17,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class LoginUserIdArgumentResolver implements HandlerMethodArgumentResolver { // 컨트롤러 메서드의 파라미터 해석하여 값 전달
 
-    private final MemberRepository repository;
+    private final MemberService service;
+
 
 
     @Override
@@ -34,10 +35,10 @@ public class LoginUserIdArgumentResolver implements HandlerMethodArgumentResolve
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); // 사용자 인증 정보
         // 익명이면 -1L 리턴
-        if(principal == "anonymousUser"){
+        if(principal.equals("anonymousUser")){
             return -1L;
         }
-        Member member = repository.findByEmail(principal.toString()).get();
+        Member member = service.findMemberByEmail(principal.toString());
         return member.getId();
     }
 }

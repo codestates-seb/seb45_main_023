@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,9 +49,12 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/{member-id}")
-    public ResponseEntity getMember(@Positive @PathVariable("member-id") Long id){
+    @GetMapping("/me")
+    public ResponseEntity getMember(@Positive @LoginMemberId long id){
+        String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        System.out.println(principal);
         Member foundMember = service.findMember(id);
+
 
         return new ResponseEntity<>(mapper.memberToResponse(foundMember),HttpStatus.OK);
     }
