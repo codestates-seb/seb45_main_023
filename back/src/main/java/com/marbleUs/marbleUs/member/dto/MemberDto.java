@@ -46,6 +46,8 @@ public class MemberDto {
 
         private String nickname;
 
+        private String currentCityCode;
+
         private UserLocations currentLocation;
 
 

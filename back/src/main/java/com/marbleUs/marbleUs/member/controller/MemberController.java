@@ -56,7 +56,7 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity getMember(@Positive @RequestParam int page,
+    public ResponseEntity getMembers(@Positive @RequestParam int page,
                                     @Positive @RequestParam int size){
         Page<Member> pages = service.findMembers(page,size);
         List<MemberDto.Response> responses = mapper.membersToResponses(pages.getContent());
