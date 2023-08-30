@@ -1,5 +1,5 @@
 package com.marbleUs.marbleUs.systemUtils;
 
-public interface LevelUpVerifier {
+public interface MissionLevelUpVerifier {
     Boolean isLevelUp(UserLocations userLocation);
 }
