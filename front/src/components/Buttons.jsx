@@ -3,7 +3,27 @@
 export const Button = ({ text }) => {
 	return (
 		<button
-			className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-blue-300 bg-white text-black shadow-md font-semibold hover:bg-blue-00 hover:bg-blue-300 active:bg-blue-500 active:border-blue-500 active:text-white transition duration-300 ease-in-out`}
+			className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-blue-300 bg-white text-black shadow-md font-semibold hover:bg-blue-300 active:bg-blue-500 active:border-blue-500 active:text-white transition duration-300 ease-in-out`}
+		>
+			{text}
+		</button>
+	);
+};
+
+export const GreenButton = ({ text }) => {
+	return (
+		<button
+			className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-green-300 bg-white text-black shadow-md font-semibold hover:bg-green-300 active:bg-green-500 active:border-green-500 active:text-white transition duration-300 ease-in-out`}
+		>
+			{text}
+		</button>
+	);
+};
+
+export const PurpleButton = ({ text }) => {
+	return (
+		<button
+			className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-purple-300 bg-white text-black shadow-md font-semibold hover:bg-purple-300 active:bg-purple-500 active:border-purple-500 active:text-white transition duration-300 ease-in-out`}
 		>
 			{text}
 		</button>
@@ -26,38 +46,50 @@ export const NegativeButtonGreen = ({ text }) => {
 	);
 };
 
-export const RightIconButtonPurple = () => {
+export const ToMypage = () => {
 	return (
 		<button className="inline-flex items-center justify-center gap-2 p-3 pr-6 rounded-full border-4 border-solid border-purple-300 bg-white shadow-md text-black font-bold hover:bg-purple-300 active:bg-white active:border-white hover:text-white active:text-purple-300 transition duration-300 ease-in-out">
 			<div className="pl-6 pr-2">마이페이지 미션 탭으로</div>
 			<div className="inline-flex items-center justify-center w-10 h-10 flex-shrink-0 bg-purple-300 rounded-full text-white">
-				<i className="fa-solid fa-arrow-right text-2xl"></i>
+				<i className="fa-solid fa-arrow-right text-2xl" />
 			</div>
 		</button>
 	);
 };
 
-export const RightIconButtonBlue = () => {
+export const ToBoard = () => {
 	return (
 		<button className="inline-flex items-center justify-center gap-2 p-3 pr-6 rounded-full border-4 border-solid border-sky-300 bg-white shadow-md text-black font-bold hover:bg-sky-300 hover:text-white active:bg-white active:border-white active:text-sky-300 transition duration-300 ease-in-out">
 			<div className="pl-6 pr-2">여행 후기 게시판으로</div>
 			<div className="inline-flex items-center justify-center w-10 h-10 flex-shrink-0 bg-sky-300 rounded-full text-white">
-				<i className="fa-solid fa-arrow-right text-2xl"></i>
+				<i className="fa-solid fa-arrow-right text-2xl" />
 			</div>
 		</button>
 	);
 };
 
+export const Signup = () => {
+	return (
+		<button className="inline-flex items-center justify-center gap-2 p-3 pr-6 rounded-full border-4 border-solid border-white bg-sky-400 shadow-md text-white font-bold hover:bg-white hover:text-black active:bg-sky-200 active:border-sky-200 active:text-black transition duration-300 ease-in-out">
+			<div className="inline-flex items-center justify-center w-10 h-10 flex-shrink-0 bg-white rounded-full text-sky-400">
+				<i className="fa-solid fa-plane text-2xl" />
+			</div>
+			<div className="pl-6 pr-2">Sign up with MarbleUs</div>
+		</button>
+	);
+};
+
+// 테일윈드로는 테두리 그라데이션이 안 들어가서 트랜지션 넣는 게 어려줘졌는데 방법 아시는 분?
 export const GoogleLogin = ({ text }) => {
 	return (
 		<button
-			className="inline-flex items-center justify-center gap-2 p-1 rounded-full shadow-md font-semibold active:bg-white transition duration-300 ease-in-out"
+			className="inline-flex items-center justify-center gap-2 p-1 rounded-full shadow-md font-semibold transition duration-300 ease-in-out"
 			style={{
 				backgroundImage:
 					"linear-gradient(to right, #FF3D00, #FFC107, #4CAF50, #1976D2)",
 			}}
 		>
-			<div className="inline-flex bg-white text-black hover:bg-transparent p-2 pr-8 rounded-full">
+			<div className="inline-flex bg-white text-black p-2 pr-8 hover:bg-grey-200 rounded-full">
 				<div className="inline-flex items-center justify-center w-10 h-10 flex-shrink-0 rounded-full">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -84,8 +116,24 @@ export const GoogleLogin = ({ text }) => {
 						/>
 					</svg>
 				</div>
-				<div className="p-2 ml-4 ">{text}</div>
+				<div className="p-2 ml-4 ">Sign up with Google</div>
 			</div>
+		</button>
+	);
+};
+
+export const RefreshButton = ({ text }) => {
+	return (
+		<button className="inline-flex items-center justify-center gap-2 p-4 rounded-full shadow-md bg-slate-300 hover:bg-white hover:text-black text-white font-semibold active:bg-grey-500 active:bg-slate-500 active:text-white transition duration-300 ease-in-out">
+			<i class="fa-solid fa-arrows-rotate text-2xl pr-1 pl-1" />
+		</button>
+	);
+};
+
+export const CloseButton = ({ text }) => {
+	return (
+		<button className="inline-flex items-center justify-center gap-2 p-4 rounded-full shadow-md bg-slate-300 hover:bg-white hover:text-black text-white font-semibold active:bg-grey-500 active:bg-slate-500 active:text-white transition duration-300 ease-in-out">
+			<i class="fa-solid fa-xmark text-2xl pr-2 pl-2" />
 		</button>
 	);
 };
