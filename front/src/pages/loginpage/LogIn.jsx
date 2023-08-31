@@ -60,11 +60,20 @@ export default function LogIn () {
             return;
         }
         try {
-            const response = await axios.post('http://api@example.com/login', {
-              email,
-              password,
+            // POST인 경우
+            // const response = await axios.post('http://api@example.com/login', {
+            //   email,
+            //   password,
+            // });
+
+            // GET인 경우
+            const response = await axios.get('http://api@example.com/login', {
+                auth: {
+                    email,
+                    password,
+                },
             });
-      
+
             const data = response.data;
             setAccessToken(data.accessToken);
             console.log('Logged in!', data.accessToken);
