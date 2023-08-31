@@ -8,7 +8,7 @@ export default function MyPage() {
   return (
     <div className="flex justify-center">
       <LeftSidebar />
-      <div className="flex flex-col items-center w-[50rem] mt-[3rem] shadow-xss rounded-[2rem] pb-4 bg-white">
+      <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-[2rem] pb-4 bg-white">
         <MypageNotice />
         <UserInfo/>
       </div>

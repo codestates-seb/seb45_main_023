@@ -7,7 +7,7 @@ export default function MyStamp() {
   return (
     <div className="flex justify-center">
       <LeftSidebar />
-      <div className="flex flex-col items-center mt-[20px] shadow-xss rounded-[2rem]">
+      <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-[2rem]">
         <div className="flex flex-col border-b-1 border-black h-[25rem]">
           <div className="flex p-4 w-[50rem] h-[25rem] rounded-t-3xl justify-center bg-white">
             <div className="flex w-[20rem] rounded-l-2xl bg-white items-center border-1 border-black text-lg font-bold px-2">
