@@ -1,6 +1,7 @@
 package com.marbleUs.marbleUs.member.entity;
 
 import com.marbleUs.marbleUs.audit.Auditable;
+import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.systemUtils.Stamps;
 import com.marbleUs.marbleUs.systemUtils.UserLocations;
 import lombok.AllArgsConstructor;
@@ -55,15 +56,15 @@ public class Member extends Auditable {
     }
 
 
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Blog> myBlogs = new ArrayList<>();
+
+
 //    @OneToMany(mappedBy = "member")
 //    private List<Mission> missions = new ArrayList<>();
 
     //    @OneToMany(mappedBy = "member")
 //    private List<Blogs> bookmarks = new ArrayList<>();
-
-    //    @OneToMany(mappedBy = "member")
-//    private List<Blogs> myBlogs = new ArrayList<>();
-
 
 
 
@@ -80,5 +81,8 @@ public class Member extends Auditable {
     @Column(nullable = false)
     private LocalDate birth;
 
-
+    public void addBlogs(Blog blog) {
+        if (blog.getMember() != this) blog.setMember(this);
+        myBlogs.add(blog);
+    }
 }

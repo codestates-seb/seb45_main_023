@@ -1,5 +1,6 @@
 package com.marbleUs.marbleUs.member.dto;
 
+import com.marbleUs.marbleUs.blog.dto.BlogResponseDto;
 import com.marbleUs.marbleUs.systemUtils.Stamps;
 import com.marbleUs.marbleUs.systemUtils.UserLocations;
 import lombok.Getter;
@@ -67,6 +68,7 @@ public class MemberDto {
         private List<Stamps> myStamps;
         private UserLocations currentLocation;
         private List<UserLocations> visitedCities;
+        private List<BlogResponseDto> myBlogs;
     }
 
 }
