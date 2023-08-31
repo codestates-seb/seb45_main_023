@@ -1,5 +1,4 @@
 // 테일윈드는 동적으로 prop 값을 못 받는다네요... 여기서 그냥 가져다 쓰세여 색상별로 만들어 둘게요
-
 // SignUpButton, GoogleLogInButton의 컴포넌트명과 컴포넌트 크기 등... 약간 수정하였습니다.
 
 export const Button = ({ text }) => {
