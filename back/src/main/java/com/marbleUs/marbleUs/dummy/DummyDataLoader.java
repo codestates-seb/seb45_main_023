@@ -52,7 +52,7 @@ public class DummyDataLoader implements CommandLineRunner {
       member1.setPassword(encryptedPassword);
       member1.setRoles(roles);
       member1.setNickname(nickName);
-      member1.setNationality("대힌민국");
+      member1.setNationality("대한민국");
       member1.setBirth(birthDate);
 
 
