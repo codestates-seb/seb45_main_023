@@ -3,7 +3,8 @@
 }
 
 .active {
-  display: none; 
+  display: none;
+}
 body {
   background-color: #dde7ec;
 }
