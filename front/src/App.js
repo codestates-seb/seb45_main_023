@@ -8,6 +8,8 @@ import MyBookmark from './pages/mypage/MyBookmark';
 import MyLog from './pages/mypage/MyLog';
 import MyMission from './pages/mypage/MyMission';
 import MyStamp from './pages/mypage/MyStamp';
+import LogIn from './pages/loginpage/LogIn';
+import SignUp from './pages/signuppage/SignUp';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path={RouteConst.mylog} element={<MyLog />} />
         <Route path={RouteConst.mymission} element={<MyMission />} />
         <Route path={RouteConst.mystamp} element={<MyStamp />} />
+        <Route path={RouteConst.login} element={<LogIn />} />
+        <Route path={RouteConst.signup} element={<SignUp />} />
       </Routes>
     </BrowserRouter>
   );
