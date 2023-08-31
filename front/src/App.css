@@ -1,7 +1,9 @@
 * {
   box-sizing: border-box;
-  background-color: #dde7ec;
 }
+
 .active {
   display: none; 
+body {
+  background-color: #dde7ec;
 }
