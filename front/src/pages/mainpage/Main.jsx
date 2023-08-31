@@ -11,8 +11,8 @@ import {
 	NegativeButtonGreen,
 	ToMypage,
 	ToBoard,
-	Signup,
-	GoogleLogin,
+	SignUpButton,
+	GoogleLogInButton,
 	RefreshButton,
 	CloseButton,
 } from "../../components/Buttons";
@@ -37,8 +37,8 @@ export default function Main() {
 			<NegativeButtonGreen text={"댓글 쓰기"} />
 			<ToMypage />
 			<ToBoard />
-			<Signup />
-			<GoogleLogin />
+			<SignUpButton />
+			<GoogleLogInButton />
 			<RefreshButton />
 			<CloseButton />
 			<PassportIcon />

@@ -4,5 +4,7 @@ export const RouteConst = {
     mystamp:'/mystamps',
     mylog:'./mylogs',
     mybookmark:'/mybookmarks',
-    mymission:'/mymissions'
+    mymission:'/mymissions',
+    login:'/login',
+    signup:'/signup'
 }

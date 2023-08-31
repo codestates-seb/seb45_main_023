@@ -1,4 +1,5 @@
 // 테일윈드는 동적으로 prop 값을 못 받는다네요... 여기서 그냥 가져다 쓰세여 색상별로 만들어 둘게요
+// SignUpButton, GoogleLogInButton의 컴포넌트명과 컴포넌트 크기 등... 약간 수정하였습니다.
 
 export const Button = ({ text }) => {
 	return (
@@ -68,28 +69,28 @@ export const ToBoard = () => {
 	);
 };
 
-export const Signup = () => {
+export const SignUpButton = () => {
 	return (
-		<button className="inline-flex items-center justify-center gap-2 p-3 pr-6 rounded-full border-4 border-solid border-white bg-sky-400 shadow-md text-white font-bold hover:bg-white hover:text-black active:bg-sky-200 active:border-sky-200 active:text-black transition duration-300 ease-in-out">
+		<button className="inline-flex items-center justify-center w-[280px] h-[60px] p-2 pr-8 rounded-full border-4 border-solid border-white bg-sky-400 shadow-md text-white font-bold hover:bg-white hover:text-black active:bg-sky-200 active:border-sky-200 active:text-black transition duration-300 ease-in-out">
 			<div className="inline-flex items-center justify-center w-10 h-10 flex-shrink-0 bg-white rounded-full text-sky-400">
-				<i className="fa-solid fa-plane text-2xl" />
+				<i className="fa-solid fa-plane text-2xl rotate-[-45deg]" />
 			</div>
-			<div className="pl-6 pr-2">Sign up with MarbleUs</div>
+			<div className="pl-[16px]">Sign up with MarbleUs</div>
 		</button>
 	);
 };
 
 // 테일윈드로는 테두리 그라데이션이 안 들어가서 트랜지션 넣는 게 어려줘졌는데 방법 아시는 분?
-export const GoogleLogin = ({ text }) => {
+export const GoogleLogInButton = () => {
 	return (
 		<button
-			className="inline-flex items-center justify-center gap-2 p-1 rounded-full shadow-md font-semibold transition duration-300 ease-in-out"
+			className="inline-flex items-center justify-center w-[280px] h-[60px] p-1 rounded-full shadow-md font-semibold transition duration-300 ease-in-out"
 			style={{
 				backgroundImage:
 					"linear-gradient(to right, #FF3D00, #FFC107, #4CAF50, #1976D2)",
 			}}
 		>
-			<div className="inline-flex bg-white text-black p-2 pr-8 hover:bg-grey-200 rounded-full">
+			<div className="inline-flex bg-white text-black w-[280px] h-[54px] p-2 pr-8 hover:bg-gray-200 rounded-full">
 				<div className="inline-flex items-center justify-center w-10 h-10 flex-shrink-0 rounded-full">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +117,7 @@ export const GoogleLogin = ({ text }) => {
 						/>
 					</svg>
 				</div>
-				<div className="p-2 ml-4 ">Sign up with Google</div>
+				<div className="p-[5px] pl-[30px] ">Sign up with Google</div>
 			</div>
 		</button>
 	);
