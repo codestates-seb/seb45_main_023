@@ -28,9 +28,6 @@ public class Blog extends Auditable {
     @Column(nullable = false, name = "title")
     private String title;
 
-    @Column(nullable = false, name = "city_name")
-    private String cityName;
-
     @Column(nullable = false, name = "body")
     private String body;
 

@@ -33,7 +33,6 @@ public class BlogService {
         blog.setMember(memberRepository.findById(memberId));
         City findCity = cityService.findVerifiedCity(cityId);
         blog.setCity(findCity);
-        blog.setCityName(findCity.getName());
         Member member = memberService.findVerifiedMember(memberId);
         member.addBlogs(blog);
         blog.setCreatedAt(LocalDateTime.now());
