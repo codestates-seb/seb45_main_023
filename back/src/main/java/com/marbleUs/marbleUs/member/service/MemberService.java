@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Transactional
@@ -86,6 +87,7 @@ public class MemberService {
 
 
     //관리자만 조회 가능하게 추후 수정 요망
+    @Transactional(readOnly = true)
     public Page<Member> findMembers(int page, int size){
         return memberRepository.findAll(PageRequest.of(page-1,size, Sort.by("id").descending()));
     }
@@ -118,5 +120,10 @@ public class MemberService {
                         new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         return findMember;
     }
+
+    public Member findMemberByEmail(String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        return member;
     }
+}
 
