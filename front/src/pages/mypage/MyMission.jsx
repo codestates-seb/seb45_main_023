@@ -7,49 +7,38 @@ export default function MyMission() {
   return (
     <div className="flex justify-center">
       <LeftSidebar />
-      <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-[2rem]">
-        <div className="flex flex-col border-b-1 border-black h-[25rem]">
-          <div className="flex p-4 w-[50rem] h-[25rem] rounded-t-3xl justify-center bg-white">
-            <div className="flex w-[20rem] rounded-l-2xl bg-white items-center border-1 border-black text-lg font-bold px-2">
-              미션페이지
-            </div>
-            <div className="flex w-[20rem] rounded-r-2xl bg-white items-center border-1 border-black text-lg font-bold px-2">
-              This passport is only valid on this site unless otherwise endorsed.
-            </div>
+      <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-[2rem] bg-white">
+        <div className="flex flex-col w-[40rem] h-[25rem] mt-[2rem] justify-around bg-white">
+          <div className="flex h-[4rem] rounded-3xl shadow-2xl">
+            <span className="flex w-[6rem] justify-center items-center rounded-l-3xl bg-blue-400 text-white font-bold hover:bg-blue-500">
+              강원
+            </span>
+            <span className="flex w-full justify-center items-center bg-white rounded-3xl ml-[-1.2rem]">
+              미션내용 블라블라
+            </span>
           </div>
-          <div className="flex justify-center bg-white h-[3.75rem] pb-2">
-            <button className=" border-black border-1 px-2 mx-4 w-40">로그아웃</button>
-            <button className=" border-black border-1 px-2 mx-4 w-40">개인정보수정</button>
+          <div className="flex h-[4rem] rounded-3xl shadow-2xl">
+            <span className="flex w-[6rem] justify-center items-center rounded-l-3xl bg-green-400 text-white font-bold hover:bg-green-500">
+              경기
+            </span>
+            <span className="flex w-full justify-center items-center bg-white rounded-3xl ml-[-1.2rem]">
+              미션내용 블라블라
+            </span>
+          </div>
+          <div className="flex h-[4rem] rounded-3xl shadow-2xl">
+            <span className="flex w-[6rem] justify-center items-center rounded-l-3xl bg-pink-300 text-white font-bold hover:bg-pink-400">
+              전북
+            </span>
+            <span className="flex w-full justify-center items-center bg-white rounded-3xl ml-[-1.2rem]">
+              미션내용 블라블라
+            </span>
           </div>
         </div>
-        <div className="flex flex-col justify-between border-2 w-[50rem] h-[27.5rem] rounded-b-3xl bg-white">
-          <div className="flex flex-col h-[25rem] justify-between mx-[6rem] bg-white">
-            <div className="flex bg-white justify-center">
-              <div className="flex bg-white mx-4 text-[2.5rem]">M A R B L E U S</div>
-              <div className="flex bg-white mx-4 text-[2.5rem]">P A S S P O R T</div>
-            </div>
-            <div className="flex h-[17rem] bg-white">
-              <div className=" border-1 border-black w-[12.5rem] bg-white">이미지자리</div>
-              <div className="flex flex-col justify-between ml-10 bg-white">
-                <div>
-                  <div className="bg-white">메일/E-mail</div>
-                  <div className="font-bold bg-white">user@example.com</div>
-                </div>
-                <div>
-                  <div className="bg-white">닉네임/nickname</div>
-                  <div className="font-bold bg-white">김코딩코딩</div>
-                </div>
-                <div>
-                  <div className="bg-white">생년월일/Date of birth</div>
-                  <div className="font-bold bg-white">01 JAN 2000</div>
-                </div>
-                <div>
-                  <div className="bg-white">국적/nationality</div>
-                  <div className="font-bold bg-white">대한민국</div>
-                </div>
-              </div>
-            </div>
-            <div className="flex whitespace-pre-line bg-white">{footer}</div>
+        <div className="flex flex-col items-center w-[40rem] h-[25rem] bg-white mt-[4rem]">
+          <text className="text-3xl font-bold">N o t i c e</text>
+          <div className="flex flex-col mt-[2rem] shadow-xss">
+            <text>미션 인증 글 작성은 본인의 자유이며 어떠한 강제성도 없습니다.</text>
+            <text>3개의 미션을 이미 받으신 상태에서 추가로 미션을 받게 되시면 오래된 미션부터 갱신됩니다.</text>
           </div>
         </div>
       </div>
