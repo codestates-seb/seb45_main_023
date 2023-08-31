@@ -14,3 +14,8 @@ export const Coments = atom({
   key: 'coment',
   default: [],
 });
+
+export const Routes = atom({
+  key: 'routes',
+  default: '/mypage',
+});
