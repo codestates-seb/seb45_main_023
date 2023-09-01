@@ -26,7 +26,7 @@ public class CommentController {
     //Could not autowire. No beans of 'CommentMapper' type found. 오류는 테스트실행하면 사라질것
 
     //댓글 작성
-    @PostMapping("/{blog-id}/{member-id}/comments")
+    @PostMapping("/{blog-id}/{member-id}")
     public ResponseEntity postComment(@PathVariable("member-id") Long memberId, //url통해서 받아옴
                                       @PathVariable("blog-id") Long blogId,
                                       @Valid @RequestBody CommentPostDto commentPostDto){
@@ -35,7 +35,7 @@ public class CommentController {
     }
 
     //댓글 수정
-    @PatchMapping("/comments/{comment-id}")
+    @PatchMapping("/{comment-id}")
     public ResponseEntity patchComment(@PathVariable("comment-id") Long commentId,
                                        @Valid @RequestBody CommentPatchDto commentPatchDto) {
         Comment comment = commentService.updateComment(commentMapper.toCommentFromPatchDto(commentPatchDto), commentId);
@@ -44,7 +44,7 @@ public class CommentController {
     }
 
     //댓글 삭제
-    @DeleteMapping("/comments/{comment-id}")
+    @DeleteMapping("/{comment-id}")
     public ResponseEntity deleteComment(@PathVariable("comment-id") Long commentId) {
         commentService.deleteComment(commentId);
         return new ResponseEntity<>("댓글이 삭제되었습니다.", HttpStatus.OK);

@@ -19,7 +19,23 @@ public interface CommentMapper {
 
 
     //Comment를 CommentResponseDto로 변환하는 메서드
-    CommentResponseDto toCommentResponseDto(Comment comment);
+    default CommentResponseDto toCommentResponseDto(Comment comment){
+        if ( comment == null ) {
+            return null;
+        }
+
+        CommentResponseDto commentResponseDto = new CommentResponseDto();
+
+        commentResponseDto.setCommentId( comment.getCommentId() );
+        commentResponseDto.setBody( comment.getBody() );
+        commentResponseDto.setCreatedAt( comment.getCreatedAt() );
+        commentResponseDto.setModifiedAt( comment.getModifiedAt() );
+
+        commentResponseDto.setBlogId( comment.getBlog().getBlogId());
+        commentResponseDto.setNickname( comment.getMember().getNickname());
+
+        return commentResponseDto;
+    }
 
     //Comment리스트를 CommentResponseDto리스트로 변환하는 메서드
     List<CommentResponseDto> toCommentResponseDto(List<Comment> comments);
