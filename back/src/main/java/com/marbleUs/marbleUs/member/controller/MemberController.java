@@ -1,6 +1,8 @@
 package com.marbleUs.marbleUs.member.controller;
 
 import com.marbleUs.marbleUs.argumentresolver.LoginMemberId;
+import com.marbleUs.marbleUs.blog.service.BlogService;
+import com.marbleUs.marbleUs.image.ImageService;
 import com.marbleUs.marbleUs.member.dto.MemberDto;
 import com.marbleUs.marbleUs.member.entity.Member;
 import com.marbleUs.marbleUs.member.mapper.MemberMapper;
@@ -13,8 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -28,6 +33,8 @@ public class MemberController {
 
     private final MemberMapper mapper;
     private final MemberService service;
+    private final BlogService blogService;
+    private final ImageService ImgService;
 
 
     @PostMapping("/signup")
@@ -41,12 +48,28 @@ public class MemberController {
         return new ResponseEntity<>(mapper.memberToResponse(memberToSave),HttpStatus.CREATED);
     }
 
+    @PostMapping("{member-id}/profile/upload")
+    public ResponseEntity uploadProfilePic(@RequestPart("images") List<MultipartFile> images,
+                                           @Positive @PathVariable("member-id") Long id) throws IOException {
+        ImgService.uploadMemberImage(images,id);
+        return new ResponseEntity<>("Profile Pic has been uploaded",HttpStatus.OK);
+    }
+
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@RequestBody MemberDto.Patch patch,
                                      @Positive @PathVariable("member-id") Long id){
         Member memberChanged = service.update(mapper.patchToMember(patch),id);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("{member-id}/bookmark/{blog-id}")
+    public ResponseEntity addBookMark(@Positive @PathVariable("member-id") Long memberId,
+                                      @Positive @PathVariable("blog-id") Long blogId){
+        Member findMember = service.findMember(memberId);
+        findMember.addBookMarks(blogService.findBlog(blogId));
+        service.update(findMember,memberId);
+        return new ResponseEntity<>("bookmark is created",HttpStatus.OK);
     }
 
     @GetMapping("/me")

@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.cities.entity;
+package com.marbleUs.marbleUs.city.entity;
 
 import com.marbleUs.marbleUs.audit.Auditable;
 import com.marbleUs.marbleUs.blog.entity.Blog;
@@ -35,6 +35,9 @@ public class City extends Auditable implements CityEntity{
 
     @OneToMany(mappedBy = "city")
     private List<Blog> blogs = new ArrayList();
+
+//    @OneToMany(mappedBy = "city")
+//    private List<City_weathers> city_weathers = new ArrayList();
 
 //    @OneToMany(mappedBy = "city")
 //    private List<CityMission> cityMissions = new ArrayList();

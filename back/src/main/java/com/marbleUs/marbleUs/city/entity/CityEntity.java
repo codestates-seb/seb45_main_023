@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.cities.entity;
+package com.marbleUs.marbleUs.city.entity;
 
 public interface CityEntity {
 

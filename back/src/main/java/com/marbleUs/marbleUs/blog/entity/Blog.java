@@ -1,8 +1,8 @@
 package com.marbleUs.marbleUs.blog.entity;
 
 import com.marbleUs.marbleUs.audit.Auditable;
+import com.marbleUs.marbleUs.city.entity.City;
 import com.marbleUs.marbleUs.member.entity.Member;
-import com.marbleUs.marbleUs.cities.entity.City;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

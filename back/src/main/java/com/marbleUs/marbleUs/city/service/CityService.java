@@ -1,10 +1,9 @@
-package com.marbleUs.marbleUs.cities.service;
+package com.marbleUs.marbleUs.city.service;
 
-import com.marbleUs.marbleUs.cities.entity.City;
-import com.marbleUs.marbleUs.cities.repository.CityRepository;
+import com.marbleUs.marbleUs.city.entity.City;
+import com.marbleUs.marbleUs.city.repository.CityRepository;
 import com.marbleUs.marbleUs.exception.BusinessLogicException;
 import com.marbleUs.marbleUs.exception.ExceptionCode;
-import com.marbleUs.marbleUs.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

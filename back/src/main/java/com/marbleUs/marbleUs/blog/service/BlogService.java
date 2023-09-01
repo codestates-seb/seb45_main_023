@@ -2,9 +2,8 @@ package com.marbleUs.marbleUs.blog.service;
 
 import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.blog.repository.BlogRepository;
-import com.marbleUs.marbleUs.cities.entity.City;
-import com.marbleUs.marbleUs.cities.repository.CityRepository;
-import com.marbleUs.marbleUs.cities.service.CityService;
+import com.marbleUs.marbleUs.city.entity.City;
+import com.marbleUs.marbleUs.city.service.CityService;
 import com.marbleUs.marbleUs.exception.BusinessLogicException;
 import com.marbleUs.marbleUs.exception.ExceptionCode;
 import com.marbleUs.marbleUs.member.entity.Member;
@@ -33,7 +32,6 @@ public class BlogService {
         blog.setMember(memberRepository.findById(memberId));
         City findCity = cityService.findVerifiedCity(cityId);
         blog.setCity(findCity);
-        blog.setCityName(findCity.getName());
         Member member = memberService.findVerifiedMember(memberId);
         member.addBlogs(blog);
         blog.setCreatedAt(LocalDateTime.now());

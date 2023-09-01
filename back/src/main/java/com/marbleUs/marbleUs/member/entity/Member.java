@@ -2,6 +2,8 @@ package com.marbleUs.marbleUs.member.entity;
 
 import com.marbleUs.marbleUs.audit.Auditable;
 import com.marbleUs.marbleUs.blog.entity.Blog;
+import com.marbleUs.marbleUs.image.Image;
+import com.marbleUs.marbleUs.image.MemberImage;
 import com.marbleUs.marbleUs.systemUtils.Stamps;
 import com.marbleUs.marbleUs.systemUtils.UserLocations;
 import lombok.AllArgsConstructor;
@@ -63,8 +65,8 @@ public class Member extends Auditable {
 //    @OneToMany(mappedBy = "member")
 //    private List<Mission> missions = new ArrayList<>();
 
-    //    @OneToMany(mappedBy = "member")
-//    private List<Blogs> bookmarks = new ArrayList<>();
+    @OneToMany(mappedBy = "member",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Blog> bookmarks = new ArrayList<>();
 
 
 
@@ -73,7 +75,8 @@ public class Member extends Auditable {
     @Column(nullable = false, updatable = false, unique = true)
     private String email;
 
-    private String profilePic;
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<MemberImage> profilePics = new ArrayList<>();
 
     @Column(nullable = false, length = 50)
     private String nationality;
@@ -84,5 +87,15 @@ public class Member extends Auditable {
     public void addBlogs(Blog blog) {
         if (blog.getMember() != this) blog.setMember(this);
         myBlogs.add(blog);
+    }
+
+    public void addBookMarks(Blog blog) {
+        if (blog.getMember() != this) blog.setMember(this);
+        bookmarks.add(blog);
+    }
+
+    public void addProfilePic(MemberImage profilePic){
+        if (profilePic.getMember() != this) profilePic.setMember(this);
+        profilePics.add(profilePic);
     }
 }
