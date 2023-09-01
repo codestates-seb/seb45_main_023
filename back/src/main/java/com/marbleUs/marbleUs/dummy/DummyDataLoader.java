@@ -76,7 +76,7 @@ public class DummyDataLoader implements CommandLineRunner {
       blog.setTags(tags);
       blog.setMember(member1);
       blog.setCity(city);
-      blog.setCityName(blog.getCity().getName());
+      blog.setCity(blog.getCity());
 
 
 
