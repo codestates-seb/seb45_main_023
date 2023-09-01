@@ -30,8 +30,8 @@ public class BlogController {
 
 
     //후기글 작성
-    @PostMapping("{member-id}/blogs/{city-id}")
-    public ResponseEntity postBlog (@PathVariable("member-id") Long memberId,
+    @PostMapping("blogs/{city-id}")
+    public ResponseEntity postBlog (@LoginMemberId Long memberId,
                                     @PathVariable("city-id") Long cityId,
                                     @Valid @RequestBody BlogPostDto blogPostDto) {
         Blog blog = blogService.createBlog(blogMapper.toBlog(blogPostDto), memberId, cityId);
@@ -50,7 +50,7 @@ public class BlogController {
     @DeleteMapping("blogs/{blog-id}")
     public ResponseEntity deleteBlog (@PathVariable("blog-id") Long blogId) {
         blogService.deleteBlog(blogId);
-        return new ResponseEntity("게시글이 삭제되었습니다.",HttpStatus.OK);
+        return new ResponseEntity("게시글이 삭제되었습니다.", HttpStatus.OK);
     }
 
     //특정 후기글 조회

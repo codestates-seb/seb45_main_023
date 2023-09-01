@@ -11,7 +11,6 @@ import java.util.List;
 public class BlogResponseDto {
     private Long blogId;
     private String title;
-    private String cityName;
     private String body;
     private List<String> tags;
     private LocalDateTime createdAt;
