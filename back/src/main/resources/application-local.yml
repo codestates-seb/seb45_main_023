@@ -50,8 +50,8 @@ cloud:
     stack:
       auto: false
     credentials:
-      accessKey: AKIAQYDOKWUPJMXFUEVE
-      secretKey: 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
+      accessKey:
+      secretKey:
     s3:
       bucket: marbleus-s3
 
