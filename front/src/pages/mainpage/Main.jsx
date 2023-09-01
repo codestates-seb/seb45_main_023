@@ -29,8 +29,8 @@ export default function Main() {
 					<meshStandardMaterial attach="material" color={505050} />
 				</mesh>
 			</Canvas>
-			<Button text={"로그아웃"} />
-			<Button text={"개인정보수정"} />
+			<Button text={"로그아웃"} color={'blue'}/>
+			<Button text={"개인정보수정"} color={'blue'}/>
 			<GreenButton text={"인증글 쓰러가기"} />
 			<PurpleButton text={"인증글 쓰러가기"} />
 			<NegativeButton text={"글 쓰기"} />
