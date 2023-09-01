@@ -1,5 +1,6 @@
 import { useRecoilState } from 'recoil';
 import { Edit } from '../../recoil/mypage';
+import { Button } from '../Buttons';
 
 export default function MypageNotice() {
   const [isEdit, setIsEdit] = useRecoilState(Edit);
@@ -17,10 +18,10 @@ export default function MypageNotice() {
           This passport is only valid on this site unless otherwise endorsed.
         </div>
       </div>
-      <div className="flex justify-center bg-white h-[3.75rem] pb-2">
-        <button className=" border-black border-1 px-2 mx-4 w-40">로그아웃</button>
-        <button className=" border-black border-1 px-2 mx-4 w-40" onClick={handleEdit}>
-          {isEdit ? '수정완료' : '개인정보수정'}
+      <div className="flex justify-center bg-white h-[7rem] pb-2">
+        <button className='mr-8 w-[10rem]'><Button text={'로그아웃'} color={'blue'}/></button>
+        <button className='ml-4 w-[10rem]'onClick={handleEdit}>
+          {isEdit ? <Button text={'수정완료'} color={'blue'}/> : <Button text={'개인정보수정'} color={'blue'}/>}
         </button>
       </div>
     </div>
