@@ -1,6 +1,8 @@
 package com.marbleUs.marbleUs.member.mapper;
 
+import com.marbleUs.marbleUs.image.MemberImage;
 import com.marbleUs.marbleUs.member.dto.MemberDto;
+import com.marbleUs.marbleUs.member.dto.MemberImageResponse;
 import com.marbleUs.marbleUs.member.entity.Member;
 import com.marbleUs.marbleUs.systemUtils.UserLocations;
 import org.mapstruct.Mapper;
@@ -44,4 +46,11 @@ public interface MemberMapper {
     MemberDto.Response memberToResponse(Member member);
 
     List<MemberDto.Response> membersToResponses(List<Member> members);
+
+    default MemberImageResponse memberImageToResponse(MemberImage memberImage){
+    MemberImageResponse memberImageResponse = new MemberImageResponse();
+    memberImageResponse.setName(memberImage.getImage().getName());
+    memberImageResponse.setPath(memberImage.getImage().getPath());
+    return memberImageResponse;
+    };
 }

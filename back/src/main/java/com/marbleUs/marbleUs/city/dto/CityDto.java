@@ -1,8 +1,7 @@
-package com.marbleUs.marbleUs.cities.dto;
+package com.marbleUs.marbleUs.city.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Service;
 
 @Getter
 @Setter

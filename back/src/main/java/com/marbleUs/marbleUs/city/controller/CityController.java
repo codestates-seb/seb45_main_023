@@ -1,9 +1,9 @@
-package com.marbleUs.marbleUs.cities.controller;
+package com.marbleUs.marbleUs.city.controller;
 
-import com.marbleUs.marbleUs.cities.dto.CityDto;
-import com.marbleUs.marbleUs.cities.entity.City;
-import com.marbleUs.marbleUs.cities.mapper.CityMapper;
-import com.marbleUs.marbleUs.cities.service.CityService;
+import com.marbleUs.marbleUs.city.dto.CityDto;
+import com.marbleUs.marbleUs.city.entity.City;
+import com.marbleUs.marbleUs.city.mapper.CityMapper;
+import com.marbleUs.marbleUs.city.service.CityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

@@ -1,16 +1,14 @@
 package com.marbleUs.marbleUs.blog.entity;
 
 import com.marbleUs.marbleUs.audit.Auditable;
-import com.marbleUs.marbleUs.comment.entity.Comment;
+import com.marbleUs.marbleUs.city.entity.City;
 import com.marbleUs.marbleUs.member.entity.Member;
-import com.marbleUs.marbleUs.cities.entity.City;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -45,10 +43,9 @@ public class Blog extends Auditable {
     @JoinColumn(name = "city_id")
     private City city;
 
-    //외래키 부분 활성화완료
-    @OneToMany(mappedBy = "blog")
-    private List<Comment> comments = new ArrayList<>();
-
-
-
+    /*외래키 부분 추후 수정
+    @OneToMany
+    @JoinColumn(name = "comments")
+    private Comment comment;
+    */
 }

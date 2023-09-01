@@ -2,9 +2,8 @@ package com.marbleUs.marbleUs.blog.service;
 
 import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.blog.repository.BlogRepository;
-import com.marbleUs.marbleUs.cities.entity.City;
-import com.marbleUs.marbleUs.cities.repository.CityRepository;
-import com.marbleUs.marbleUs.cities.service.CityService;
+import com.marbleUs.marbleUs.city.entity.City;
+import com.marbleUs.marbleUs.city.service.CityService;
 import com.marbleUs.marbleUs.exception.BusinessLogicException;
 import com.marbleUs.marbleUs.exception.ExceptionCode;
 import com.marbleUs.marbleUs.member.entity.Member;

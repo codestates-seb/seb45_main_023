@@ -1,7 +1,6 @@
-package com.marbleUs.marbleUs.cities.repository;
+package com.marbleUs.marbleUs.city.repository;
 
-import com.marbleUs.marbleUs.cities.entity.City;
-import org.springframework.data.domain.Page;
+import com.marbleUs.marbleUs.city.entity.City;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

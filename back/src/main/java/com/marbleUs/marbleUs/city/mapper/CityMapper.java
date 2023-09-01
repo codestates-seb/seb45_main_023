@@ -1,10 +1,8 @@
-package com.marbleUs.marbleUs.cities.mapper;
+package com.marbleUs.marbleUs.city.mapper;
 
-import com.marbleUs.marbleUs.cities.dto.CityDto;
-import com.marbleUs.marbleUs.cities.entity.City;
-import com.marbleUs.marbleUs.cities.entity.CityEntity;
+import com.marbleUs.marbleUs.city.dto.CityDto;
+import com.marbleUs.marbleUs.city.entity.City;
 import org.mapstruct.Mapper;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
