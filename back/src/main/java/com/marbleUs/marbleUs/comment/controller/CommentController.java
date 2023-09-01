@@ -58,7 +58,7 @@ public class CommentController {
     }
 
     //특정 회원별 댓글 조회
-    @GetMapping("/members/{member-id}/comments")
+    @GetMapping("/members/{member-id}")
     public ResponseEntity getCommentsByMember(@PathVariable("member-id") Long memberId,
                                               @Positive @RequestParam int page,
                                               @Positive @RequestParam int size) {
@@ -68,7 +68,7 @@ public class CommentController {
     }
 
     //블로그글(후기)별 댓글 조회
-    @GetMapping("/blogs/{blog-id}/comments")
+    @GetMapping("/blogs/{blog-id}")
     public ResponseEntity getCommentsByBlog(@PathVariable("blog-id") Long blogId,
                                             @Positive @RequestParam int page,
                                             @Positive @RequestParam int size) {

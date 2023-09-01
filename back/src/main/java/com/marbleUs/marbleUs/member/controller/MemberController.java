@@ -72,12 +72,22 @@ public class MemberController {
         return new ResponseEntity<>("bookmark is created",HttpStatus.OK);
     }
 
+
+    //Get
+
     @GetMapping("/me")
     public ResponseEntity getMember(@Positive @LoginMemberId long id){
-        String principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        System.out.println(principal);
+
         Member foundMember = service.findMember(id);
 
+
+        return new ResponseEntity<>(mapper.memberToResponse(foundMember),HttpStatus.OK);
+    }
+
+    @GetMapping("/{member-email}")
+    public ResponseEntity getSpecificMember(@Positive @PathVariable("member-email") String email){
+
+        Member foundMember = service.findMemberByEmail(email);
 
         return new ResponseEntity<>(mapper.memberToResponse(foundMember),HttpStatus.OK);
     }
@@ -90,6 +100,8 @@ public class MemberController {
         return new ResponseEntity<>(responses,HttpStatus.OK);
     }
 
+
+    //Delete
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@Positive @PathVariable("member-id") Long memberId){
         service.deleteMember(memberId);

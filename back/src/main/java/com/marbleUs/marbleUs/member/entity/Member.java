@@ -2,6 +2,7 @@ package com.marbleUs.marbleUs.member.entity;
 
 import com.marbleUs.marbleUs.audit.Auditable;
 import com.marbleUs.marbleUs.blog.entity.Blog;
+import com.marbleUs.marbleUs.comment.entity.Comment;
 import com.marbleUs.marbleUs.image.Image;
 import com.marbleUs.marbleUs.image.MemberImage;
 import com.marbleUs.marbleUs.systemUtils.Stamps;
@@ -68,6 +69,9 @@ public class Member extends Auditable {
 
     @OneToMany(mappedBy = "member",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Blog> bookmarks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Comment> myComments = new ArrayList<>();
 
 
 
