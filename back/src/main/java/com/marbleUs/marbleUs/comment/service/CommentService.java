@@ -34,8 +34,10 @@ public class CommentService {
         //댓글 작성자 정보 설정
         Member member = memberService.findVerifiedMember(memberId);
         comment.setMember(member);
+        member.addMyComment(comment);
         //연결할 블로그 검색 및 설정
         Blog findBlog = blogService.findVerifiedBlog(blogId);
+        findBlog.addComment(comment);
         comment.setBlog(findBlog);
 
         //댓글 생성,수정 시간

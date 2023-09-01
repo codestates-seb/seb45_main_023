@@ -1,17 +1,13 @@
 package com.marbleUs.marbleUs.member.dto;
 
 import com.marbleUs.marbleUs.blog.dto.BlogResponseDto;
-import com.marbleUs.marbleUs.blog.entity.Blog;
-import com.marbleUs.marbleUs.image.MemberImage;
 import com.marbleUs.marbleUs.systemUtils.Stamps;
 import com.marbleUs.marbleUs.systemUtils.UserLocations;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.domain.PageRequest;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 

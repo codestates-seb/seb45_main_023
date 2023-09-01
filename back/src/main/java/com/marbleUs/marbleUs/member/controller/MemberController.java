@@ -2,7 +2,7 @@ package com.marbleUs.marbleUs.member.controller;
 
 import com.marbleUs.marbleUs.argumentresolver.LoginMemberId;
 import com.marbleUs.marbleUs.blog.service.BlogService;
-import com.marbleUs.marbleUs.image.ImageService;
+import com.marbleUs.marbleUs.image.service.ImageService;
 import com.marbleUs.marbleUs.member.dto.MemberDto;
 import com.marbleUs.marbleUs.member.entity.Member;
 import com.marbleUs.marbleUs.member.mapper.MemberMapper;
@@ -12,12 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -85,7 +83,7 @@ public class MemberController {
     }
 
     @GetMapping("/{member-email}")
-    public ResponseEntity getSpecificMember(@Positive @PathVariable("member-email") String email){
+    public ResponseEntity getSpecificMember(@PathVariable("member-email") String email){
 
         Member foundMember = service.findMemberByEmail(email);
 

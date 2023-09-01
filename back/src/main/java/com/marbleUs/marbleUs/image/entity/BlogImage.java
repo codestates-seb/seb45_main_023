@@ -1,6 +1,6 @@
-package com.marbleUs.marbleUs.image;
+package com.marbleUs.marbleUs.image.entity;
 
-import com.marbleUs.marbleUs.member.entity.Member;
+import com.marbleUs.marbleUs.blog.entity.Blog;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,14 +9,14 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class MemberImage {
+public class BlogImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "blog_id")
+    private Blog blog;
 
     @ManyToOne
     @JoinColumn(name = "image_id")

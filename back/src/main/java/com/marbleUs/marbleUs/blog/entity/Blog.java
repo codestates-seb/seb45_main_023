@@ -2,6 +2,7 @@ package com.marbleUs.marbleUs.blog.entity;
 
 import com.marbleUs.marbleUs.audit.Auditable;
 import com.marbleUs.marbleUs.city.entity.City;
+import com.marbleUs.marbleUs.comment.entity.Comment;
 import com.marbleUs.marbleUs.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -43,9 +45,13 @@ public class Blog extends Auditable {
     @JoinColumn(name = "city_id")
     private City city;
 
-    /*외래키 부분 추후 수정
-    @OneToMany
-    @JoinColumn(name = "comments")
-    private Comment comment;
-    */
+
+    @OneToMany(mappedBy = "blog",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<Comment> comments = new ArrayList<>();
+
+    public void addComment(Comment comment){
+        if (comment.getBlog() != this) comment.setBlog(this);
+        comments.add(comment);
+    }
+
 }

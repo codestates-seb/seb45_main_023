@@ -1,6 +1,6 @@
 package com.marbleUs.marbleUs.member.mapper;
 
-import com.marbleUs.marbleUs.image.MemberImage;
+import com.marbleUs.marbleUs.image.entity.MemberImage;
 import com.marbleUs.marbleUs.member.dto.MemberDto;
 import com.marbleUs.marbleUs.member.dto.MemberImageResponse;
 import com.marbleUs.marbleUs.member.entity.Member;

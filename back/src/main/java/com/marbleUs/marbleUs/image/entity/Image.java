@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.image;
+package com.marbleUs.marbleUs.image.entity;
 
 import com.marbleUs.marbleUs.audit.Auditable;
 import lombok.Getter;

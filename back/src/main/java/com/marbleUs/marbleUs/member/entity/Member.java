@@ -2,9 +2,9 @@ package com.marbleUs.marbleUs.member.entity;
 
 import com.marbleUs.marbleUs.audit.Auditable;
 import com.marbleUs.marbleUs.blog.entity.Blog;
+import com.marbleUs.marbleUs.comment.controller.CommentController;
 import com.marbleUs.marbleUs.comment.entity.Comment;
-import com.marbleUs.marbleUs.image.Image;
-import com.marbleUs.marbleUs.image.MemberImage;
+import com.marbleUs.marbleUs.image.entity.MemberImage;
 import com.marbleUs.marbleUs.systemUtils.Stamps;
 import com.marbleUs.marbleUs.systemUtils.UserLocations;
 import lombok.AllArgsConstructor;
@@ -102,5 +102,10 @@ public class Member extends Auditable {
     public void addProfilePic(MemberImage profilePic){
         if (profilePic.getMember() != this) profilePic.setMember(this);
         profilePics.add(profilePic);
+    }
+
+    public void addMyComment(Comment comment){
+        if (comment.getMember() != this) comment.setMember(this);
+        myComments.add(comment);
     }
 }
