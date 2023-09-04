@@ -1,8 +1,8 @@
-package com.marbleUs.marbleUs.auth.filter;
+package com.marbleUs.marbleUs.common.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marbleUs.marbleUs.auth.dto.LoginDto;
-import com.marbleUs.marbleUs.auth.jwt.JwtTokenizer;
+import com.marbleUs.marbleUs.common.auth.dto.LoginDto;
+import com.marbleUs.marbleUs.common.auth.jwt.JwtTokenizer;
 import com.marbleUs.marbleUs.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

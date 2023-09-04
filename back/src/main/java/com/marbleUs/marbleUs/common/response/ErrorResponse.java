@@ -1,7 +1,7 @@
-package com.marbleUs.marbleUs.response;
+package com.marbleUs.marbleUs.common.response;
 
 
-import com.marbleUs.marbleUs.exception.ExceptionCode;
+import com.marbleUs.marbleUs.common.exception.ExceptionCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;

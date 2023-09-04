@@ -1,9 +1,9 @@
-package com.marbleUs.marbleUs.auth.filter;
+package com.marbleUs.marbleUs.common.auth.filter;
 
 
 
-import com.marbleUs.marbleUs.auth.jwt.JwtTokenizer;
-import com.marbleUs.marbleUs.auth.utils.CustomAuthorityUtils;
+import com.marbleUs.marbleUs.common.auth.jwt.JwtTokenizer;
+import com.marbleUs.marbleUs.common.auth.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

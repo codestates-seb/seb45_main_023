@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.systemUtils;
+package com.marbleUs.marbleUs.common.tools;
 
 import lombok.Getter;
 import lombok.Setter;

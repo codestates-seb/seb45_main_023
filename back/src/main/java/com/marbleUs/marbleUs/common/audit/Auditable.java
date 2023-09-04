@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.audit;
+package com.marbleUs.marbleUs.common.audit;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class Auditable {
+public abstract class Auditable{
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)

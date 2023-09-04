@@ -1,10 +1,10 @@
-package com.marbleUs.marbleUs.auth.handler;
+package com.marbleUs.marbleUs.common.auth.handler;
 
 
 
 
-import com.marbleUs.marbleUs.auth.jwt.JwtTokenizer;
-import com.marbleUs.marbleUs.auth.utils.CustomAuthorityUtils;
+import com.marbleUs.marbleUs.common.auth.jwt.JwtTokenizer;
+import com.marbleUs.marbleUs.common.auth.utils.CustomAuthorityUtils;
 import com.marbleUs.marbleUs.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

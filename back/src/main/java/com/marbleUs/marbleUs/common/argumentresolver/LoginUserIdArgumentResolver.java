@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.argumentresolver;
+package com.marbleUs.marbleUs.common.argumentresolver;
 
 
 import com.marbleUs.marbleUs.member.entity.Member;

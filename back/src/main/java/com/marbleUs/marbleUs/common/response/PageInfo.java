@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.response;
+package com.marbleUs.marbleUs.common.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
