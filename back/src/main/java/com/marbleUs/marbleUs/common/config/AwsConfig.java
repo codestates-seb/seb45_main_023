@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.config;
+package com.marbleUs.marbleUs.common.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
