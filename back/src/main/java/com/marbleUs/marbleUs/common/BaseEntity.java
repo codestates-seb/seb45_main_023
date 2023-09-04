@@ -1,10 +1,23 @@
 package com.marbleUs.marbleUs.common;
 
+import com.marbleUs.marbleUs.common.audit.Auditable;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.Hibernate;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
-public class BaseEntity {
-    private Long id;
+@Getter
+@Setter
+@MappedSuperclass
+public class BaseEntity extends Auditable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long id;
 
     // Getter and setter for id
 

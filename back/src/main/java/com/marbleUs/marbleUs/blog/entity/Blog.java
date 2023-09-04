@@ -1,8 +1,11 @@
 package com.marbleUs.marbleUs.blog.entity;
 
-import com.marbleUs.marbleUs.audit.Auditable;
+import com.marbleUs.marbleUs.common.BaseEntity;
+
+import com.marbleUs.marbleUs.common.audit.Auditable;
 import com.marbleUs.marbleUs.city.entity.City;
 import com.marbleUs.marbleUs.comment.entity.Comment;
+import com.marbleUs.marbleUs.image.entity.Image;
 import com.marbleUs.marbleUs.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,16 +19,11 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "blog")
-public class Blog extends Auditable {
+public class Blog extends BaseEntity {
 
-    @Id //Id 자동 생성
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, name = "id")
-    private Long blogId;
+
 
     @Column(nullable = false, name = "title")
     private String title;
@@ -45,13 +43,21 @@ public class Blog extends Auditable {
     @JoinColumn(name = "city_id")
     private City city;
 
+    @OneToMany(mappedBy = "blog",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<Image> images = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "blog",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Comment> comments = new ArrayList<>();
 
+
     public void addComment(Comment comment){
         if (comment.getBlog() != this) comment.setBlog(this);
         comments.add(comment);
+    }
+    public void addBlogImage(Image image){
+        if (image.getBlog() != this) image.setBlog(this);
+        images.add(image);
     }
 
 }

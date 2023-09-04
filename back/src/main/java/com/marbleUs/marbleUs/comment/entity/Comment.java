@@ -1,7 +1,9 @@
 package com.marbleUs.marbleUs.comment.entity;
 
 
-import com.marbleUs.marbleUs.audit.Auditable;
+
+import com.marbleUs.marbleUs.common.BaseEntity;
+import com.marbleUs.marbleUs.common.audit.Auditable;
 import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.member.entity.Member;
 import lombok.Getter;
@@ -13,14 +15,8 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@Table
-public class Comment extends Auditable {
+public class Comment extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //자동생성
-    @Column
-    private Long commentId;
 
 
     @Column(nullable = false)
