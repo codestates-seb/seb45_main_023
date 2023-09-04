@@ -1,6 +1,8 @@
 package com.marbleUs.marbleUs.city.entity;
 
-import com.marbleUs.marbleUs.audit.Auditable;
+import com.marbleUs.marbleUs.common.BaseEntity;
+
+import com.marbleUs.marbleUs.common.audit.Auditable;
 import com.marbleUs.marbleUs.blog.entity.Blog;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,15 +13,12 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
+
 @Getter
 @Setter
 @Entity
-@AllArgsConstructor
-public class City extends Auditable implements CityEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class City extends BaseEntity implements CityEntity{
+
 
     @Column(length = 20, nullable = false)
     private String name;

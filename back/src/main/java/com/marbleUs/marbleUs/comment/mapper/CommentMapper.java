@@ -26,12 +26,11 @@ public interface CommentMapper {
 
         CommentResponseDto commentResponseDto = new CommentResponseDto();
 
-        commentResponseDto.setCommentId( comment.getCommentId() );
+        commentResponseDto.setId( comment.getId() );
         commentResponseDto.setBody( comment.getBody() );
+        commentResponseDto.setBlogId(comment.getBlog().getId());
         commentResponseDto.setCreatedAt( comment.getCreatedAt() );
         commentResponseDto.setModifiedAt( comment.getModifiedAt() );
-
-        commentResponseDto.setBlogId( comment.getBlog().getBlogId());
         commentResponseDto.setNickname( comment.getMember().getNickname());
 
         return commentResponseDto;

@@ -2,8 +2,8 @@ package com.marbleUs.marbleUs.city.service;
 
 import com.marbleUs.marbleUs.city.entity.City;
 import com.marbleUs.marbleUs.city.repository.CityRepository;
-import com.marbleUs.marbleUs.exception.BusinessLogicException;
-import com.marbleUs.marbleUs.exception.ExceptionCode;
+import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
+import com.marbleUs.marbleUs.common.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

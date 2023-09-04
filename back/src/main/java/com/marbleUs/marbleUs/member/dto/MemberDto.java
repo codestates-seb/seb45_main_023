@@ -1,8 +1,10 @@
 package com.marbleUs.marbleUs.member.dto;
 
 import com.marbleUs.marbleUs.blog.dto.BlogResponseDto;
-import com.marbleUs.marbleUs.systemUtils.Stamps;
-import com.marbleUs.marbleUs.systemUtils.UserLocations;
+import com.marbleUs.marbleUs.comment.dto.CommentResponseDto;
+import com.marbleUs.marbleUs.common.tools.Stamps;
+import com.marbleUs.marbleUs.common.tools.UserLocations;
+import com.marbleUs.marbleUs.image.dto.ImageResponseDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -45,6 +47,8 @@ public class MemberDto {
 
         private String nickname;
 
+        private Long bookmarkId;
+
         private String currentCityCode;
 
         private UserLocations currentLocation;
@@ -60,14 +64,17 @@ public class MemberDto {
         private String nickname;
         private String email;
         private int level;
-        private List<MemberImageResponse> profilePics;
+        private List<ImageResponseDto> profilePics;
         private String nationality;
         private LocalDate birth;
         private List<Stamps> myStamps;
         private UserLocations currentLocation;
         private List<UserLocations> visitedCities;
-        private List<BlogResponseDto> myBlogs;
-        private List<BlogResponseDto> bookmarks;
+
+        private List<Long> bookmarks;
+
+        private LocalDate createdAt;
+        private LocalDate modifiedAt;
     }
 
 }

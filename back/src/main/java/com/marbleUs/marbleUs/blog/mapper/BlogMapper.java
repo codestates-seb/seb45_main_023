@@ -21,24 +21,9 @@ public interface BlogMapper {
         }
 
         BlogResponseDto blogResponseDto = new BlogResponseDto();
-        List<CommentResponseDto> commentResponseDtos = blog.getComments().stream()
-                .map(
-                        comment -> {
-                            CommentResponseDto commentResponseDto = new CommentResponseDto();
-                            commentResponseDto.setCommentId(comment.getCommentId());
-                            commentResponseDto.setNickname(comment.getMember().getNickname());
-                            commentResponseDto.setBody(comment.getBody());
-                            commentResponseDto.setCreatedAt(comment.getCreatedAt());
-                            commentResponseDto.setModifiedAt(comment.getModifiedAt());
-                            commentResponseDto.setBlogId(comment.getBlog().getBlogId());
-                            return commentResponseDto;
-                        }).collect(Collectors.toList());
-
-        blogResponseDto.setComments(commentResponseDtos);
 
 
-
-        blogResponseDto.setBlogId( blog.getBlogId() );
+        blogResponseDto.setId( blog.getId() );
         blogResponseDto.setTitle( blog.getTitle() );
         blogResponseDto.setBody( blog.getBody() );
         List<String> list = blog.getTags();

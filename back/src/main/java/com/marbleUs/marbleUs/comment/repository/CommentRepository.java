@@ -12,13 +12,14 @@ import java.util.Optional;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     //댓글 ID를 기반으로 댓글 조회
-    Optional<Comment> findByCommentId(Long commentId);
+    Optional<Comment> findById(Long id);
 
     //블로그 ID를 기반으로 댓글 목록 조회
-    @Query("select c FROM Comment c WHERE c.blog.blogId = :blogId") //나중에 다시 찾아보기 왜 얘만 수동으로 쿼리를 넣어야하나??
+    @Query("select c FROM Comment c WHERE c.blog.id = :blogId") //나중에 다시 찾아보기 왜 얘만 수동으로 쿼리를 넣어야하나??
     Page<Comment> findByBlogId(Long blogId, Pageable pageable);
 
     //특정 회원 ID를 기반으로 댓글 목록 조회
+    @Query("select c FROM Comment c WHERE c.member.id = :memberId")
     Page<Comment> findByMemberId(Long memberId, Pageable pageable);
 
 

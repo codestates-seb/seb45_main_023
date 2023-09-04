@@ -10,11 +10,10 @@ import java.util.List;
 @Getter
 @Setter
 public class BlogResponseDto {
-    private Long blogId;
+    private Long id;
     private String title;
     private String body;
     private List<String> tags;
-    private List<CommentResponseDto> comments;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }
