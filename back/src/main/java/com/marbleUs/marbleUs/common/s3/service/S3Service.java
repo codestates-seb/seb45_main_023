@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.s3.service;
+package com.marbleUs.marbleUs.common.s3.service;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.HttpMethod;
