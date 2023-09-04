@@ -10,4 +10,5 @@ import java.util.List;
 public interface ImageMapper {
     ImageResponseDto imageToResponse(Image image);
     List<ImageResponseDto> imagesToResponses(List<Image> images);
+
 }

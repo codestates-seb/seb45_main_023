@@ -1,6 +1,7 @@
 package com.marbleUs.marbleUs.member.controller;
 
-import com.marbleUs.marbleUs.argumentresolver.LoginMemberId;
+import com.amazonaws.services.s3.AmazonS3;
+import com.marbleUs.marbleUs.common.argumentresolver.LoginMemberId;
 import com.marbleUs.marbleUs.blog.service.BlogService;
 import com.marbleUs.marbleUs.image.service.ImageService;
 import com.marbleUs.marbleUs.member.dto.MemberDto;
@@ -31,8 +32,7 @@ public class MemberController {
 
     private final MemberMapper mapper;
     private final MemberService service;
-    private final BlogService blogService;
-    private final ImageService ImgService;
+    private final ImageService imgService;
 
 
     @PostMapping("/signup")
@@ -49,9 +49,17 @@ public class MemberController {
     @PostMapping("{member-id}/profile/upload")
     public ResponseEntity uploadProfilePic(@RequestPart("images") List<MultipartFile> images,
                                            @Positive @PathVariable("member-id") Long id) throws IOException {
-        ImgService.uploadMemberImage(images,id);
+        imgService.uploadMemberImage(images,id);
         return new ResponseEntity<>("Profile Pic has been uploaded",HttpStatus.OK);
     }
+
+    //유저가 삭제하고싶은 사진들을 골라서 리스트형태로 삭제
+    @DeleteMapping("/pic-delete")
+    public ResponseEntity deleteBlogImageWithEditor(@RequestParam List<String> names){
+        imgService.deleteMemberImage(names);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
 
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@RequestBody MemberDto.Patch patch,
@@ -65,7 +73,7 @@ public class MemberController {
     public ResponseEntity addBookMark(@Positive @PathVariable("member-id") Long memberId,
                                       @Positive @PathVariable("blog-id") Long blogId){
         Member findMember = service.findMember(memberId);
-        findMember.addBookMarks(blogService.findBlog(blogId));
+        findMember.addBookMarks(blogId);
         service.update(findMember,memberId);
         return new ResponseEntity<>("bookmark is created",HttpStatus.OK);
     }

@@ -4,8 +4,8 @@ import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.blog.repository.BlogRepository;
 import com.marbleUs.marbleUs.city.entity.City;
 import com.marbleUs.marbleUs.city.service.CityService;
-import com.marbleUs.marbleUs.exception.BusinessLogicException;
-import com.marbleUs.marbleUs.exception.ExceptionCode;
+import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
+import com.marbleUs.marbleUs.common.exception.ExceptionCode;
 import com.marbleUs.marbleUs.member.entity.Member;
 import com.marbleUs.marbleUs.member.repository.MemberRepository;
 import com.marbleUs.marbleUs.member.service.MemberService;
@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class BlogService {
@@ -89,4 +91,13 @@ public class BlogService {
         return new PageImpl<>(cityBlogs, pageRequest, cityBlogs.size());
     }
 
+    public Page<Blog> findBookMarkedBlogs(List<Long> bookmarkIds, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        List<Blog> findBlogs= bookmarkIds.stream().map(id ->{
+            Blog blog = findVerifiedBlog(id);
+            return blog;
+        }).collect(Collectors.toList());
+        return new PageImpl<>(findBlogs,pageRequest,findBlogs.size());
+    }
 }

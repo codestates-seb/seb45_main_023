@@ -1,12 +1,13 @@
 package com.marbleUs.marbleUs.member.service;
 
-import com.marbleUs.marbleUs.auth.utils.CustomAuthorityUtils;
-import com.marbleUs.marbleUs.exception.BusinessLogicException;
-import com.marbleUs.marbleUs.exception.ExceptionCode;
+import com.marbleUs.marbleUs.blog.service.BlogService;
+import com.marbleUs.marbleUs.common.auth.utils.CustomAuthorityUtils;
+import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
+import com.marbleUs.marbleUs.common.exception.ExceptionCode;
 import com.marbleUs.marbleUs.member.entity.Member;
 import com.marbleUs.marbleUs.member.repository.MemberRepository;
-import com.marbleUs.marbleUs.systemUtils.MemberNickNameGenerator;
-import com.marbleUs.marbleUs.systemUtils.NickNameGenerator;
+import com.marbleUs.marbleUs.common.tools.MemberNickNameGenerator;
+import com.marbleUs.marbleUs.common.tools.NickNameGenerator;
 import lombok.RequiredArgsConstructor;
 
 
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Transactional
@@ -65,6 +65,8 @@ public class MemberService {
                 .ifPresent( nationality -> findMember.setNationality(nationality));
         Optional.ofNullable(member.getNickname())
                 .ifPresent( nickname -> findMember.setNickname(nickname));
+        Optional.ofNullable(member.getBookmarks().get(member.getBookmarks().size()-1))
+                .ifPresent( blogId -> findMember.addBookMarks(blogId));
 
         Optional.ofNullable(member.getCurrentLocation())
                 .ifPresent( location -> {
