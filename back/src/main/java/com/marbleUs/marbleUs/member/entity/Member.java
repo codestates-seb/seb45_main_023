@@ -1,16 +1,15 @@
 package com.marbleUs.marbleUs.member.entity;
 
-import com.marbleUs.marbleUs.audit.Auditable;
+import com.marbleUs.marbleUs.common.BaseEntity;
+import com.marbleUs.marbleUs.common.audit.Auditable;
 import com.marbleUs.marbleUs.blog.entity.Blog;
-import com.marbleUs.marbleUs.comment.controller.CommentController;
 import com.marbleUs.marbleUs.comment.entity.Comment;
-import com.marbleUs.marbleUs.image.entity.MemberImage;
-import com.marbleUs.marbleUs.systemUtils.Stamps;
-import com.marbleUs.marbleUs.systemUtils.UserLocations;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
+import com.marbleUs.marbleUs.common.exception.ExceptionCode;
+import com.marbleUs.marbleUs.image.entity.Image;
+import com.marbleUs.marbleUs.common.tools.Stamps;
+import com.marbleUs.marbleUs.common.tools.UserLocations;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -18,16 +17,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@NoArgsConstructor
+
 @Getter
 @Setter
 @Entity
-@AllArgsConstructor
-public class Member extends Auditable {
+//@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+public class Member extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+////    @EqualsAndHashCode.Include
+//    private Long id;
 
 
     //create 시 기본 자동 생성 추후 수정가능
@@ -59,16 +60,15 @@ public class Member extends Auditable {
         visitedCities.add(currentLocation);
     }
 
-
     @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Blog> myBlogs = new ArrayList<>();
 
+    @ElementCollection
+    private List<Long> bookmarks = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "member")
-//    private List<Mission> missions = new ArrayList<>();
+//    private List<Member_Mission> myMissions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Blog> bookmarks = new ArrayList<>();
 
     @OneToMany(mappedBy = "member",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Comment> myComments = new ArrayList<>();
@@ -81,7 +81,7 @@ public class Member extends Auditable {
     private String email;
 
     @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
-    private List<MemberImage> profilePics = new ArrayList<>();
+    private List<Image> profilePics = new ArrayList<>();
 
     @Column(nullable = false, length = 50)
     private String nationality;
@@ -94,12 +94,12 @@ public class Member extends Auditable {
         myBlogs.add(blog);
     }
 
-    public void addBookMarks(Blog blog) {
-        if (blog.getMember() != this) blog.setMember(this);
-        bookmarks.add(blog);
+    public void addBookMarks(Long blogId) {
+        if (blogId == this.id) throw new BusinessLogicException(ExceptionCode.NOT_ALLOWED_BOOKMARK);
+        bookmarks.add(blogId);
     }
 
-    public void addProfilePic(MemberImage profilePic){
+    public void addProfilePic(Image profilePic){
         if (profilePic.getMember() != this) profilePic.setMember(this);
         profilePics.add(profilePic);
     }
@@ -108,4 +108,6 @@ public class Member extends Auditable {
         if (comment.getMember() != this) comment.setMember(this);
         myComments.add(comment);
     }
+
+
 }
