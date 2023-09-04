@@ -1,22 +1,17 @@
 package com.marbleUs.marbleUs.comment.service;
 
 import com.marbleUs.marbleUs.blog.entity.Blog;
-import com.marbleUs.marbleUs.blog.repository.BlogRepository;
 import com.marbleUs.marbleUs.blog.service.BlogService;
-import com.marbleUs.marbleUs.city.repository.CityRepository;
-import com.marbleUs.marbleUs.city.service.CityService;
 import com.marbleUs.marbleUs.comment.entity.Comment;
 import com.marbleUs.marbleUs.comment.repository.CommentRepository;
-import com.marbleUs.marbleUs.exception.BusinessLogicException;
-import com.marbleUs.marbleUs.exception.ExceptionCode;
+import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
+import com.marbleUs.marbleUs.common.exception.ExceptionCode;
 import com.marbleUs.marbleUs.member.entity.Member;
-import com.marbleUs.marbleUs.member.repository.MemberRepository;
 import com.marbleUs.marbleUs.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -74,7 +69,7 @@ public class CommentService {
 
     //검증된 댓글 조회 메서드
     public Comment findVerifiedComment(long commentId) {
-        return commentRepository.findByCommentId(commentId)
+        return commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_EXIST));
     }
 
@@ -96,7 +91,7 @@ public class CommentService {
     //특정 회원이 작성한 댓글을 페이지네이션을 사용하여 조회하는 메서드
     public Page<Comment> findCommentByMemberId(int page, int size, Long memberId) {
         //특정 회원별 댓글 조회
-        return commentRepository.findByMemberId(memberId, PageRequest.of(page, size, Sort.by("commentId").descending()));
+        return commentRepository.findByMemberId(memberId, PageRequest.of(page, size, Sort.by("createdAt").descending()));
     }
 
 

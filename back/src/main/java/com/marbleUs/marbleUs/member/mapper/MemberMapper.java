@@ -1,13 +1,14 @@
 package com.marbleUs.marbleUs.member.mapper;
 
-import com.marbleUs.marbleUs.image.entity.MemberImage;
+import com.marbleUs.marbleUs.blog.entity.Blog;
+import com.marbleUs.marbleUs.common.tools.Stamps;
 import com.marbleUs.marbleUs.member.dto.MemberDto;
-import com.marbleUs.marbleUs.member.dto.MemberImageResponse;
 import com.marbleUs.marbleUs.member.entity.Member;
-import com.marbleUs.marbleUs.systemUtils.UserLocations;
+import com.marbleUs.marbleUs.common.tools.UserLocations;
 import org.mapstruct.Mapper;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -35,6 +36,7 @@ public interface MemberMapper {
 
         member.setNickname( patch.getNickname() );
         member.setPassword( patch.getPassword() );
+        member.addBookMarks(patch.getBookmarkId());
 
         UserLocations currentLocation = patch.getCurrentLocation();
         currentLocation.setCityCode(patch.getCurrentCityCode());
@@ -42,15 +44,12 @@ public interface MemberMapper {
         member.setNationality( patch.getNationality() );
 
         return member;
-    };
+    }
+
+
+    ;
     MemberDto.Response memberToResponse(Member member);
 
     List<MemberDto.Response> membersToResponses(List<Member> members);
 
-    default MemberImageResponse memberImageToResponse(MemberImage memberImage){
-    MemberImageResponse memberImageResponse = new MemberImageResponse();
-    memberImageResponse.setName(memberImage.getImage().getName());
-    memberImageResponse.setPath(memberImage.getImage().getPath());
-    return memberImageResponse;
-    };
 }

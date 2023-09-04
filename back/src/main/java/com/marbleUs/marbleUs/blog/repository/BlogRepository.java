@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BlogRepository extends JpaRepository<Blog,Long> {
-    Optional<Blog> findById(Long blogId);
+
+
+    Optional<Blog> findById(Long id);
     List<Blog> findByTagsContaining(String tag);
     List<Blog> findByMemberId(Long memberId);
     List<Blog> findByCityId(Long cityId);

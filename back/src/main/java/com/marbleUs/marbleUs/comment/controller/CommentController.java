@@ -5,7 +5,7 @@ import com.marbleUs.marbleUs.comment.dto.CommentPostDto;
 import com.marbleUs.marbleUs.comment.entity.Comment;
 import com.marbleUs.marbleUs.comment.mapper.CommentMapper;
 import com.marbleUs.marbleUs.comment.service.CommentService;
-import com.marbleUs.marbleUs.response.MultiResponseDto;
+import com.marbleUs.marbleUs.common.response.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
