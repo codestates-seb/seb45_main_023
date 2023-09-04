@@ -1,9 +1,9 @@
-package com.marbleUs.marbleUs.advice;
+package com.marbleUs.marbleUs.common.advice;
 
 
 
-import com.marbleUs.marbleUs.exception.BusinessLogicException;
-import com.marbleUs.marbleUs.response.ErrorResponse;
+import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
+import com.marbleUs.marbleUs.common.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

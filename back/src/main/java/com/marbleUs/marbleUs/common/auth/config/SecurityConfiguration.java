@@ -1,15 +1,15 @@
-package com.marbleUs.marbleUs.auth.config;
+package com.marbleUs.marbleUs.common.auth.config;
 
 
 
 
 
-import com.marbleUs.marbleUs.auth.filter.JwtAuthenticationFilter;
-import com.marbleUs.marbleUs.auth.filter.JwtVerificationFilter;
-import com.marbleUs.marbleUs.auth.handler.MemberAuthenticationEntryPoint;
-import com.marbleUs.marbleUs.auth.handler.OAuth2memberSuccessHandler;
-import com.marbleUs.marbleUs.auth.jwt.JwtTokenizer;
-import com.marbleUs.marbleUs.auth.utils.CustomAuthorityUtils;
+import com.marbleUs.marbleUs.common.auth.filter.JwtAuthenticationFilter;
+import com.marbleUs.marbleUs.common.auth.filter.JwtVerificationFilter;
+import com.marbleUs.marbleUs.common.auth.handler.MemberAuthenticationEntryPoint;
+import com.marbleUs.marbleUs.common.auth.handler.OAuth2memberSuccessHandler;
+import com.marbleUs.marbleUs.common.auth.jwt.JwtTokenizer;
+import com.marbleUs.marbleUs.common.auth.utils.CustomAuthorityUtils;
 import com.marbleUs.marbleUs.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

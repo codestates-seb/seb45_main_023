@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.argumentresolver;
+package com.marbleUs.marbleUs.common.argumentresolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.exception;
+package com.marbleUs.marbleUs.common.exception;
 
 import lombok.Getter;
 

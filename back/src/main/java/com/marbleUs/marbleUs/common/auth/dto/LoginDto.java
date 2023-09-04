@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.auth.dto;
+package com.marbleUs.marbleUs.common.auth.dto;
 
 import lombok.Getter;
 

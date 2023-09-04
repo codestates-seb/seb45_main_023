@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.auth.utils;
+package com.marbleUs.marbleUs.common.auth.utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.exception;
+package com.marbleUs.marbleUs.common.exception;
 
 import lombok.Getter;
 
@@ -8,6 +8,8 @@ public enum ExceptionCode {
     MEMBER_EXISTS(409, "Member exists"),
     CITY_EXISTS(409, "City exists"),
     ID_DOESNT_MATCH(403, "Id doesnt Match"),
+
+    NOT_ALLOWED_BOOKMARK(403, "You can only bookmark others' blogs"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     COMMENT_NOT_EXIST(404, "Comment doesnt exist"),
     IMAGE_NOT_FOUND(404, "Image not found"),

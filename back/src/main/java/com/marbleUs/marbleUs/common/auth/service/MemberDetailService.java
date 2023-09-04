@@ -1,8 +1,8 @@
-package com.marbleUs.marbleUs.auth.service;
+package com.marbleUs.marbleUs.common.auth.service;
 
-import com.marbleUs.marbleUs.auth.utils.CustomAuthorityUtils;
-import com.marbleUs.marbleUs.exception.BusinessLogicException;
-import com.marbleUs.marbleUs.exception.ExceptionCode;
+import com.marbleUs.marbleUs.common.auth.utils.CustomAuthorityUtils;
+import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
+import com.marbleUs.marbleUs.common.exception.ExceptionCode;
 import com.marbleUs.marbleUs.member.entity.Member;
 import com.marbleUs.marbleUs.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Optional;
-
-import static org.apache.tomcat.jni.SSL.setPassword;
 
 @Component
 @RequiredArgsConstructor
