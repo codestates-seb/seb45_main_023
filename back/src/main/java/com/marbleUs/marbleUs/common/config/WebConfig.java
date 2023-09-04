@@ -1,7 +1,7 @@
-package com.marbleUs.marbleUs.config;
+package com.marbleUs.marbleUs.common.config;
 
 
-import com.marbleUs.marbleUs.argumentresolver.LoginUserIdArgumentResolver;
+import com.marbleUs.marbleUs.common.argumentresolver.LoginUserIdArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
