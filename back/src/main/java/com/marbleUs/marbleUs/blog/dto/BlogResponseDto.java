@@ -13,6 +13,7 @@ public class BlogResponseDto {
     private Long id;
     private String title;
     private String body;
+    private Long view;
     private List<String> tags;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

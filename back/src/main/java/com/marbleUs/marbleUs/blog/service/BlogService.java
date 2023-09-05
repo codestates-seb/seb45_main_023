@@ -6,6 +6,7 @@ import com.marbleUs.marbleUs.city.entity.City;
 import com.marbleUs.marbleUs.city.service.CityService;
 import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
 import com.marbleUs.marbleUs.common.exception.ExceptionCode;
+import com.marbleUs.marbleUs.common.redis.viewCounter.ViewCounter;
 import com.marbleUs.marbleUs.member.entity.Member;
 import com.marbleUs.marbleUs.member.repository.MemberRepository;
 import com.marbleUs.marbleUs.member.service.MemberService;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 public class BlogService {
     private final BlogRepository blogRepository;
     private final MemberRepository memberRepository;
+    private final ViewCounter viewCounter;
     private final MemberService memberService;
     private final CityService cityService;
 
@@ -58,8 +60,12 @@ public class BlogService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BLOG_NOT_FOUND));
     }
 
-    public Blog findBlog(long blogId) {
-        return findVerifiedBlog(blogId);
+    public Blog findBlog(long blogId,long memberId) {
+        Blog blog = findVerifiedBlog(blogId);
+        Member member = memberService.findVerifiedMember(memberId);
+        viewCounter.verifyIsViewed(member,blog);
+        memberRepository.save(member);
+        return blog;
     }
 
     public void deleteBlog(long blogId) {

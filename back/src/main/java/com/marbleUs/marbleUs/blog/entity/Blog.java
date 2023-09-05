@@ -31,6 +31,8 @@ public class Blog extends BaseEntity {
     @Column(nullable = false, name = "body")
     private String body;
 
+    private Long views = 0L;
+
     @ElementCollection
     @Column(nullable = false, name = "tags")
     private List<String> tags;
