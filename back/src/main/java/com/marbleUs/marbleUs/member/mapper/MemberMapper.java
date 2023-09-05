@@ -33,14 +33,18 @@ public interface MemberMapper {
         }
 
         Member member = new Member();
+        Blog blog = new Blog();
+        blog.setId(patch.getBookmarkId());
 
         member.setNickname( patch.getNickname() );
         member.setPassword( patch.getPassword() );
-        member.addBookMarks(patch.getBookmarkId());
+        member.addBookMarks(blog);
 
         UserLocations currentLocation = patch.getCurrentLocation();
-        currentLocation.setCityCode(patch.getCurrentCityCode());
-        member.setCurrentLocation(currentLocation);
+        if (currentLocation != null) {
+            currentLocation.setCityCode(patch.getCurrentCityCode());
+            member.setCurrentLocation(currentLocation);
+        }
         member.setNationality( patch.getNationality() );
 
         return member;
