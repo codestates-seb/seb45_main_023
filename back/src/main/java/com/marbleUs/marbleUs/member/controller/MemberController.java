@@ -83,6 +83,7 @@ public class MemberController {
     public ResponseEntity addBookMark(@Positive @PathVariable("member-id") Long memberId,
                                       @Positive @PathVariable("blog-id") Long blogId){
         Member findMember = service.findMember(memberId);
+
         findMember.addBookMarks(blogService.findVerifiedBlog(blogId));
         service.saveMember(findMember);
         return new ResponseEntity<>("bookmark is created",HttpStatus.OK);
