@@ -26,6 +26,7 @@ public interface BlogMapper {
         blogResponseDto.setId( blog.getId() );
         blogResponseDto.setTitle( blog.getTitle() );
         blogResponseDto.setBody( blog.getBody() );
+        blogResponseDto.setView(blog.getViews());
         List<String> list = blog.getTags();
         if ( list != null ) {
             blogResponseDto.setTags( new ArrayList<String>( list ) );

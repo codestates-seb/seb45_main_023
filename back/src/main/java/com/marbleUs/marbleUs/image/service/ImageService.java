@@ -1,6 +1,7 @@
 package com.marbleUs.marbleUs.image.service;
 
 import com.marbleUs.marbleUs.blog.entity.Blog;
+import com.marbleUs.marbleUs.blog.repository.BlogRepository;
 import com.marbleUs.marbleUs.blog.service.BlogService;
 import com.marbleUs.marbleUs.image.entity.Image;
 import com.marbleUs.marbleUs.image.repository.ImageRepository;
@@ -22,7 +23,7 @@ public class ImageService {
     private final S3Service s3Service;
     private final ImageRepository imageRepository;
     private final MemberService memberService;
-    private final BlogService blogService;
+    private final BlogRepository blogRepository;
 
     public List<Image> submitFiles(List<MultipartFile> multipartFileList) throws IOException {
 
@@ -92,7 +93,7 @@ public class ImageService {
             // 파일데이터와 파일명 넘겨서 S3에 저장 / 이미지 테이블에 path저장
             image.setPath(s3Service.upload(multipartFile, "images/blog-images/"+fileName));
 
-            Blog blog = blogService.findBlog(blogId);
+            Blog blog = blogRepository.findById(blogId).get();
             blog.addBlogImage(image);
 
             // DB에는 전체 url말고 파일명으로 저장할 것임
@@ -139,6 +140,12 @@ public class ImageService {
             imageRepository.delete(imageRepository.findByName(name).get());
             s3Service.delete("images/blog-images/"+name);
         }
+    }
+
+    public List<Image> findMemberImages(Long memberId) {
+        Member findMember = memberService.findVerifiedMember(memberId);
+        List<Image> profilePics = findMember.getProfilePics();
+        return profilePics;
     }
 }
 

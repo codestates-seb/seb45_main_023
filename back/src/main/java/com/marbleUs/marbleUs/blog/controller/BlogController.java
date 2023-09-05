@@ -9,10 +9,13 @@ import com.marbleUs.marbleUs.blog.dto.BlogPostDto;
 import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.blog.mapper.BlogMapper;
 import com.marbleUs.marbleUs.blog.service.BlogService;
+import com.marbleUs.marbleUs.common.redis.viewCounter.ViewCounter;
 import com.marbleUs.marbleUs.image.entity.Image;
 import com.marbleUs.marbleUs.image.mapper.ImageMapper;
 import com.marbleUs.marbleUs.image.service.ImageService;
 import com.marbleUs.marbleUs.common.response.MultiResponseDto;
+import com.marbleUs.marbleUs.member.entity.Member;
+import com.marbleUs.marbleUs.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -153,8 +156,10 @@ public class BlogController {
 
     //특정 후기글 조회
     @GetMapping("blogs/{blog-id}")
-    public ResponseEntity getBlog (@PathVariable("blog-id") Long blogId) {
-        Blog blog = blogService.findBlog(blogId);
+    public ResponseEntity getBlog (@PathVariable("blog-id") Long blogId,
+                                   @LoginMemberId long memberId) {
+        Blog blog = blogService.findBlog(blogId,memberId);
+
         return new ResponseEntity(blogMapper.toBlogResponseDto(blog),HttpStatus.OK);
     }
 
