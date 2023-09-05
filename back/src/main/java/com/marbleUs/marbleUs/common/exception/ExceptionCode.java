@@ -10,6 +10,8 @@ public enum ExceptionCode {
     ID_DOESNT_MATCH(403, "Id doesnt Match"),
 
     NOT_ALLOWED_BOOKMARK(403, "You can only bookmark others' blogs"),
+
+    ALREADY_BOOKMARKED(403, "You already bookmarked this blog"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     COMMENT_NOT_EXIST(404, "Comment doesnt exist"),
     IMAGE_NOT_FOUND(404, "Image not found"),

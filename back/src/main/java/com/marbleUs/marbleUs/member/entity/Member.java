@@ -15,7 +15,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -94,12 +94,20 @@ public class Member extends BaseEntity {
         myBlogs.add(blog);
     }
 
-    public void addBookMarks(Long blogId) {
-        if (blogId == this.id) throw new BusinessLogicException(ExceptionCode.NOT_ALLOWED_BOOKMARK);
-        bookmarks.add(blogId);
+    public void addBookMarks(Blog blog) {
+        if (myBlogs.contains(blog)) throw new BusinessLogicException(ExceptionCode.NOT_ALLOWED_BOOKMARK);
+        if (bookmarks.contains(blog.getId())) throw new BusinessLogicException(ExceptionCode.ALREADY_BOOKMARKED);
+        bookmarks.add(blog.getId());
+    }
+    public void deleteBookmark(Long id) {
+
+        if (!bookmarks.contains(id)) throw new BusinessLogicException(ExceptionCode.BLOG_NOT_FOUND);
+        bookmarks.removeIf(blogId -> blogId.equals(id));
     }
 
     public void addProfilePic(Image profilePic){
+
+
         if (profilePic.getMember() != this) profilePic.setMember(this);
         profilePics.add(profilePic);
     }

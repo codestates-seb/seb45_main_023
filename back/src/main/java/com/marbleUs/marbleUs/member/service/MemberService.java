@@ -1,5 +1,6 @@
 package com.marbleUs.marbleUs.member.service;
 
+import com.marbleUs.marbleUs.blog.repository.BlogRepository;
 import com.marbleUs.marbleUs.blog.service.BlogService;
 import com.marbleUs.marbleUs.common.auth.utils.CustomAuthorityUtils;
 import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -27,6 +29,7 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final BlogRepository blogRepository;
     private final CustomAuthorityUtils authorityUtils;
     private final MemberNickNameGenerator nickNameGenerator;
 
@@ -65,21 +68,25 @@ public class MemberService {
                 .ifPresent( nationality -> findMember.setNationality(nationality));
         Optional.ofNullable(member.getNickname())
                 .ifPresent( nickname -> findMember.setNickname(nickname));
-        Optional.ofNullable(member.getBookmarks().get(member.getBookmarks().size()-1))
-                .ifPresent( blogId -> findMember.addBookMarks(blogId));
 
         Optional.ofNullable(member.getCurrentLocation())
                 .ifPresent( location -> {
-                    if (findMember.getCurrentLocation().getNum()>=location.getNum()){
+
+                    if (findMember.getCurrentLocation() != location && findMember.getCurrentLocation().getNum()>=location.getNum()){
                         int currentLevel = findMember.getLevel() +1;
                         findMember.setLevel(currentLevel);
-                    }
                         findMember.setCurrentLocation(location);
                         findMember.addLocation(location);
+                    }
                 });
+
 
         return memberRepository.save(findMember);
 
+    }
+
+    public void saveMember(Member member){
+        memberRepository.save(member);
     }
 
     @Transactional(readOnly = true)

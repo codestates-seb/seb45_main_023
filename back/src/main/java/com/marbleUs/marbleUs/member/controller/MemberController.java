@@ -3,6 +3,8 @@ package com.marbleUs.marbleUs.member.controller;
 import com.amazonaws.services.s3.AmazonS3;
 import com.marbleUs.marbleUs.common.argumentresolver.LoginMemberId;
 import com.marbleUs.marbleUs.blog.service.BlogService;
+import com.marbleUs.marbleUs.image.entity.Image;
+import com.marbleUs.marbleUs.image.mapper.ImageMapper;
 import com.marbleUs.marbleUs.image.service.ImageService;
 import com.marbleUs.marbleUs.member.dto.MemberDto;
 import com.marbleUs.marbleUs.member.entity.Member;
@@ -31,8 +33,10 @@ import java.util.List;
 public class MemberController {
 
     private final MemberMapper mapper;
+    private final ImageMapper imgMapper;
     private final MemberService service;
     private final ImageService imgService;
+    private final BlogService blogService;
 
 
     @PostMapping("/signup")
@@ -57,7 +61,13 @@ public class MemberController {
     @DeleteMapping("/pic-delete")
     public ResponseEntity deleteBlogImageWithEditor(@RequestParam List<String> names){
         imgService.deleteMemberImage(names);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/pics/{member-id}")
+    public ResponseEntity getMemberProfilePics(@Positive @PathVariable("member-id") Long memberId){
+       List<Image> profilePics = imgService.findMemberImages(memberId);
+        return new ResponseEntity<>(imgMapper.imagesToResponses(profilePics),HttpStatus.OK);
     }
 
 
@@ -66,16 +76,25 @@ public class MemberController {
                                      @Positive @PathVariable("member-id") Long id){
         Member memberChanged = service.update(mapper.patchToMember(patch),id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(mapper.memberToResponse(memberChanged),HttpStatus.OK);
     }
 
     @PatchMapping("{member-id}/bookmark/{blog-id}")
     public ResponseEntity addBookMark(@Positive @PathVariable("member-id") Long memberId,
                                       @Positive @PathVariable("blog-id") Long blogId){
         Member findMember = service.findMember(memberId);
-        findMember.addBookMarks(blogId);
-        service.update(findMember,memberId);
+        findMember.addBookMarks(blogService.findVerifiedBlog(blogId));
+        service.saveMember(findMember);
         return new ResponseEntity<>("bookmark is created",HttpStatus.OK);
+    }
+
+    @PatchMapping("{member-id}/no-bookmark/{blog-id}")
+    public ResponseEntity deleteBookMark(@Positive @PathVariable("member-id") Long memberId,
+                                      @Positive @PathVariable("blog-id") Long blogId){
+        Member findMember = service.findMember(memberId);
+        findMember.deleteBookmark(blogId);
+        service.saveMember(findMember);
+        return new ResponseEntity<>("bookmark is deleted",HttpStatus.OK);
     }
 
 

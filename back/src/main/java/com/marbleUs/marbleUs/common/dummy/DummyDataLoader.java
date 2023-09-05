@@ -139,8 +139,8 @@ public class DummyDataLoader implements CommandLineRunner {
       member1.addMyComment(comment1);
       member2.addMyComment(comment2);
 
-      member1.addBookMarks(blog2.getId());
-      member2.addBookMarks(blog.getId());
+      member1.addBookMarks(blog2);
+      member2.addBookMarks(blog);
 
       memberRepository.save(member1);
       memberRepository.save(member2);
