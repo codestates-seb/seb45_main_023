@@ -10,7 +10,7 @@ export const Blogs = atom({
   default: [],
 });
 
-export const Coments = atom({
+export const Comments = atom({
   key: 'coment',
   default: [],
 });
@@ -18,4 +18,25 @@ export const Coments = atom({
 export const Routes = atom({
   key: 'routes',
   default: '/mypage',
+});
+
+export const User = atom({
+  key: 'user',
+  default: {},
+});
+
+export const sidebar = atom({
+  key: 'sidebar',
+  default: 0,
+});
+
+export const userInfo = atom({
+  key: 'info',
+  default: {
+    nickname: '',
+    nationality: '',
+    password: '',
+    birth:'',
+    id:0
+  },
 });
