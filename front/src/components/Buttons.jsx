@@ -1,10 +1,19 @@
 // 테일윈드는 동적으로 prop 값을 못 받는다네요... 여기서 그냥 가져다 쓰세여 색상별로 만들어 둘게요
-// SignUpButton, GoogleLogInButton의 컴포넌트명과 컴포넌트 크기 등... 약간 수정하였습니다.
 
 export const Button = ({ text,color }) => {
   return (
     <button
       className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-${color}-300 bg-white text-black shadow-md font-semibold hover:bg-${color}-300 active:bg-${color}-500 active:border-${color}-500 active:text-white transition duration-300 ease-in-out`}
+    >
+      {text}
+    </button>
+  );
+};
+
+export const GrayButton = ({ text }) => {
+  return (
+    <button
+      className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-gray-300 bg-white text-black shadow-md font-semibold hover:bg-gray-300 active:bg-gray-500 active:border-gray-500 active:text-white transition duration-300 ease-in-out`}
     >
       {text}
     </button>
@@ -69,7 +78,7 @@ export const ToBoard = () => {
   );
 };
 
-export const SignUpButton = () => {
+export const SignUpWithMarbleUsButton = () => {
   return (
     <button className="inline-flex items-center justify-center w-[280px] h-[60px] p-2 pr-8 rounded-full border-4 border-solid border-white bg-sky-400 shadow-md text-white font-bold hover:bg-white hover:text-black active:bg-sky-200 active:border-sky-200 active:text-black transition duration-300 ease-in-out">
       <div className="inline-flex items-center justify-center w-10 h-10 flex-shrink-0 bg-white rounded-full text-sky-400">

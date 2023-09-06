@@ -8,8 +8,8 @@ import MyBookmark from './pages/mypage/MyBookmark';
 import MyBlog from './pages/mypage/MyBlog';
 import MyMission from './pages/mypage/MyMission';
 import MyStamp from './pages/mypage/MyStamp';
-import LogIn from './pages/loginpage/LogIn';
-import SignUp from './pages/signuppage/SignUp';
+import LogInForm from './pages/loginpage/LogIn';
+import SignUpForm from './pages/signuppage/SignUp';
 
 function App() {
   return (
@@ -21,8 +21,8 @@ function App() {
         <Route path={RouteConst.myblog} element={<MyBlog />} />
         <Route path={RouteConst.mymission} element={<MyMission />} />
         <Route path={RouteConst.mystamp} element={<MyStamp />} />
-        <Route path={RouteConst.login} element={<LogIn />} />
-        <Route path={RouteConst.signup} element={<SignUp />} />
+        <Route path={RouteConst.login} element={<LogInForm />} />
+        <Route path={RouteConst.signup} element={<SignUpForm />} />
       </Routes>
     </BrowserRouter>
   );
