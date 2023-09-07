@@ -5,6 +5,7 @@ import com.marbleUs.marbleUs.blog.dto.BlogPostDto;
 import com.marbleUs.marbleUs.blog.dto.BlogResponseDto;
 import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.comment.dto.CommentResponseDto;
+import com.marbleUs.marbleUs.image.dto.ImageResponseDto;
 import org.mapstruct.Mapper;
 
 import java.util.ArrayList;
@@ -27,6 +28,13 @@ public interface BlogMapper {
         blogResponseDto.setTitle( blog.getTitle() );
         blogResponseDto.setBody( blog.getBody() );
         blogResponseDto.setView(blog.getViews());
+        List<ImageResponseDto> images = blog.getImages().stream().map(image -> {
+            ImageResponseDto response = new ImageResponseDto();
+            response.setName(image.getName());
+            response.setPath(image.getPath());
+            return response;
+        }).collect(Collectors.toList());
+        blogResponseDto.setImages(images);
         List<String> list = blog.getTags();
         if ( list != null ) {
             blogResponseDto.setTags( new ArrayList<String>( list ) );

@@ -1,15 +1,11 @@
 package com.marbleUs.marbleUs.blog.entity;
 
-import com.marbleUs.marbleUs.common.BaseEntity;
-
-import com.marbleUs.marbleUs.common.audit.Auditable;
+import com.marbleUs.marbleUs.common.tools.audit.Auditable;
 import com.marbleUs.marbleUs.city.entity.City;
 import com.marbleUs.marbleUs.comment.entity.Comment;
 import com.marbleUs.marbleUs.image.entity.Image;
 import com.marbleUs.marbleUs.member.entity.Member;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -21,7 +17,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "blog")
-public class Blog extends BaseEntity {
+public class Blog extends Auditable {
 
 
 

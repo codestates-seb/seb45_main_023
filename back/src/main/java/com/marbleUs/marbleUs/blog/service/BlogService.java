@@ -6,7 +6,7 @@ import com.marbleUs.marbleUs.city.entity.City;
 import com.marbleUs.marbleUs.city.service.CityService;
 import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
 import com.marbleUs.marbleUs.common.exception.ExceptionCode;
-import com.marbleUs.marbleUs.common.redis.viewCounter.ViewCounter;
+import com.marbleUs.marbleUs.common.tools.counter.ViewCounter;
 import com.marbleUs.marbleUs.member.entity.Member;
 import com.marbleUs.marbleUs.member.repository.MemberRepository;
 import com.marbleUs.marbleUs.member.service.MemberService;
@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -60,11 +61,10 @@ public class BlogService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BLOG_NOT_FOUND));
     }
 
-    public Blog findBlog(long blogId,long memberId) {
+    public Blog findBlog(HttpServletRequest request, long blogId) {
         Blog blog = findVerifiedBlog(blogId);
-        Member member = memberService.findVerifiedMember(memberId);
-        viewCounter.verifyIsViewed(member,blog);
-        memberRepository.save(member);
+        viewCounter.verifyIsViewed(request,blog);
+        blogRepository.save(blog);
         return blog;
     }
 

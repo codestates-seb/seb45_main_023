@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -80,11 +81,11 @@ public class ImageService {
 
     }
 
-    public List<Image> uploadBlogImage(List<MultipartFile> multipartFileList, Long blogId)throws IOException{
-        List<Image> blogImages = new ArrayList();
+    public Image uploadBlogImage(MultipartFile multipartFile, Long blogId)throws IOException{
 
 
-        for (MultipartFile multipartFile : multipartFileList) {
+
+
             // 파일명 지정 (겹치면 안되고, 확장자 빼먹지 않도록 조심!)
             String fileName = UUID.randomUUID() + multipartFile.getOriginalFilename();
 
@@ -96,13 +97,12 @@ public class ImageService {
             Blog blog = blogRepository.findById(blogId).get();
             blog.addBlogImage(image);
 
+
             // DB에는 전체 url말고 파일명으로 저장할 것임
             imageRepository.save(image);
 
-        }
 
-
-        return blogImages;
+        return image;
     }
     //로직 최적화 요망
 
@@ -146,6 +146,14 @@ public class ImageService {
         Member findMember = memberService.findVerifiedMember(memberId);
         List<Image> profilePics = findMember.getProfilePics();
         return profilePics;
+    }
+
+    public Image findBlogImage(String name){
+
+        Image image = imageRepository.findByName(name).get();
+
+        return image;
+
     }
 }
 
