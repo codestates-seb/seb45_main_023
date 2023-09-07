@@ -14,7 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @MappedSuperclass
-public class BaseEntity extends Auditable {
+public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;

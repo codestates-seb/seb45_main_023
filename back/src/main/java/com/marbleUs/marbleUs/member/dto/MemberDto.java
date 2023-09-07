@@ -1,9 +1,7 @@
 package com.marbleUs.marbleUs.member.dto;
 
-import com.marbleUs.marbleUs.blog.dto.BlogResponseDto;
-import com.marbleUs.marbleUs.comment.dto.CommentResponseDto;
-import com.marbleUs.marbleUs.common.tools.Stamps;
-import com.marbleUs.marbleUs.common.tools.UserLocations;
+import com.marbleUs.marbleUs.common.tools.enums.Stamps;
+import com.marbleUs.marbleUs.common.tools.enums.UserLocations;
 import com.marbleUs.marbleUs.image.dto.ImageResponseDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +9,7 @@ import lombok.Setter;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -67,14 +66,16 @@ public class MemberDto {
         private List<ImageResponseDto> profilePics;
         private String nationality;
         private LocalDate birth;
+        private int follows;
+        private int followers;
         private List<Stamps> myStamps;
         private UserLocations currentLocation;
         private List<UserLocations> visitedCities;
 
         private List<Long> bookmarks;
 
-        private LocalDate createdAt;
-        private LocalDate modifiedAt;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
     }
 
 }
