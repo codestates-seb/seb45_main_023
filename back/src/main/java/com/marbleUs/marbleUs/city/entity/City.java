@@ -1,12 +1,9 @@
 package com.marbleUs.marbleUs.city.entity;
 
-import com.marbleUs.marbleUs.common.BaseEntity;
+import com.marbleUs.marbleUs.common.tools.entity.BaseEntity;
 
-import com.marbleUs.marbleUs.common.audit.Auditable;
 import com.marbleUs.marbleUs.blog.entity.Blog;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
