@@ -1,18 +1,24 @@
 package com.marbleUs.marbleUs.member.service;
 
+import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.blog.repository.BlogRepository;
-import com.marbleUs.marbleUs.blog.service.BlogService;
 import com.marbleUs.marbleUs.common.auth.utils.CustomAuthorityUtils;
 import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
 import com.marbleUs.marbleUs.common.exception.ExceptionCode;
+import com.marbleUs.marbleUs.common.tools.enums.UserLocations;
+import com.marbleUs.marbleUs.member.entity.Follow;
+import com.marbleUs.marbleUs.member.entity.Follower;
 import com.marbleUs.marbleUs.member.entity.Member;
+import com.marbleUs.marbleUs.member.repository.FollowRepository;
+import com.marbleUs.marbleUs.member.repository.FollowerRepository;
 import com.marbleUs.marbleUs.member.repository.MemberRepository;
-import com.marbleUs.marbleUs.common.tools.MemberNickNameGenerator;
-import com.marbleUs.marbleUs.common.tools.NickNameGenerator;
+import com.marbleUs.marbleUs.common.tools.generator.MemberNickNameGenerator;
+import com.marbleUs.marbleUs.common.tools.generator.NickNameGenerator;
 import lombok.RequiredArgsConstructor;
 
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +36,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final BlogRepository blogRepository;
+    private final FollowRepository followRepository;
+    private final FollowerRepository followerRepository;
     private final CustomAuthorityUtils authorityUtils;
     private final MemberNickNameGenerator nickNameGenerator;
 
@@ -71,19 +79,15 @@ public class MemberService {
 
         Optional.ofNullable(member.getCurrentLocation())
                 .ifPresent( location -> {
-
-                    if (findMember.getCurrentLocation() != location && findMember.getCurrentLocation().getNum()>=location.getNum()){
-                        int currentLevel = findMember.getLevel() +1;
-                        findMember.setLevel(currentLevel);
-                        findMember.setCurrentLocation(location);
-                        findMember.addLocation(location);
-                    }
+                    memberLocationCalculator(findMember, location);
                 });
 
 
         return memberRepository.save(findMember);
 
     }
+
+
 
     public void saveMember(Member member){
         memberRepository.save(member);
@@ -105,6 +109,7 @@ public class MemberService {
 
     public void deleteMember(Long memberId) {
         Member findMember = findVerifiedMember(memberId);
+
 
         memberRepository.delete(findMember);
     }
@@ -133,6 +138,84 @@ public class MemberService {
     public Member findMemberByEmail(String email) {
         Member member = memberRepository.findByEmail(email).get();
         return member;
+    }
+
+    private static void memberLocationCalculator(Member findMember, UserLocations location) {
+        if (findMember.getCurrentLocation() != location && findMember.getCurrentLocation().getNum()>= location.getNum()){
+            memberLevelup(findMember);
+            findMember.setCurrentLocation(location);
+            findMember.addLocation(location);
+        }
+    }
+
+    private static void memberLevelup(Member findMember) {
+        int currentLevel = findMember.getLevel() +1;
+        findMember.setLevel(currentLevel);
+    }
+
+
+    public void saveFollowing(Member findMember, Member followedMember) {
+
+
+        Follow follow = new Follow();
+        follow.setMember(findMember);
+        follow.setFollowedMember(followedMember);
+        followRepository.save(follow);
+        findMember.addFollow(follow);
+        saveMember(findMember);
+
+        Follower follower = new Follower();
+        follower.setMember(followedMember);
+        follower.setFollower(findMember);
+        followerRepository.save(follower);
+        followedMember.addFollower(follower);
+        saveMember(followedMember);
+    }
+
+    public void unfollowMember(Member findMember, Member followedMember) {
+        Follow follow = followRepository.findByMemberAndFollowedMember(findMember,followedMember).get();
+        findMember.unFollow(follow);
+        followRepository.delete(follow);
+        saveMember(findMember);
+
+        Follower follower = followerRepository.findByMemberAndFollower(followedMember,findMember).get();
+        followedMember.deleteFollower(follower);
+        followerRepository.delete(follower);
+        saveMember(followedMember);
+
+    }
+
+    public Page<Member> findFollows(Member findMember,int page,int size) {
+        List<Member> follows = findMember.getFollows().stream().map(
+                follow-> {
+                    Member followedMember = follow.getFollowedMember();
+                return followedMember;
+                }).collect(Collectors.toList());
+        PageRequest pageRequest = PageRequest.of(page-1, size, Sort.by("createdAt").descending());
+
+        return new PageImpl<>(follows,pageRequest,follows.size());
+    }
+
+    public Page<Member> findFollowers(Member findMember,int page,int size) {
+        List<Member> followers = findMember.getFollowers().stream().map(
+                follower-> {
+                    Member findFollower = follower.getFollower();
+                    return findFollower;
+                }).collect(Collectors.toList());
+        PageRequest pageRequest = PageRequest.of(page-1, size, Sort.by("createdAt").descending());
+
+        return new PageImpl<>(followers,pageRequest,followers.size());
+    }
+
+    public Page<Blog> findBookMarks(Member findMember,int page,int size) {
+        PageRequest pageRequest = PageRequest.of(page-1, size, Sort.by("createdAt").descending());
+
+        List<Blog> bookMarks = findMember.getBookmarks().stream().map(id->{
+            Blog findBlog = blogRepository.findById(id).get();
+            return findBlog;
+        }).collect(Collectors.toList());
+
+        return new PageImpl<>(bookMarks,pageRequest,bookMarks.size());
     }
 }
 
