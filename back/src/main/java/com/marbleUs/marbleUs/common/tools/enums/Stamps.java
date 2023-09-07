@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.common.tools;
+package com.marbleUs.marbleUs.common.tools.enums;
 
 import lombok.Getter;
 

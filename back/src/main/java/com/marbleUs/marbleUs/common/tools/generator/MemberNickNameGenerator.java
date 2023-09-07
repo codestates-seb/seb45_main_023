@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.common.tools;
+package com.marbleUs.marbleUs.common.tools.generator;
 
 import org.springframework.stereotype.Component;
 
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 @Component
-public class MemberNickNameGenerator implements NickNameGenerator{
+public class MemberNickNameGenerator implements NickNameGenerator {
 
     @Override
     public String randomNickNameGenerator(List<String> adjectives, List<String> animals) {

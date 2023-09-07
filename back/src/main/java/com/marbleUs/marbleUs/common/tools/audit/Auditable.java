@@ -1,6 +1,6 @@
-package com.marbleUs.marbleUs.common.audit;
+package com.marbleUs.marbleUs.common.tools.audit;
 
-import com.marbleUs.marbleUs.common.BaseEntity;
+import com.marbleUs.marbleUs.common.tools.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
