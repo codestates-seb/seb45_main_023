@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.common.converter;
+package com.marbleUs.marbleUs.common.tools.converter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;

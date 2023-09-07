@@ -2,12 +2,10 @@ package com.marbleUs.marbleUs.comment.entity;
 
 
 
-import com.marbleUs.marbleUs.common.BaseEntity;
-import com.marbleUs.marbleUs.common.audit.Auditable;
+import com.marbleUs.marbleUs.common.tools.audit.Auditable;
 import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.member.entity.Member;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -15,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class Comment extends BaseEntity {
+public class Comment extends Auditable {
 
 
 

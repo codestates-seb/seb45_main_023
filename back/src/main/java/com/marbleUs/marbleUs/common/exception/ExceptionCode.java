@@ -15,8 +15,8 @@ public enum ExceptionCode {
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     COMMENT_NOT_EXIST(404, "Comment doesnt exist"),
     IMAGE_NOT_FOUND(404, "Image not found"),
-    BLOG_NOT_FOUND(404, "Blog not found");
-
+    BLOG_NOT_FOUND(404, "Blog not found"),
+    ALREADY_FOLLOWED(403,"already following member");
     @Getter
     private int status;
 

@@ -1,26 +1,64 @@
-package com.marbleUs.marbleUs.common.redis.viewCounter;
+package com.marbleUs.marbleUs.common.tools.counter;
 
 import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.common.redis.service.RedisServiceUtil;
 import com.marbleUs.marbleUs.member.entity.Member;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.mysql.cj.conf.PropertyKey.logger;
+
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class ViewCounter {
     private final RedisServiceUtil redisServiceUtil;
 
-    public void verifyIsViewed(Member member, Blog blog) {
-        String viewCount = redisServiceUtil.getData(String.valueOf(member.getId()));
+
+    public String getClientIP(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        log.info("> X-FORWARDED-FOR : " + ip);
+
+        if (ip == null) {
+            ip = request.getHeader("Proxy-Client-IP");
+            log.info("> Proxy-Client-IP : " + ip);
+        }
+        if (ip == null) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+            log.info(">  WL-Proxy-Client-IP : " + ip);
+        }
+        if (ip == null) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+            log.info("> HTTP_CLIENT_IP : " + ip);
+        }
+        if (ip == null) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+            log.info("> HTTP_X_FORWARDED_FOR : " + ip);
+        }
+        if (ip == null) {
+            ip = request.getRemoteAddr();
+            log.info("> getRemoteAddr : "+ip);
+        }
+        log.info("> Result : IP Address : "+ip);
+
+        return ip;
+    }
+
+    public void verifyIsViewed(HttpServletRequest request, Blog blog) {
+
+        String ip = getClientIP(request);
+
+        String viewCount = redisServiceUtil.getData(ip);
         if (viewCount == null) {
             //아예 새로 생성
-            redisServiceUtil.setDateExpire(String.valueOf(member.getId()), blog.getId() + "_", expirationDate());
+            redisServiceUtil.setDateExpire(ip, blog.getId() + "_", expirationDate());
             increaseView(blog);
         } else {
             //저장된 맴버지만 방문하지 않은 블로그일 경우
@@ -44,7 +82,7 @@ public class ViewCounter {
                     //래디스는 문자열 베이스기 때문에 문자열에 추가하고 split을 이용해 떼어내 검사한다.
                     viewCount += blog.getId() + "_";
                     //래디스에 같은 키값으로 업데이트
-                    redisServiceUtil.setDateExpire(String.valueOf(member.getId()), viewCount, expirationDate());
+                    redisServiceUtil.setDateExpire(ip, viewCount, expirationDate());
                     //조회수 증가
                     increaseView(blog);
                 }

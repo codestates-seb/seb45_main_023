@@ -80,12 +80,12 @@ public class CommentService {
 
     //페이지네이션을 사용하여 모든 댓글 조회 메서드(필요한가??)
     public Page<Comment> findAllComments(int page, int size) {
-        return commentRepository.findAll(PageRequest.of(page, size, Sort.by("commentId").descending()));
+        return commentRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
     }
 
     //특정 블로그글(후기)에 속하는 댓글을 페이지네이션을 사용하여 조회하는 메서드
     public Page<Comment> findCommentsByBlogId(long blogId, int page, int size) {
-        return commentRepository.findByBlogId(blogId, PageRequest.of(page, size, Sort.by("commentId").descending()));
+        return commentRepository.findByBlogId(blogId, PageRequest.of(page, size, Sort.by("id").descending()));
     }
 
     //특정 회원이 작성한 댓글을 페이지네이션을 사용하여 조회하는 메서드

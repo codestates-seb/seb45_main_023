@@ -1,6 +1,5 @@
-package com.marbleUs.marbleUs.common;
+package com.marbleUs.marbleUs.common.tools.entity;
 
-import com.marbleUs.marbleUs.common.audit.Auditable;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;

@@ -1,4 +1,4 @@
-package com.marbleUs.marbleUs.common.tools;
+package com.marbleUs.marbleUs.common.tools.generator;
 
 import java.util.Arrays;
 import java.util.List;
