@@ -7,10 +7,10 @@ export default function PostLink({
   member_id,
   // comments,
   city_id,
-  // tags,
   created_at,
   modified_at,
-  blog_id
+  blog_id,
+  tags
 }) {
   const navigate = useNavigate();
 
@@ -24,8 +24,18 @@ export default function PostLink({
       role='button'
       onClick={handlePostClick}
     >
-      <div className='TopSection'>
-        <h2 className='post_title text-2xl font-bold'>{title}</h2>
+      <div className='TopSection flex justify-between items-center'>
+        <div className='post_title text-2xl font-bold'>{title}</div>
+        <div className='tags'>
+          {tags.map((tag, index) => (
+            <span
+              key={index}
+              className='inline-block bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-blue-700 mr-2'
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
       </div>
       <div className='MiddleSection'>
         {body.length > 200 ? body.slice(0, 200) + '...' : body}
