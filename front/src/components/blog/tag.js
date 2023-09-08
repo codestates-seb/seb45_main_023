@@ -1,13 +1,14 @@
 import React from 'react';
+import { GreenButton, PurpleButton } from '../Buttons';
 
 const Tag = ({ tagName, onClick, isSelected }) => {
   return (
-    <div
-      className={`Tag ${isSelected ? 'selected' : ''}`}
+    <button
+      className={`Tag ${ isSelected ? PurpleButton : GreenButton } w-[100px] h-[50px] text-[10px] mr-2`}
       onClick={onClick}
     >
       {tagName}
-    </div>
+    </button>
   );
 };
 
