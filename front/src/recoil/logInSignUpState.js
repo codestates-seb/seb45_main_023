@@ -1,14 +1,8 @@
 import { atom } from "recoil";
 
-// authorizationToken 상태관리
+// authorizationToken 상태관리 (= accessToken)
 export const authorizationTokenState = atom({
     key: 'authorizationTokenState',
-    default: '',
-});
-
-// refreshToken 상태관리
-export const refreshTokenState = atom({
-    key: 'refreshTokenState',
     default: '',
 });
 

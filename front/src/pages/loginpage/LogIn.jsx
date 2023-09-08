@@ -6,7 +6,6 @@ import {
     emailState,
     passwordState,
     authorizationTokenState,
-    refreshTokenState
 } from "../../recoil/logInSignUpState";
 import { SignUpWithMarbleUsButton } from "../../components/Buttons";
 import GoogleOAuth from "../../components/oauth/GoogleOAuth";
@@ -19,7 +18,6 @@ export default function LogInForm () {
     const [email, setEmail] = useRecoilState(emailState);
     const [password, setPassword] = useRecoilState(passwordState);
     const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
-    const [refreshToken, setRefreshToken] = useRecoilState(refreshTokenState);
     
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false); 
@@ -78,25 +76,20 @@ export default function LogInForm () {
                 }
             );
     
-            // 로그인 성공 시 AuthorizationToken, RefreshToken을 받아옴
+            // 로그인 성공 시 AuthorizationToken 을 받아옴
             const Authorization = response.headers.authorization;
-            const Refresh = response.headers.refresh;
 
-            // 상태로 AuthorizationToken, refreshToken 저장
+            // 상태로 AuthorizationToken 저장
             setAuthorizationToken(Authorization);
-            setRefreshToken(Refresh);
             
-            // 상태로 저장한 토큰들 확인
+            // 상태로 저장한 AuthorizationToken 확인
             console.log(authorizationToken);
-            console.log(refreshToken);
 
-            // localStorage에 Authorization, Refresh을 저장
+            // localStorage에 AuthorizationToken 저장
             localStorage.setItem('Authorization', Authorization);
-            localStorage.setItem('Refresh', Refresh);
 
-            // 로컬로 저장한 토큰들 확인
+            // 로컬로 저장한 AuthorizationToken 확인
             console.log(localStorage.getItem('Authorization'));
-            console.log(localStorage.getItem('Refresh'));
 
             // 메인페이지로 이동
             navigate('/');
