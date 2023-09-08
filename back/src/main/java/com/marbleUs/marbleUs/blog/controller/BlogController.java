@@ -10,8 +10,8 @@ import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.blog.mapper.BlogMapper;
 import com.marbleUs.marbleUs.blog.service.BlogService;
 import com.marbleUs.marbleUs.image.entity.Image;
-import com.marbleUs.marbleUs.image.mapper.ImageMapper;
-import com.marbleUs.marbleUs.image.service.ImageService;
+//import com.marbleUs.marbleUs.image.mapper.ImageMapper;
+//import com.marbleUs.marbleUs.image.service.ImageService;
 import com.marbleUs.marbleUs.common.response.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,9 +38,9 @@ import java.util.List;
 public class BlogController {
     private final BlogMapper blogMapper;
     private final BlogService blogService;
-    private final ImageService imageService;
-    private final ImageMapper imageMapper;
-    private final AmazonS3 amazonS3;
+//    private final ImageService imageService;
+//    private final ImageMapper imageMapper;
+//    private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -67,64 +67,64 @@ public class BlogController {
 //        List<Image> images = imageService.uploadBlogImage(multipartFileList,blogId);
 //        return new ResponseEntity<>(imageMapper.imagesToResponses(images), HttpStatus.OK);
 //    }
-    @PostMapping(value = "blogs/{blog-id}/upload-images", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity postBlogImagesWithEditor(@RequestParam("image") MultipartFile multipartFile,
-                                                   @PathVariable("blog-id") Long blogId) throws IOException {
-
-        Image image = imageService.uploadBlogImage(multipartFile,blogId);
-        return new ResponseEntity<>(imageMapper.imageToResponse(image), HttpStatus.OK);
-    }
-
-    @GetMapping("/blogs/print-image")
-    private ResponseEntity printImage(@RequestParam String name){
-        Image image = imageService.findBlogImage(name);
-        return new ResponseEntity<>(imageMapper.imageToResponse(image),HttpStatus.OK);
-    }
+//    @PostMapping(value = "blogs/{blog-id}/upload-images", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity postBlogImagesWithEditor(@RequestParam("image") MultipartFile multipartFile,
+//                                                   @PathVariable("blog-id") Long blogId) throws IOException {
+//
+//        Image image = imageService.uploadBlogImage(multipartFile,blogId);
+//        return new ResponseEntity<>(imageMapper.imageToResponse(image), HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/blogs/print-image")
+//    private ResponseEntity printImage(@RequestParam String name){
+//        Image image = imageService.findBlogImage(name);
+//        return new ResponseEntity<>(imageMapper.imageToResponse(image),HttpStatus.OK);
+//    }
 
     // 1. Raw 바이너리 데이터자체를 전송하기 보다 Base64로 인코딩데이터로 전송
     // 2. converting 에러를 막기위해 ResponseEntity를 사용해 문자열 리스트형태로 전송
     // 3. header에 컨텐츠타입을 지정해 오류를 방지
     // 의문점: 토스트 UI 에디터 사용시 이미지를 저장후 다시 html문서에 매핑할때 이처럼 바이너리 형태로 줘야 하는가? 아니면 이미지가 S3에 저장되어 있는 path를 주는것이 좋은가.
-    @GetMapping("/blogs/image-print")
-    public ResponseEntity<List<String>> printEditorImageAsBase64(@RequestParam List<String> names) {
-        List<String> imagesAsBase64 = new ArrayList<>();
+//    @GetMapping("/blogs/image-print")
+//    public ResponseEntity<List<String>> printEditorImageAsBase64(@RequestParam List<String> names) {
+//        List<String> imagesAsBase64 = new ArrayList<>();
+//
+//        for (String name : names) {
+//            try {
+//                S3Object s3Object = amazonS3.getObject(bucket, name);
+//                InputStream inputStream = s3Object.getObjectContent();
+//                byte[] imageBytes = IOUtils.toByteArray(inputStream);
+//                String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+//                imagesAsBase64.add(base64Image);
+//
+//            } catch (IOException e) {
+//                // Handle the exception
+//                throw new RuntimeException(e);
+//            }
+//        }
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON); // Set the appropriate content type
+//
+//        return new ResponseEntity<>(imagesAsBase64, headers, HttpStatus.OK);
+//    }
 
-        for (String name : names) {
-            try {
-                S3Object s3Object = amazonS3.getObject(bucket, name);
-                InputStream inputStream = s3Object.getObjectContent();
-                byte[] imageBytes = IOUtils.toByteArray(inputStream);
-                String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-                imagesAsBase64.add(base64Image);
-
-            } catch (IOException e) {
-                // Handle the exception
-                throw new RuntimeException(e);
-            }
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON); // Set the appropriate content type
-
-        return new ResponseEntity<>(imagesAsBase64, headers, HttpStatus.OK);
-    }
-
-    @PatchMapping(value = "/blogs/{blog-id}/image-update", consumes = "multipart/form-data")
-    public ResponseEntity patchBlogImagesWithEditor(@RequestPart("images") List<MultipartFile> multipartFileList,
-                                                    @RequestParam List<String> names,
-                                                    @PathVariable("blog-id") Long blogId) throws IOException {
-        if (multipartFileList.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No images to update.");
-        }
-        List<Image> images = imageService.updateBlogImage(multipartFileList,names);
-        return new ResponseEntity<>(imageMapper.imagesToResponses(images), HttpStatus.OK);
-    }
-
-    @DeleteMapping("blogs/image-delete")
-    public ResponseEntity deleteBlogImageWithEditor(@RequestParam List<String> names){
-        imageService.deleteBlogImage(names);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
+//    @PatchMapping(value = "/blogs/{blog-id}/image-update", consumes = "multipart/form-data")
+//    public ResponseEntity patchBlogImagesWithEditor(@RequestPart("images") List<MultipartFile> multipartFileList,
+//                                                    @RequestParam List<String> names,
+//                                                    @PathVariable("blog-id") Long blogId) throws IOException {
+//        if (multipartFileList.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No images to update.");
+//        }
+//        List<Image> images = imageService.updateBlogImage(multipartFileList,names);
+//        return new ResponseEntity<>(imageMapper.imagesToResponses(images), HttpStatus.OK);
+//    }
+//
+//    @DeleteMapping("blogs/image-delete")
+//    public ResponseEntity deleteBlogImageWithEditor(@RequestParam List<String> names){
+//        imageService.deleteBlogImage(names);
+//        return new ResponseEntity(HttpStatus.NO_CONTENT);
+//    }
 
 
 

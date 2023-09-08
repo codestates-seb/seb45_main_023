@@ -3,7 +3,7 @@ package com.marbleUs.marbleUs.blog.entity;
 import com.marbleUs.marbleUs.common.tools.audit.Auditable;
 import com.marbleUs.marbleUs.city.entity.City;
 import com.marbleUs.marbleUs.comment.entity.Comment;
-import com.marbleUs.marbleUs.image.entity.Image;
+//import com.marbleUs.marbleUs.image.entity.Image;
 import com.marbleUs.marbleUs.member.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,8 +41,8 @@ public class Blog extends Auditable {
     @JoinColumn(name = "city_id")
     private City city;
 
-    @OneToMany(mappedBy = "blog",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
-    private List<Image> images = new ArrayList<>();
+//    @OneToMany(mappedBy = "blog",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+//    private List<Image> images = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "blog",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
@@ -53,9 +53,9 @@ public class Blog extends Auditable {
         if (comment.getBlog() != this) comment.setBlog(this);
         comments.add(comment);
     }
-    public void addBlogImage(Image image){
-        if (image.getBlog() != this) image.setBlog(this);
-        images.add(image);
-    }
+//    public void addBlogImage(Image image){
+//        if (image.getBlog() != this) image.setBlog(this);
+//        images.add(image);
+//    }
 
 }

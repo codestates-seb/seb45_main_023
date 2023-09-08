@@ -1,9 +1,12 @@
 package com.marbleUs.marbleUs.city.dto;
 
+import com.marbleUs.marbleUs.mission.entity.CityMission;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,7 +42,7 @@ public class CityDto {
         private String nx;
         private String ny;
 
-//        private List<CityMission> commonMissions;
+        private List<CityMission> Missions;
 //
 //        private List<SpecialMission> specialMissions;
 

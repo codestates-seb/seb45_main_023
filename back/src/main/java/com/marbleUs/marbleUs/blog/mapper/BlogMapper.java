@@ -28,13 +28,13 @@ public interface BlogMapper {
         blogResponseDto.setTitle( blog.getTitle() );
         blogResponseDto.setBody( blog.getBody() );
         blogResponseDto.setView(blog.getViews());
-        List<ImageResponseDto> images = blog.getImages().stream().map(image -> {
-            ImageResponseDto response = new ImageResponseDto();
-            response.setName(image.getName());
-            response.setPath(image.getPath());
-            return response;
-        }).collect(Collectors.toList());
-        blogResponseDto.setImages(images);
+//        List<ImageResponseDto> images = blog.getImages().stream().map(image -> {
+//            ImageResponseDto response = new ImageResponseDto();
+//            response.setName(image.getName());
+//            response.setPath(image.getPath());
+//            return response;
+//        }).collect(Collectors.toList());
+//        blogResponseDto.setImages(images);
         List<String> list = blog.getTags();
         if ( list != null ) {
             blogResponseDto.setTags( new ArrayList<String>( list ) );

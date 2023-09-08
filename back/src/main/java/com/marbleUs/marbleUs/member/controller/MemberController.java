@@ -6,8 +6,8 @@ import com.marbleUs.marbleUs.blog.mapper.BlogMapper;
 import com.marbleUs.marbleUs.common.argumentresolver.LoginMemberId;
 import com.marbleUs.marbleUs.blog.service.BlogService;
 import com.marbleUs.marbleUs.image.entity.Image;
-import com.marbleUs.marbleUs.image.mapper.ImageMapper;
-import com.marbleUs.marbleUs.image.service.ImageService;
+//import com.marbleUs.marbleUs.image.mapper.ImageMapper;
+//import com.marbleUs.marbleUs.image.service.ImageService;
 import com.marbleUs.marbleUs.member.dto.MemberDto;
 import com.marbleUs.marbleUs.member.entity.Member;
 import com.marbleUs.marbleUs.member.mapper.MemberMapper;
@@ -37,10 +37,10 @@ import java.util.List;
 public class MemberController {
 
     private final MemberMapper mapper;
-    private final ImageMapper imgMapper;
+//    private final ImageMapper imgMapper;
     private final BlogMapper blogMapper;
     private final MemberService service;
-    private final ImageService imgService;
+//    private final ImageService imgService;
     private final BlogService blogService;
 
 
@@ -55,25 +55,25 @@ public class MemberController {
         return new ResponseEntity<>(mapper.memberToResponse(memberToSave),HttpStatus.CREATED);
     }
 
-    @PostMapping("{member-id}/profile/upload")
-    public ResponseEntity uploadProfilePic(@RequestPart("images") List<MultipartFile> images,
-                                           @Positive @PathVariable("member-id") Long id) throws IOException {
-        imgService.uploadMemberImage(images,id);
-        return new ResponseEntity<>("Profile Pic has been uploaded",HttpStatus.OK);
-    }
-
-    //유저가 삭제하고싶은 사진들을 골라서 리스트형태로 삭제
-    @DeleteMapping("/pic-delete")
-    public ResponseEntity deleteMemberImage(@RequestParam List<String> names){
-        imgService.deleteMemberImage(names);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping("/pics/{member-id}")
-    public ResponseEntity getMemberProfilePics(@Positive @PathVariable("member-id") Long memberId){
-       List<Image> profilePics = imgService.findMemberImages(memberId);
-        return new ResponseEntity<>(imgMapper.imagesToResponses(profilePics),HttpStatus.OK);
-    }
+//    @PostMapping("{member-id}/profile/upload")
+//    public ResponseEntity uploadProfilePic(@RequestPart("images") List<MultipartFile> images,
+//                                           @Positive @PathVariable("member-id") Long id) throws IOException {
+//        imgService.uploadMemberImage(images,id);
+//        return new ResponseEntity<>("Profile Pic has been uploaded",HttpStatus.OK);
+//    }
+//
+//    //유저가 삭제하고싶은 사진들을 골라서 리스트형태로 삭제
+//    @DeleteMapping("/pic-delete")
+//    public ResponseEntity deleteMemberImage(@RequestParam List<String> names){
+//        imgService.deleteMemberImage(names);
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
+//
+//    @GetMapping("/pics/{member-id}")
+//    public ResponseEntity getMemberProfilePics(@Positive @PathVariable("member-id") Long memberId){
+//       List<Image> profilePics = imgService.findMemberImages(memberId);
+//        return new ResponseEntity<>(imgMapper.imagesToResponses(profilePics),HttpStatus.OK);
+//    }
 
 
     @PatchMapping("/{member-id}")

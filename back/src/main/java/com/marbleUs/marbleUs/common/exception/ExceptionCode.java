@@ -3,8 +3,11 @@ package com.marbleUs.marbleUs.common.exception;
 import lombok.Getter;
 
 public enum ExceptionCode {
+
+    MISSION_NOT_FOUND(404, "Mission not found"),
     MEMBER_NOT_FOUND(404, "Member not found"),
     CITY_NOT_FOUND(404, "City not found"),
+    MISSION_EXISTS(404, "Mission not found"),
     MEMBER_EXISTS(409, "Member exists"),
     CITY_EXISTS(409, "City exists"),
     ID_DOESNT_MATCH(403, "Id doesnt Match"),

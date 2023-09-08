@@ -43,17 +43,17 @@ jwt:
     secret: ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
-cloud:
-  aws:
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
-    credentials:
-      accessKey: ${S3_ACCESS_KEY}
-      secretKey: ${S3_SECRET_KEY}
-    s3:
-      bucket: marbleus-s3
+#cloud:
+#  aws:
+#    region:
+#      static: ap-northeast-2
+#    stack:
+#      auto: false
+#    credentials:
+#      accessKey: ${S3_ACCESS_KEY}
+#      secretKey: ${S3_SECRET_KEY}
+#    s3:
+#      bucket: marbleus-s3
 
 
 

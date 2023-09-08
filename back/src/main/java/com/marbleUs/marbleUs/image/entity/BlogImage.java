@@ -14,7 +14,7 @@ public class BlogImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
+//    @ManyToOne
     @JoinColumn(name = "blog_id")
     private Blog blog;
 
