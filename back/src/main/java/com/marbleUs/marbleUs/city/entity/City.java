@@ -29,6 +29,13 @@ public class City extends BaseEntity implements CityEntity{
     @Column(length = 1000, nullable = false)
     private String description;
 
+    @Column(length = 10, nullable = false)
+    private String nx;
+
+    @Column(length = 10, nullable = false)
+    private String ny;
+
+
     @OneToMany(mappedBy = "city")
     private List<Blog> blogs = new ArrayList();
 
