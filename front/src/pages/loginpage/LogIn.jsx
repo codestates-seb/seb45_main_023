@@ -5,8 +5,12 @@ import { useRecoilState } from "recoil";
 import { 
     emailState,
     passwordState,
+    authorizationTokenState,
+    refreshTokenState
 } from "../../recoil/logInSignUpState";
-import { SignUpWithMarbleUsButton, GoogleLogInButton } from "../../components/Buttons";
+import { SignUpWithMarbleUsButton } from "../../components/Buttons";
+import GoogleOAuth from "../../components/oauth/GoogleOAuth";
+
 
 export default function LogInForm () {
     const navigate = useNavigate();
@@ -14,17 +18,19 @@ export default function LogInForm () {
     // 상태관리 정의
     const [email, setEmail] = useRecoilState(emailState);
     const [password, setPassword] = useRecoilState(passwordState);
+    const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
+    const [refreshToken, setRefreshToken] = useRecoilState(refreshTokenState);
     
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false); 
 
-    // email 유효성 검사 조건 : 영어+숫자._-@영어+숫자.-.영어+숫자
+    // email 유효성 검사 조건 : 영어+숫자._-@영어+숫자.-.영어+숫자 (= 일반적인 이메일 형식)
     const validateEmail = (email) => {
         const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
         return emailRegex.test(email);
     };
     
-    // password 유효성 검사 조건 : 영어+숫자+특수문자(@$!%*?&)를 모두 포함하며, 최소 8자 이상
+    // password 유효성 검사 조건 : 영어+숫자+특수문자(@$!%*?&)를 모두 포함하며, 최소 8자 이상 (= 일반적인 비밀번호 형식)
     const validatePassword = (password) => {
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         return passwordRegex.test(password);
@@ -57,29 +63,49 @@ export default function LogInForm () {
 
         // API 요청을 보내기 위한 데이터 준비
         const requestData = {
-          email,
-          password,
+            email,
+            password,
         };
     
         try {
-          // 서버 API 호출 (POST)
-          // const response = await axios.post('https://api@example.com/auth/login', requestData);
+            // 서버 API 호출
+            const response = await axios.post('https://9129-116-126-166-12.ngrok-free.app/auth/login', requestData, 
+                { 
+                    headers: {
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning": "69420",
+                    }
+                }
+            );
+    
+            // 로그인 성공 시 AuthorizationToken, RefreshToken을 받아옴
+            const Authorization = response.headers.authorization;
+            const Refresh = response.headers.refresh;
 
-          // 서버 API 호출 (GET)
-          const response = await axios.get('https://api@example.com/auth/login', { params: requestData });
-    
-          // 로그인 성공 시 AccessToken을 받아옴
-          const { accessToken } = response.data;
-    
-          // AccessToken을 저장하고 메인 페이지로 이동
-          localStorage.setItem('accessToken', accessToken);
-          navigate('/');
+            // 상태로 AuthorizationToken, refreshToken 저장
+            setAuthorizationToken(Authorization);
+            setRefreshToken(Refresh);
+            
+            // 상태로 저장한 토큰들 확인
+            console.log(authorizationToken);
+            console.log(refreshToken);
+
+            // localStorage에 Authorization, Refresh을 저장
+            localStorage.setItem('Authorization', Authorization);
+            localStorage.setItem('Refresh', Refresh);
+
+            // 로컬로 저장한 토큰들 확인
+            console.log(localStorage.getItem('Authorization'));
+            console.log(localStorage.getItem('Refresh'));
+
+            // 메인페이지로 이동
+            navigate('/');
         } catch (error) {
-          // 로딩 상태 해제
-          setIsLoading(false);
-
-          // 로그인 실패 처리
-          setErrors({ serverError: '로그인에 실패했습니다.' });
+            // 로딩 상태 해제
+            setIsLoading(false);
+    
+            // 로그인 실패 처리
+            setErrors({ serverError: '로그인에 실패했습니다.' });
         }
     };
 
@@ -87,7 +113,7 @@ export default function LogInForm () {
         <main>
             {/* 메인페이지의 오른쪽 하단의 여권(로그인,회원가입 버튼)을 클릭하면 loginPage로 온다. */}
             <form onSubmit={handleLogin} className="flex-col h-screen">
-                <section className="flex justify-center items-center h-[90%] mb-[-120px] ">
+                <section className="flex justify-center items-center h-[90%] mb-[-140px] ">
                     <section className="w-[40%] h-[350px] shadow-2xl rounded-[20px]">
                         {/* 로그인 폼 왼쪽 상단 */}
                         <div className="bg-sky-400
@@ -151,23 +177,23 @@ export default function LogInForm () {
                         {/* 로그인 폼 오른쪽 상단 */}
                         <div className="bg-sky-400
                             flex justify-center items-center
-                            h-[53px] rounded-tl-[20px] rounded-tr-[20px] font-medium text-white">
-                            Log In
+                            h-[53px] rounded-tl-[20px] rounded-tr-[20px] font-medium text-white text-[20px]">
+                            Sign In
                         </div>
                         {/* 로그인 폼 오른쪽 하단 */}
                         <div className="h-[297px] flex justify-center items-center rounded-bl-[20px] rounded-br-[20px] bg-white">
-                            <button type="submit" className={`w-[170px] h-[170px] rounded-full bg-sky-400 flex justify-center items-center hover:bg-[#0088F8] ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={isLoading}>
+                            <button type="submit" className={`w-[170px] h-[170px] rounded-full text-white bg-sky-400 flex justify-center items-center hover:bg-[#0088F8] active:bg-gray-100 active:text-[#0088F8] transition duration-300 ease-in-out ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={isLoading}>
                                 {isLoading ? (
-                                    <i className="fa-solid fa-spinner animate-spin text-white text-[100px] rotate-[-45deg]" />
+                                    <i className="fa-solid fa-spinner animate-spin text-[100px] rotate-[-45deg]" />
                                 ) : (
-                                    <i className="fa-solid fa-plane text-white text-[100px] rotate-[-45deg]" />
+                                    <i className="fa-solid fa-plane text-[100px] rotate-[-45deg]" />
                                 )}
                             </button>
                         </div>
                     </section>
                 </section>
 
-                {/* 로그인 화면 하단 */}
+                {/* 로그인 화면 하단 버튼들 */}
                 <section className="flex-col">
                     <div className="flex justify-center mb-[25px]">
                         <Link to='/signup'>
@@ -175,7 +201,7 @@ export default function LogInForm () {
                         </Link>
                     </div>
                     <div className="flex justify-center">
-                        <GoogleLogInButton />
+                        <GoogleOAuth />
                     </div>
                 </section>
             </form>

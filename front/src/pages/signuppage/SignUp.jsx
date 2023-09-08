@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { GrayButton } from '../../components/Buttons';
-import TermsOfUse from '../../components/TermsOfUse';
+import TermsOfUse from '../../components/signuppage/TermsOfUse';
 import { 
     emailState, 
     passwordState, 
@@ -16,6 +16,7 @@ import {
 export default function SignUpForm() {
     const navigate = useNavigate();
 
+    // 상태관리
     const [email, setEmail] = useRecoilState(emailState);
     const [password, setPassword] = useRecoilState(passwordState);
     const [confirmPassword, setConfirmPassword] = useRecoilState(confirmPasswordState);
@@ -26,7 +27,6 @@ export default function SignUpForm() {
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
-
 
     // Email 유효성 검사 : 이메일 형식
     const validateEmail = (email) => {
@@ -98,14 +98,19 @@ export default function SignUpForm() {
             nationality,
             birthDate,
         };
-        
+
         try {
             // 서버 API 호출
-            const response = await axios.post('https://api@example.com/members/signup', requestData);
-
+            const response = await axios.post('https://9129-116-126-166-12.ngrok-free.app/members/signup', requestData,
+            { headers: {
+                "Content-Type": "application/json",
+                "ngrok-skip-browser-warning": "69420",
+              }});
+            
             // 회원가입 성공 시 메시지 표시 및 로그인 페이지로 이동함
             setSuccessMessage(response.data);
             console.log(successMessage);
+            alert(successMessage);
             navigate('/login');
         } catch (error) {
             // 회원가입 실패 처리
@@ -118,7 +123,7 @@ export default function SignUpForm() {
 
     return (
           <form onSubmit={handleSignUp} className="flex justify-center">
-            <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-[2rem] pb-4 bg-white">
+            <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-[2rem] pb-4 bg-[#F6F8FA]">
                 <section className="flex flex-col border-b-1 border-[#ccc] h-[25rem]">
                     <div className='flex justify-between items-center w-[100%] px-[40px] mt-[20px]'>
                         <div className='font-bold text-[20px]'>
@@ -127,15 +132,15 @@ export default function SignUpForm() {
                         <div className='flex gap-[8px]'>
                             <Link to='/'>
                                 <div className="flex justify-center items-center">
-                                    <div className="w-[40px] h-[40px] rounded-full bg-sky-400 hover:bg-[#0088F8] flex justify-center items-center">
-                                        <i className="fa-solid fa-house text-white text-[20px]" />
+                                    <div className="w-[40px] h-[40px] rounded-full bg-sky-400 text-white hover:bg-[#0088F8] flex justify-center items-center active:bg-gray-200 active:text-[#0088F8] transition duration-300 ease-in-out">
+                                        <i className="fa-solid fa-house text-[20px]" />
                                     </div>
                                 </div>
                             </Link>
                             <Link to='/login'>
                                 <div className="flex justify-center items-center">
-                                    <div className="w-[40px] h-[40px] rounded-full bg-sky-400 hover:bg-[#0088F8] flex justify-center items-center">
-                                        <i className="fa-solid fa-plane text-white text-[20px] rotate-[-45deg]" />
+                                    <div className="w-[40px] h-[40px] rounded-full bg-sky-400 text-white hover:bg-[#0088F8] flex justify-center items-center active:bg-gray-200 active:text-[#0088F8] transition duration-300 ease-in-out">
+                                        <i className="fa-solid fa-plane text-[20px] rotate-[-45deg]" />
                                     </div>
                                 </div>
                             </Link>
@@ -163,26 +168,12 @@ export default function SignUpForm() {
                 </section>
                 
                 <section className="flex flex-col w-[600px] mt-[15px]">
-                    <div className="flex justify-between items-center text-[20px] font-bold mb-[15px]">
-                        <div className='flex justify-center items-center gap-[20px]'>
-                            <div>M</div>
-                            <div>A</div>
-                            <div>R</div>
-                            <div>B</div>
-                            <div>L</div>
-                            <div>E</div>
-                            <div>U</div>
-                            <div>S</div>
+                    <div className="flex justify-between items-center text-[20px] font-bold mb-[15px] mr-[-20px]">
+                        <div className='flex justify-start items-center tracking-[1em]'>
+                            MARBLEUS
                         </div>
-                        <div className='flex justify-center items-center gap-[20px]'>
-                            <div>P</div>
-                            <div>A</div>
-                            <div>S</div>
-                            <div>S</div>
-                            <div>P</div>
-                            <div>O</div>
-                            <div>R</div>
-                            <div>T</div>
+                        <div className='flex flex-row justify-end items-center tracking-[1em]'>
+                            PASSPORT
                         </div>
                     </div>
                     <div className='flex justify-between mb-[38px]'>

@@ -78,13 +78,15 @@ export const ToBoard = () => {
   );
 };
 
+// GoogleOAuth 버튼의 css가 지정되어 있어서 변경이 불가능하므로... SignUpWithMarbleUs 버튼을 수정함...
+// GoogleLogInButton에 연결하는 방법을 모르겠음..
 export const SignUpWithMarbleUsButton = () => {
   return (
-    <button className="inline-flex items-center justify-center w-[280px] h-[60px] p-2 pr-8 rounded-full border-4 border-solid border-white bg-sky-400 shadow-md text-white font-bold hover:bg-white hover:text-black active:bg-sky-200 active:border-sky-200 active:text-black transition duration-300 ease-in-out">
-      <div className="inline-flex items-center justify-center w-10 h-10 flex-shrink-0 bg-white rounded-full text-sky-400">
-        <i className="fa-solid fa-plane text-2xl rotate-[-45deg]" />
+    <button className="inline-flex items-center w-[220px] h-[45px] pl-[2px] rounded-full border-2 border-solid border-white bg-sky-400 shadow-md text-white font-bold hover:bg-white hover:text-black active:bg-sky-200 active:border-sky-200 active:text-black transition duration-300 ease-in-out">
+      <div className="inline-flex items-center justify-center w-[36px] h-[36px] flex-shrink-0 bg-white rounded-full text-sky-400">
+        <i className="fa-solid fa-plane text-[16px] rotate-[-45deg]" />
       </div>
-      <div className="pl-[16px]">Sign up with MarbleUs</div>
+      <div className="pl-[10px] text-[14px] font-semibold">Sign up with MarbleUs</div>
     </button>
   );
 };

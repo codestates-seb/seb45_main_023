@@ -1,5 +1,17 @@
 import { atom } from "recoil";
-  
+
+// authorizationToken 상태관리
+export const authorizationTokenState = atom({
+    key: 'authorizationTokenState',
+    default: '',
+});
+
+// refreshToken 상태관리
+export const refreshTokenState = atom({
+    key: 'refreshTokenState',
+    default: '',
+});
+
 // Email 상태관리
 export const emailState = atom({
     key: 'emailState',
