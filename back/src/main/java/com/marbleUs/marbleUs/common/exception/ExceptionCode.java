@@ -16,6 +16,7 @@ public enum ExceptionCode {
     COMMENT_NOT_EXIST(404, "Comment doesnt exist"),
     IMAGE_NOT_FOUND(404, "Image not found"),
     BLOG_NOT_FOUND(404, "Blog not found"),
+    WEATHER_NOT_FOUND(404, "Weather not found"),
     ALREADY_FOLLOWED(403,"already following member");
     @Getter
     private int status;
