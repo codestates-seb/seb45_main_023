@@ -6,5 +6,8 @@ export const RouteConst = {
     mybookmark:'/mybookmarks',
     mymission:'/mymissions',
     login:'/login',
-    signup:'/signup'
+    signup:'/signup',
+    blog_list: '/bloglist',
+    blog_write: '/blogwrite/:member_id/:cityId',
+    blog_detail: '/blogdetail'
 }
