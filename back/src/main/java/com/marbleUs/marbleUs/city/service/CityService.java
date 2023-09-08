@@ -32,7 +32,10 @@ public class CityService {
                 .ifPresent(description -> foundCity.setDescription(description));
         Optional.ofNullable(city.getImg())
                 .ifPresent(img -> foundCity.setDescription(img));
-
+        Optional.ofNullable(city.getNx())
+                .ifPresent(nx -> foundCity.setNx(nx));
+        Optional.ofNullable(city.getNy())
+                .ifPresent(ny -> foundCity.setNy(ny));
 
         return repository.save(foundCity);
     }
@@ -68,7 +71,11 @@ public class CityService {
                 repository.findById(id);
         City findCity =
                 optionalCity.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+                        new BusinessLogicException(ExceptionCode.CITY_NOT_FOUND));
         return findCity;
+    }
+
+    public long cityCount() {
+        return repository.count();
     }
 }
