@@ -5,7 +5,6 @@ import PassportIcon from "../../components/PassportIcon";
 
 import {
 	Button,
-	GrayButton,
 	GreenButton,
 	PurpleButton,
 	NegativeButton,
@@ -16,6 +15,11 @@ import {
 	GoogleLogInButton,
 	RefreshButton,
 	CloseButton,
+
+	BasicCustomButton,
+	NegativeCustomButton,
+	ToPageCustomButton,
+	SkillButton,
 } from "../../components/Buttons";
 
 export default function Main() {
@@ -32,7 +36,6 @@ export default function Main() {
 			</Canvas>
 			<Button text={"로그아웃"} color={'blue'}/>
 			<Button text={"개인정보수정"} color={'blue'}/>
-			<GrayButton text={"Sign Up"} />
 			<GreenButton text={"인증글 쓰러가기"} />
 			<PurpleButton text={"인증글 쓰러가기"} />
 			<NegativeButton text={"글 쓰기"} />
@@ -43,7 +46,18 @@ export default function Main() {
 			<GoogleLogInButton />
 			<RefreshButton />
 			<CloseButton />
-			<PassportIcon />
+			<PassportIcon /> <br/>
+
+			{/* 통합한 버튼들 사용법 */}
+			<BasicCustomButton text='가나다라' colorName='gray' />
+			<BasicCustomButton text='마바사아' colorName='green' />
+			<BasicCustomButton text='자차카타' colorName='purple' />
+			<NegativeCustomButton text='글쓰기' colorName='blue'/>
+			<NegativeCustomButton text='댓글쓰기' colorName='green'/>
+			<ToPageCustomButton text='마이페이지 미션 탭으로' colorName='purple' iconColorName='purple' />
+			<ToPageCustomButton text='여행 후기 게시판으로' colorName='blue' iconColorName='blue' />
+			<SkillButton iconName='refresh'/>
+			<SkillButton iconName='close'/>
 		</div>
 	);
 }

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useState, useEffect } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
-import { GrayButton } from '../../components/Buttons';
+import { useNavigate } from 'react-router-dom';
+import { BasicCustomButton, ToSmallButton } from '../../components/Buttons';
 import TermsOfUse from '../../components/signuppage/TermsOfUse';
 import { 
     emailState, 
@@ -11,9 +11,10 @@ import {
     nationalityState,
     birthDateState,
     agreementState,
+    authorizationTokenState,
 } from '../../recoil/logInSignUpState';
 
-export default function SignUpForm() {
+export default function SignUpPage() {
     const navigate = useNavigate();
 
     // 상태관리
@@ -23,10 +24,20 @@ export default function SignUpForm() {
     const [nationality, setNationality] = useRecoilState(nationalityState);
     const [birthDate, setBirthDate] = useRecoilState(birthDateState);
     const [agreement, setAgreement] = useRecoilState(agreementState);
+    const authorizationToken = useRecoilValue(authorizationTokenState);  
     
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
+
+    useEffect(() => {
+        // 컴포넌트가 로딩될 때 실행됩니다.
+        // authorizationToken이 있는 경우, 메인 페이지로 이동합니다.
+        if (authorizationToken) {
+            navigate('/'); // 메인 페이지 경로로 변경
+            alert('이미 로그인 되었습니다.'); // 경고창 에러 메시지 표시
+        }
+    }, [authorizationToken, navigate]);
 
     // Email 유효성 검사 : 이메일 형식
     const validateEmail = (email) => {
@@ -48,7 +59,9 @@ export default function SignUpForm() {
         // 유효성 검사 & 유효성 검사 실패시 내용 초기화
         if (!validateEmail(email)) {
             errors.email = '올바른 이메일 형식이 아닙니다.';
-        }
+        } 
+
+        // 400번 에러가 뜨면 '이미 가입한 이메일입니다.' 라는 알림 보여주기!
         
         if (!validatePassword(password)) {
             errors.password = '비밀번호는 영어, 숫자, 특수문자를 모두 포함하고 최소 8자 이상이어야 합니다.';          
@@ -110,11 +123,18 @@ export default function SignUpForm() {
             // 회원가입 성공 시 메시지 표시 및 로그인 페이지로 이동함
             setSuccessMessage(response.data);
             console.log(successMessage);
+
+            // 지금은 회원가입 성공시 경고창이 나오지만... 회원가입 완료 시 완료페이지 만들도록 할 것!
             alert(successMessage);
             navigate('/login');
         } catch (error) {
-            // 회원가입 실패 처리
-            setErrors({serverError: '회원가입에 실패했습니다.'});
+            if (error.response && error.response.status === 409) {
+                setErrors({ email: '이미 가입된 이메일입니다.' });
+            } else {
+                // 회원가입 실패 처리
+                setErrors({serverError: '회원가입에 실패했습니다.'});
+            }
+            
         } finally {
             // 로딩 상태를 비활성화 (성공 또는 실패에 관계없이 항상 실행되도록 함)
             setIsLoading(false);
@@ -130,20 +150,8 @@ export default function SignUpForm() {
                             이용약관
                         </div>
                         <div className='flex gap-[8px]'>
-                            <Link to='/'>
-                                <div className="flex justify-center items-center">
-                                    <div className="w-[40px] h-[40px] rounded-full bg-sky-400 text-white hover:bg-[#0088F8] flex justify-center items-center active:bg-gray-200 active:text-[#0088F8] transition duration-300 ease-in-out">
-                                        <i className="fa-solid fa-house text-[20px]" />
-                                    </div>
-                                </div>
-                            </Link>
-                            <Link to='/login'>
-                                <div className="flex justify-center items-center">
-                                    <div className="w-[40px] h-[40px] rounded-full bg-sky-400 text-white hover:bg-[#0088F8] flex justify-center items-center active:bg-gray-200 active:text-[#0088F8] transition duration-300 ease-in-out">
-                                        <i className="fa-solid fa-plane text-[20px] rotate-[-45deg]" />
-                                    </div>
-                                </div>
-                            </Link>
+                            <ToSmallButton linkName='mainpage' Size='sm' iconName='mainpage' colorName='orange' title='mainpage'/>
+                            <ToSmallButton linkName='loginpage' Size='sm' iconName='loginpage' colorName='blue' title='loginpage'/>
                         </div>
                     </div>
                     {/* 이용약관 스크롤을 넣으니 이용약관 box가 계속 깨진다. ㅠㅠ 해결방법을 모르겠습니당 */}
@@ -161,7 +169,7 @@ export default function SignUpForm() {
                         </div>
                         <div>
                             {/* 회원가입 시도 중 버튼이 비활성화 되고, 로딩이 끝나면 다시 활성화 된다.*/}
-                            <GrayButton type='submit' text={'Sign Up'} disabled={isLoading}/>
+                            <BasicCustomButton type='submit' text='Sign Up' colorName='gray' disabled={isLoading} />
                         </div>
                     </div>
                     {errors.agreement && <div className='text-red-500 mt-[-30px] mb-[9px] ml-[220px] text-[14px]'>{errors.agreement}</div>}

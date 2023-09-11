@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -7,11 +7,9 @@ import {
     passwordState,
     authorizationTokenState,
 } from "../../recoil/logInSignUpState";
-import { SignUpWithMarbleUsButton } from "../../components/Buttons";
-import GoogleOAuth from "../../components/oauth/GoogleOAuth";
+import { SignUpWithMarbleUsButton, GoogleLogInButton } from "../../components/Buttons";
 
-
-export default function LogInForm () {
+export default function LogInPage () {
     const navigate = useNavigate();
 
     // 상태관리 정의
@@ -21,6 +19,15 @@ export default function LogInForm () {
     
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false); 
+
+    useEffect(() => {
+        // 컴포넌트가 로딩될 때 실행됩니다.
+        // authorizationToken이 있는 경우, 메인 페이지로 이동합니다.
+        if (authorizationToken) {
+            navigate('/'); // 메인 페이지 경로로 변경
+            alert('이미 로그인 되었습니다.'); // 경고창 에러 메시지 표시
+        }
+    }, [authorizationToken, navigate]);
 
     // email 유효성 검사 조건 : 영어+숫자._-@영어+숫자.-.영어+숫자 (= 일반적인 이메일 형식)
     const validateEmail = (email) => {
@@ -91,8 +98,8 @@ export default function LogInForm () {
             // 로컬로 저장한 AuthorizationToken 확인
             console.log(localStorage.getItem('Authorization'));
 
-            // 메인페이지로 이동
-            navigate('/');
+            // 웰컴페이지로 이동
+            navigate('/welcome');
         } catch (error) {
             // 로딩 상태 해제
             setIsLoading(false);
@@ -114,7 +121,7 @@ export default function LogInForm () {
                             h-[53px] rounded-tl-[20px] rounded-tr-[20px] 
                             border-r-1 border-dashed border-gray-500">
                                 <Link to='/'>
-                                    <div className="flex items-center gap-[8px]">
+                                    <div className="flex items-center gap-[8px] animate-pulse hover:animate-none transition duration-300 ease-in-out">
                                         <div className="flex justify-center items-center">
                                             <div className="w-[40px] h-[40px] rounded-full bg-white flex justify-center items-center">
                                                 <i className="fa-solid fa-plane text-sky-400 text-[20px] rotate-[-45deg]" />
@@ -133,7 +140,7 @@ export default function LogInForm () {
                         {/* 로그인 폼 왼쪽 하단 */}
                         <div className="
                             h-[297px] rounded-bl-[20px] rounded-br-[20px]
-                            pt-[46px] pr-[30px] pb-[46px] pl-[30px]
+                            pt-[35px] pr-[30px] pb-[46px] pl-[30px]
                             border-r-1 border-dashed border-gray-500 bg-white">
                             <div>
                                 <label htmlFor="email" className="font-medium text-[18px] block">
@@ -164,6 +171,18 @@ export default function LogInForm () {
                                 }
                             </div>
                         </div>
+                        <div className="flex justify-end">
+                            <Link to='/find/email'>
+                                <div className="text-[#0088F8] hover:text-sky-400 active:text-[#0088F8] mt-[-40px] mr-[20px]">
+                                    forgot E-mail
+                                </div>
+                            </Link>
+                            <Link to='/find/pw'>
+                                <div className="text-[#0088F8] hover:text-sky-400 active:text-[#0088F8] mt-[-40px] mr-[30px]">
+                                    forgot Password
+                                </div>
+                            </Link>
+                        </div>
                     </section>
 
                     <section className="w-[20%] h-[350px] shadow-xl rounded-[20px]">
@@ -175,7 +194,7 @@ export default function LogInForm () {
                         </div>
                         {/* 로그인 폼 오른쪽 하단 */}
                         <div className="h-[297px] flex justify-center items-center rounded-bl-[20px] rounded-br-[20px] bg-white">
-                            <button type="submit" className={`w-[170px] h-[170px] rounded-full text-white bg-sky-400 flex justify-center items-center hover:bg-[#0088F8] active:bg-gray-100 active:text-[#0088F8] transition duration-300 ease-in-out ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={isLoading}>
+                            <button type="submit" className={`w-[170px] h-[170px] rounded-full text-white bg-sky-400 flex justify-center items-center hover:bg-[#0088F8] active:bg-gray-100 active:text-[#0088F8] animate-pulse hover:animate-none transition shadow-md duration-300 ease-in-out ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={isLoading}>
                                 {isLoading ? (
                                     <i className="fa-solid fa-spinner animate-spin text-[100px] rotate-[-45deg]" />
                                 ) : (
@@ -194,7 +213,9 @@ export default function LogInForm () {
                         </Link>
                     </div>
                     <div className="flex justify-center">
-                        <GoogleOAuth />
+                        <Link to={'https://9129-116-126-166-12.ngrok-free.app/login/oauth2/code/google'}>
+                            <GoogleLogInButton/>
+                        </Link>
                     </div>
                 </section>
             </form>
