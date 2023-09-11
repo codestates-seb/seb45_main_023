@@ -51,7 +51,7 @@ public class MissionService {
         Optional<Mission> mission = repository.findByContent(content);
         //이미 존재하는 미션 내용일 경우 예외를 발생
         if (mission.isPresent())
-            throw new BusinessLogicException(ExceptionCode.Mission_EXISTS);
+            throw new BusinessLogicException(ExceptionCode.MISSION_EXISTS);
     }
 
     //읽기 전용 트랜잭션을 사용하여 미션을 조회
@@ -62,7 +62,7 @@ public class MissionService {
                 repository.findById(id);
         Mission findMission =
                 optionalMission.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.Mission_NOT_FOUND));
+                        new BusinessLogicException(ExceptionCode.MISSION_NOT_FOUND));
                 return findMission;
     }
 }
