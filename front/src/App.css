@@ -8,3 +8,23 @@
 body {
   background-color: #dde7ec;
 }
+@keyframes flip {
+  0% {
+    transform: scaleY(1);
+    opacity:.5;
+  }
+  50% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.bookshelf-animation {
+  animation-name: flip;
+  animation-duration: .8s;
+  transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+}
