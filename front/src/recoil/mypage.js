@@ -36,7 +36,23 @@ export const userInfo = atom({
     nickname: '',
     nationality: '',
     password: '',
-    birth:'',
-    id:0
+    birth: '',
+    id: 0,
   },
+});
+
+export const bookmarkInfo = atom({
+  key: 'bookmark',
+  default: [
+    {
+      id: '',
+      body: '',
+      createdAt: '',
+      tags: [],
+      images: [],
+      modifiedAt: '',
+      title: '',
+      view: '',
+    },
+  ],
 });

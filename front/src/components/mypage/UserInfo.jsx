@@ -38,7 +38,7 @@ export default function UserInfo({setNickname,setNationality,setPassword,setBirt
           <div className="flex bg-white mx-4 text-[2.5rem]">P A S S P O R T</div>
         </div>
         <div className="flex h-[17rem] bg-white justify-between">
-          <div className=" border-1 border-black w-[12.5rem] bg-white">이미지자리</div>
+          <img src='https://img.seoul.co.kr/img/upload/2017/10/07/SSI_20171007154542_O2.jpg' alt='profileImg' className=" border-1 border-black w-[12.5rem] bg-white"/>
           <div className="flex flex-col w-[12rem] justify-between bg-white">
             <div className="flex flex-col">
               <label className="bg-white" htmlFor="nickname">

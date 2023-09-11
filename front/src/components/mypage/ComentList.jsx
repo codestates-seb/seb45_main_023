@@ -1,6 +1,6 @@
 import { useRecoilValue } from 'recoil';
-import Pagenation from './Pagenation';
 import { User } from '../../recoil/mypage';
+import BlogPagenation from './BlogPagination';
 
 export default function ComentList() {
   return (
@@ -18,7 +18,7 @@ export default function ComentList() {
           })} */}
         </div>
       </div>
-      <Pagenation/>
+      <BlogPagenation/>
     </div>
   );
 }
