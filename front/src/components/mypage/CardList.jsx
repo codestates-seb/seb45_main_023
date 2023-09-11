@@ -12,7 +12,7 @@ export default function CardList({ start, end }) {
             return (
               <div className="flex flex-col justify-between w-[13rem] h-[8rem] shadow-cardList p-2">
                 <div key={item.id} className="flex justify-between">
-                  <div className='font-bold'>경기</div>
+                  <div className='font-bold'>{item.cityName}</div>
                   <div className='mr-2'>x</div>
                 </div>
                 <div key={item.id}>
