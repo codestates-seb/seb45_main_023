@@ -20,15 +20,6 @@ export default function LogInPage () {
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false); 
 
-    useEffect(() => {
-        // 컴포넌트가 로딩될 때 실행됩니다.
-        // authorizationToken이 있는 경우, 메인 페이지로 이동합니다.
-        if (authorizationToken) {
-            navigate('/'); // 메인 페이지 경로로 변경
-            alert('이미 로그인 되었습니다.'); // 경고창 에러 메시지 표시
-        }
-    }, [authorizationToken, navigate]);
-
     // email 유효성 검사 조건 : 영어+숫자._-@영어+숫자.-.영어+숫자 (= 일반적인 이메일 형식)
     const validateEmail = (email) => {
         const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -108,6 +99,17 @@ export default function LogInPage () {
             setErrors({ serverError: '로그인에 실패했습니다.' });
         }
     };
+
+    // 컴포넌트가 로딩될 때 실행됩니다.
+    // authorizationToken이 있는 경우, 웰컴페이지로 이동합니다.
+    useEffect(() => {
+        if (authorizationToken) {
+            // 웰컴페이지로 경로 변경
+            navigate('/welcome');
+            // 경고창 에러 메시지 표시
+            alert('이미 로그인 되었습니다.'); 
+        }
+    }, [authorizationToken, navigate]);
 
     return (
         <main>
@@ -194,7 +196,7 @@ export default function LogInPage () {
                         </div>
                         {/* 로그인 폼 오른쪽 하단 */}
                         <div className="h-[297px] flex justify-center items-center rounded-bl-[20px] rounded-br-[20px] bg-white">
-                            <button type="submit" className={`w-[170px] h-[170px] rounded-full text-white bg-sky-400 flex justify-center items-center hover:bg-[#0088F8] active:bg-gray-100 active:text-[#0088F8] animate-pulse hover:animate-none transition shadow-md duration-300 ease-in-out ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={isLoading}>
+                            <button type="submit" className={`w-[170px] h-[170px] rounded-full text-white bg-sky-400 flex justify-center items-center hover:bg-[#0088F8] active:bg-gray-100 active:text-[#0088F8] animate-pulse hover:animate-none transition shadow-md duration-300 ease-in-out ${isLoading || authorizationToken ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={isLoading || authorizationToken}>
                                 {isLoading ? (
                                     <i className="fa-solid fa-spinner animate-spin text-[100px] rotate-[-45deg]" />
                                 ) : (

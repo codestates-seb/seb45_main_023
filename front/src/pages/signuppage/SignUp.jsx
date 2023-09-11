@@ -28,7 +28,6 @@ export default function SignUpPage() {
     
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState({});
-    const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
         // 컴포넌트가 로딩될 때 실행됩니다.
@@ -120,12 +119,10 @@ export default function SignUpPage() {
                 "ngrok-skip-browser-warning": "69420",
               }});
             
-            // 회원가입 성공 시 메시지 표시 및 로그인 페이지로 이동함
-            setSuccessMessage(response.data);
-            console.log(successMessage);
+            console.log(response.data);
 
-            // 지금은 회원가입 성공시 경고창이 나오지만... 회원가입 완료 시 완료페이지 만들도록 할 것!
-            alert(successMessage);
+            // 지금은 회원가입 성공시 경고창이 나온다.
+            alert('Member Registered!');
             navigate('/login');
         } catch (error) {
             if (error.response && error.response.status === 409) {

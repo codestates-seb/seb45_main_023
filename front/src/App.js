@@ -24,8 +24,6 @@ import FindPasswordMethod1 from './pages/findpage/findPasswordPages/findPassword
 import FindPasswordMethod2 from './pages/findpage/findPasswordPages/findPasswordMethod2';
 import FindPassword from './pages/findpage/findPasswordPages/findPassword';
 
-
-
 function App() {
   return (
     <BrowserRouter>
