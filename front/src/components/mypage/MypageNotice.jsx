@@ -21,12 +21,10 @@ export default function MypageNotice({ nickname, nationality, password, birth })
     if (isEdit) {
       handlePost();
     } else {
-      console.log('프로필 수정완료');
     }
   };
 
   const handlePost = () => {
-    console.log('프로필 수정');
     const patchData = async () => {
       try {
         const response =await axios.patch(`https://9129-116-126-166-12.ngrok-free.app/members/${info.id}`, request, {
