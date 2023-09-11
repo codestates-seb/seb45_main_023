@@ -54,6 +54,8 @@ cloud:
       secretKey: ${S3_SECRET_KEY}
     s3:
       bucket: marbleus-s3
+api:
+  key: ${API_SERVICE_KEY}
 
 
 

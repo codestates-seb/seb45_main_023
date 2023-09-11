@@ -1,7 +1,8 @@
 package com.marbleUs.marbleUs.weather.service;
 
 import com.marbleUs.marbleUs.weather.entity.Weather;
-import lombok.Value;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -29,6 +30,8 @@ import java.time.format.DateTimeFormatter;
 public class WeatherApiService {
 
     private static final String API_URL = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
+
+    @Getter
     @Value("${API_SERVICE_KEY}")
     private String SERVICE_KEY;
     private static final String PAGE_NO = "1";        //페이지 번호
