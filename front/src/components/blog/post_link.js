@@ -1,21 +1,21 @@
 import { useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
 
 export default function PostLink({
   title,
   body,
   profile_pic,
   member_id,
-  // comments,
   city_id,
   created_at,
   modified_at,
-  blog_id,
   tags
 }) {
   const navigate = useNavigate();
+  const blog_id = useParams().blogId;
 
   const handlePostClick = () => {
-    navigate(`/blogs/${blog_id}`);
+    navigate(`/blogdetail/${blog_id}`);
   }
 
   return (
