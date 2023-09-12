@@ -20,9 +20,6 @@ public enum ExceptionCode {
     BLOG_NOT_FOUND(404, "Blog not found"),
     WEATHER_NOT_FOUND(404, "Weather not found"),
     ALREADY_FOLLOWED(403,"already following member"),
-
-    MISSION_EXISTS(409, "Mission Exists"),
-    MISSION_NOT_FOUND(404, "Mission not found"),
     MISSION_ALREADY_ASSIGNED(403, "Mission already assigned" ),
     MISSION_NOT_COMPLETE(403, "Doesnt exist complete mission"),
 
