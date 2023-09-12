@@ -26,7 +26,7 @@ const data = [
         city_id: 2,
         created_at: '2023.08.302',
         modified_at: '2023.09.012',
-        blog_id: 1,
+        blog_id: 2,
         tags: ['인기글', '숙소'],
       }
     }

@@ -7,7 +7,8 @@ export const RouteConst = {
     mymission:'/mymissions',
     login:'/login',
     signup:'/signup',
-    blog_list: '/bloglist',
+    blog_list: '/bloglist/:cityId',
     blog_write: '/blogwrite/:member_id/:cityId',
-    blog_detail: '/blogdetail'
+    blog_detail: '/blogdetail/:blogId',
+    blog_edit: '/edit/:blogId'
 }

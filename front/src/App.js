@@ -13,6 +13,7 @@ import SignUp from './pages/signuppage/SignUp';
 import Bloglist from './pages/blog/blog_list';
 import Blogwrite from './pages/blog/blog_write';
 import Blogdetail from './pages/blog/blog_detail';
+import Blogedit from './pages/blog/blog_edit';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path={RouteConst.blog_list} element={<Bloglist />} />
         <Route path={RouteConst.blog_write} element={<Blogwrite />} />
         <Route path={RouteConst.blog_detail} element={<Blogdetail />} />
+        <Route path={RouteConst.blog_edit} element={<Blogedit />} />
       </Routes>
     </BrowserRouter>
   );
