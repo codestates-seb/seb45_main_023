@@ -4,6 +4,8 @@ package com.marbleUs.marbleUs.common.auth.handler;
 
 import com.marbleUs.marbleUs.common.auth.jwt.JwtTokenizer;
 import com.marbleUs.marbleUs.common.auth.utils.CustomAuthorityUtils;
+import com.marbleUs.marbleUs.common.redis.service.RedisServiceUtil;
+import com.marbleUs.marbleUs.common.redis.tools.ClientIpInterceptor;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,8 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final RedisServiceUtil redisServiceUtil;
+    private final ClientIpInterceptor interceptor;
 
 
     @Override
@@ -40,7 +44,7 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
 //        ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
 
         if (exception instanceof ExpiredJwtException) {
-            String refreshToken = request.getHeader("Refresh");
+//            String refreshToken = request.getHeader("Refresh");
 
 
 
@@ -58,9 +62,9 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
             setAuthenticationToContext(newClaims);
 
-            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            System.out.println("new token generated with RefreshToken +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            log.info("new token generated with RefreshToken +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
 
             //새로운 액세스 토큰 응답 헤더에 담아 전송
@@ -82,9 +86,9 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(username,null,authorities);
 
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("Login Success with new AccessToken! +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        log.info("Login Success with new AccessToken! +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
 
 
@@ -94,7 +98,8 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
 
     private Map<String, Object> verifyJws(HttpServletRequest request) {
-        String jws = request.getHeader("Refresh").replace("Bearer ", "");
+        String ip = interceptor.getClientIP(request);
+        String jws = redisServiceUtil.getData(ip+"_Refresh").replace("Bearer ", "");
         String base64EncodedSecretKey = jwtTokenizer.encodedBasedSecretKey(jwtTokenizer.getSecretKey());
         Map<String,Object> claims = jwtTokenizer.getClaims(jws,base64EncodedSecretKey).getBody();
         return claims;
