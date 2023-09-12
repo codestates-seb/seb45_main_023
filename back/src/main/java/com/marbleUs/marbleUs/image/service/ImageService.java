@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,12 +107,13 @@ public class ImageService {
     }
     //로직 최적화 요망
 
+    @Transactional
     public List<Image> updateBlogImage(List<MultipartFile> multipartFileList, List<String> names)throws IOException{
         List<Image> images = new ArrayList();
 
         for (String name:names) {
 
-            s3Service.delete(name);
+
 
             for (MultipartFile multipartFile : multipartFileList) {
                 // 파일명 지정 (겹치면 안되고, 확장자 빼먹지 않도록 조심!)
@@ -127,6 +129,7 @@ public class ImageService {
                 imageRepository.save(image);
 
             }
+            s3Service.delete(name);
         }
 
 

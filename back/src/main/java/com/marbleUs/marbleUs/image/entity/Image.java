@@ -1,6 +1,7 @@
 package com.marbleUs.marbleUs.image.entity;
 
 
+import com.marbleUs.marbleUs.common.tools.audit.Auditable;
 import com.marbleUs.marbleUs.common.tools.entity.BaseEntity;
 import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.member.entity.Member;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class Image extends BaseEntity {
+public class Image extends Auditable {
 
 
     @Column(length = 500,nullable = false)
