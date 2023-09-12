@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -91,6 +91,7 @@ export default function LogInPage () {
 
             // 웰컴페이지로 이동
             navigate('/welcome');
+            
         } catch (error) {
             // 로딩 상태 해제
             setIsLoading(false);
@@ -99,17 +100,6 @@ export default function LogInPage () {
             setErrors({ serverError: '로그인에 실패했습니다.' });
         }
     };
-
-    // 컴포넌트가 로딩될 때 실행됩니다.
-    // authorizationToken이 있는 경우, 웰컴페이지로 이동합니다.
-    useEffect(() => {
-        if (authorizationToken) {
-            // 웰컴페이지로 경로 변경
-            navigate('/welcome');
-            // 경고창 에러 메시지 표시
-            alert('이미 로그인 되었습니다.'); 
-        }
-    }, [authorizationToken, navigate]);
 
     return (
         <main>
@@ -150,7 +140,7 @@ export default function LogInPage () {
                                 </label>
                                 <input type="email" name="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="example@example.com" 
                                     className="w-[75%] h-[40px] mt-[14px] bg-[#F2F2F2] text-[#6C6C6C] 
-                                    rounded-[10px] pl-[15px] mb-[26px]">
+                                    rounded-[10px] pl-[15px] mb-[26px]" disabled={isLoading || authorizationToken} >
                                 </input>
                                 {errors.email && 
                                     <p className="text-red-500 mt-[-24px]">
@@ -164,7 +154,7 @@ export default function LogInPage () {
                                 </label>
                                 <input type="password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="••••••••" 
                                     className="w-[75%] h-[40px] mt-[14px] bg-[#F2F2F2] text-[#6C6C6C] 
-                                    rounded-[10px] pl-[15px]">
+                                    rounded-[10px] pl-[15px]" disabled={isLoading || authorizationToken} >
                                 </input>
                                 {errors.password && 
                                     <p className="text-red-500">
@@ -195,9 +185,9 @@ export default function LogInPage () {
                             Sign In
                         </div>
                         {/* 로그인 폼 오른쪽 하단 */}
-                        <div className="h-[297px] flex justify-center items-center rounded-bl-[20px] rounded-br-[20px] bg-white">
-                            <button type="submit" className={`w-[170px] h-[170px] rounded-full text-white bg-sky-400 flex justify-center items-center hover:bg-[#0088F8] active:bg-gray-100 active:text-[#0088F8] animate-pulse hover:animate-none transition shadow-md duration-300 ease-in-out ${isLoading || authorizationToken ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={isLoading || authorizationToken}>
-                                {isLoading ? (
+                        <div className="h-[297px] flex justify-center items-center rounded-bl-[20px] rounded-br-[20px] bg-white" >
+                            <button type="submit" className={`w-[170px] h-[170px] rounded-full text-white bg-sky-400 flex justify-center items-center hover:bg-[#0088F8] active:bg-gray-100 active:text-[#0088F8] animate-pulse hover:animate-none transition shadow-md duration-300 ease-in-out ${isLoading || authorizationToken ? 'opacity-50 cursor-not-allowed bg-gray-200 hover:bg-gray-200 active:bg-gray-200 active:text-white ' : ''}`} disabled={isLoading || authorizationToken}>
+                                {!authorizationToken && isLoading ? (
                                     <i className="fa-solid fa-spinner animate-spin text-[100px] rotate-[-45deg]" />
                                 ) : (
                                     <i className="fa-solid fa-plane text-[100px] rotate-[-45deg]" />

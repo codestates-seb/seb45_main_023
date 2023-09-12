@@ -40,6 +40,7 @@ function App() {
         <Route path={RouteConst.blog_detail} element={<Blogdetail />} />
 
         <Route path={RouteConst.login} element={<LogInPage />} />
+        <Route path={RouteConst.login} element={<LogInPage />} />
         <Route path={RouteConst.signup} element={<SignUpPage />} />
         <Route path={RouteConst.welcome} element={<WelcomePage />} />
         <Route path={RouteConst.findemail} element={<FindEmail />} />

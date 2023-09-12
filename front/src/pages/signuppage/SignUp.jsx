@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { BasicCustomButton, ToSmallButton } from '../../components/Buttons';
 import TermsOfUse from '../../components/signuppage/TermsOfUse';
 import { 
@@ -28,15 +28,6 @@ export default function SignUpPage() {
     
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState({});
-
-    useEffect(() => {
-        // 컴포넌트가 로딩될 때 실행됩니다.
-        // authorizationToken이 있는 경우, 메인 페이지로 이동합니다.
-        if (authorizationToken) {
-            navigate('/'); // 메인 페이지 경로로 변경
-            alert('이미 로그인 되었습니다.'); // 경고창 에러 메시지 표시
-        }
-    }, [authorizationToken, navigate]);
 
     // Email 유효성 검사 : 이메일 형식
     const validateEmail = (email) => {
@@ -139,6 +130,7 @@ export default function SignUpPage() {
     };
 
     return (
+        <>
           <form onSubmit={handleSignUp} className="flex justify-center">
             <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-[2rem] pb-4 bg-[#F6F8FA]">
                 <section className="flex flex-col border-b-1 border-[#ccc] h-[25rem]">
@@ -243,5 +235,8 @@ export default function SignUpPage() {
                 </p>
             </div>
         </form>
+        {/* 로그인 된 상태에서 회원가입 페이지로 오면 바로 mypage로 이동시킨다. */}
+        {authorizationToken && <Navigate to="/mypage" replace={true} />}
+     </>
   );
 }

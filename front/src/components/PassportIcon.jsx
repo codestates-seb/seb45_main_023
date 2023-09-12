@@ -1,15 +1,15 @@
 import { useRecoilValue } from "recoil";
-import { isLoggedInState } from "../recoil/example"; // Assume you have a Recoil atom for isLoggedIn state
+import { authorizationTokenState } from "../recoil/logInSignUpState";
 import { Link } from "react-router-dom";
 
 import PassportImage from "../assets/passportImage.png";
 
 export default function PassportIcon() {
-	const isLoggedIn = useRecoilValue(isLoggedInState);
+	const authorizationToken = useRecoilValue(authorizationTokenState);
 
 	return (
 		<div className="fixed bottom-10 right-10 cursor-pointer">
-			{isLoggedIn ? (
+			{authorizationToken ? (
 				<Link to="/mypage">
 					<section
 						className="flex w-34 h-69 p-6 flex-col justify-center items-end gap-3 rounded-r-1 shadow-xl"
