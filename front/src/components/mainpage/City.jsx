@@ -1,62 +1,52 @@
 import React from "react";
 
-const City = ({ name, direction, order, onClick }) => {
-	let width, height, gradientDirection, textcolor, additionalClass;
+const City = ({ location, onClick }) => {
+	let width, height, textcolor, additionalClass;
 
-	if (direction === "horizontal") {
+	if (location.direction === "H") {
 		width = "w-28";
 		height = "h-36";
-	} else if (direction === "vertical") {
+		textcolor = "white";
+		additionalClass = "bg-opacity-80 hover:scale-105 active:scale-110";
+	} else if (location.direction === "V") {
 		width = "w-36";
 		height = "h-28";
-	} else if (direction === "Square") {
+		textcolor = "white";
+		additionalClass = "bg-opacity-80 hover:scale-105 active:scale-110";
+	} else if (location.direction === "S") {
 		width = "w-40";
 		height = "h-40";
-	}
-
-	switch (order) {
-		case 1:
-			gradientDirection = "bg-gradient-to-bl";
-			break;
-		case 2:
-			gradientDirection = "bg-gradient-to-tr";
-			break;
-		case 3:
-			gradientDirection = "bg-gradient-to-br";
-			break;
-		case 4:
-			gradientDirection = "bg-gradient-to-tl";
-			break;
-		default:
-			gradientDirection = "";
-	}
-
-	switch (direction) {
-		case "Square":
-			textcolor = "grey-300";
-			break;
-		default:
-			textcolor = "white";
-	}
-
-	if (direction === "Square") {
+		textcolor = "grey-300";
 		additionalClass =
 			"bg-white opacity-50 hover:opacity-90 transform active:scale-105";
-	} else {
-		additionalClass = "bg-opacity-80 hover:scale-105 active:scale-110";
 	}
 
 	return (
-		<div
-			className={`flex items-center justify-center col-span-1 row-span-1 ${width} ${height} m-2 ${gradientDirection} rounded-lg shadow-lg cursor-pointer transition duration-500 ease-in-out ${additionalClass}`}
-			onClick={onClick}
-		>
-			<span
-				className={`text-xl font-semibold text-${textcolor} flex items-center justify-center h-full`}
-			>
-				{name}
-			</span>
-		</div>
+		<article className="flex w-180px items-start gap-10 rounded-20px shadow-md">
+			<img
+				src="<path-to-image>"
+				alt="City"
+				className="w-180px h-240px flex-shrink-0 rounded-20px"
+				style={{
+					background: "url(), lightgray 50% / cover no-repeat",
+				}}
+			/>
+			<section className="flex w-180px h-134px flex-col justify-center items-start absolute rounded-20px 20px 0px 0px">
+				<div className="flex h-107px p-0px-10px flex-col justify-center items-center flex-shrink-0 self-stretch bg-white rounded-20px 20px 0px 0px">
+					<h1 className="flex p-10px items-center text-black text-24px font-bold">
+						City Name
+					</h1>
+					<h2 className="flex p-0px-10px items-center gap-10px text-black text-14px font-semibold">
+						<span>Population:</span>
+						<span>1,000,000</span>
+					</h2>
+				</div>
+				<footer className="flex h-27px flex-col items-center gap--34px flex-shrink-0 self-stretch">
+					<div className="w-0px h-0px border-b-180px border-solid border-gray-600 border-l-0px border-transparent border-r-255px fill-white filter drop-shadow-0px-6px-10px rgba-0-0-0-0-1"></div>
+					<div className="w-0px h-0px border-b-180px border-solid border-gray-600 border-l-255px border-transparent border-r-0px fill-gray-600 filter drop-shadow-0px-6px-10px rgba-0-0-0-0-1"></div>
+				</footer>
+			</section>
+		</article>
 	);
 };
 

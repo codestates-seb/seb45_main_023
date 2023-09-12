@@ -123,12 +123,20 @@ const Board = () => {
 			<Dice ref={diceRef} onRollDice={handleRollDice} />
 			{/* 도시 라인 */}
 			<section
+				className="absolute bottom-0 right-0 col-span-4 row-span-1 w-screen flex items-center justify-between bg-gradient-to-b from-yellow-300 via-orange-400 to-red-500 z-20"
+				style={{
+					minWidth: "870px",
+				}}
+			>
+				{renderLocations(locations.slice(0, 6))}
+			</section>
+			<section
 				className="absolute left-0 bottom-0 col-span-1 row-span-6 flex flex-col-reverse h-screen items-center justify-between bg-gradient-to-b from-green-300 via-yellow-200 to-yellow-300 z-30"
 				style={{
 					minHeight: "900px",
 				}}
 			>
-				{renderLocations(locations.slice(0, 6))}
+				{renderLocations(locations.slice(5, 11))}
 			</section>
 			<section
 				className="absolute top-0 left-0 col-span-4 row-span-1 flex w-screen items-center justify-between bg-gradient-to-l from-blue-400 via-green-400 to-green-200 z-40"
@@ -136,7 +144,7 @@ const Board = () => {
 					minWidth: "870px",
 				}}
 			>
-				{renderLocations(locations.slice(5, 11))}
+				{renderLocations(locations.slice(10, 16))}
 			</section>
 			<section
 				className="absolute right-0 top-0 col-span-1 row-span-5 flex flex-col items-center h-screen justify-between bg-gradient-to-t from-yellow-300 via-blue-300 to-blue-400 z-10"
@@ -144,16 +152,9 @@ const Board = () => {
 					minHeight: "900px",
 				}}
 			>
-				{renderLocations(locations.slice(10, 16))}
-			</section>
-			<section
-				className="absolute bottom-0 right-0 col-span-4 row-span-1 w-screen flex items-center justify-between bg-gradient-to-b from-yellow-300 via-orange-400 to-red-500 z-20"
-				style={{
-					minWidth: "870px",
-				}}
-			>
 				{renderLocations(locations.slice(15))}
 			</section>
+
 			{/* 모달 */}
 			<Modal isOpen={isOpen} setIsOpen={setIsOpen} />
 		</main>
