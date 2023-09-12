@@ -1,5 +1,5 @@
 import { useRecoilValue } from "recoil";
-import { isLoggedInState } from "../recoil/example"; // Assume you have a Recoil atom for isLoggedIn state
+import { isLoggedInState } from "../recoil/example";
 import { Link } from "react-router-dom";
 
 import PassportImage from "../assets/passportImage.png";

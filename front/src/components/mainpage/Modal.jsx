@@ -1,12 +1,12 @@
 import { useRecoilState } from "recoil";
-import { modalState } from "../../recoil/main"; // recoil.js에서 정의한 모달 상태를 가져옵니다.
+import { modalState } from "../../recoil/main";
 import { Link } from "react-router-dom";
 
 function Modal() {
-	const [isOpen, setIsOpen] = useRecoilState(modalState); // Recoil 상태와 상태를 업데이트하는 함수를 가져옵니다.
+	const [isOpen, setIsOpen] = useRecoilState(modalState);
 
 	const closeModal = () => {
-		setIsOpen(false); // 모달을 닫기 위해 Recoil 상태를 업데이트합니다.
+		setIsOpen(false);
 	};
 
 	return (
@@ -17,7 +17,6 @@ function Modal() {
 					style={{
 						backgroundColor: "rgba(0, 0, 0, 0.5)",
 						transition: "opacity 0.5s, transform 1s", // 트랜지션 설정
-						// 배경에 어둡게 처리
 					}}
 				>
 					<div className="bg-white w-3/4 h-3/4 p-10 max-w-3xl rounded-lg shadow-lg transform scale-100 transition-transform duration-500 flex overflow-hidden">

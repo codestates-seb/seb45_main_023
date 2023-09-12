@@ -1,6 +1,3 @@
-// 테일윈드는 동적으로 prop 값을 못 받는다네요... 여기서 그냥 가져다 쓰세여 색상별로 만들어 둘게요
-// SignUpButton, GoogleLogInButton의 컴포넌트명과 컴포넌트 크기 등... 약간 수정하였습니다.
-// ${color}
 export const Button = ({ text, color }) => {
   return (
     <button
@@ -105,7 +102,6 @@ export const SignUpButton = () => {
   );
 };
 
-// 테일윈드로는 테두리 그라데이션이 안 들어가서 트랜지션 넣는 게 어려줘졌는데 방법 아시는 분?
 export const GoogleLogInButton = () => {
   return (
     <button
