@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { useRecoilState } from "recoil";
 import City from "./City";
@@ -7,12 +8,11 @@ import Dice from "./dice/Dice";
 import Modal from "./Modal";
 import { diceValueState, modalState } from "../../recoil/main";
 
-const ANIMATION_INTERVAL = 1000; // 애니메이션 간격(ms)
-const OPEN_MODAL_DELAY = 2000; // 모달 열기 딜레이(ms)
+const ANIMATION_INTERVAL = 1000;
 
 const Board = () => {
 	const [isOpen, setIsOpen] = useRecoilState(modalState);
-	const [diceValue, setDiceValue] = useRecoilState(diceValueState); // diceValueState를 상태로 사용
+	const [diceValue, setDiceValue] = useRecoilState(diceValueState);
 
 	// 도시 컴포넌트 렌더링
 	const renderLocations = (locations) => {
