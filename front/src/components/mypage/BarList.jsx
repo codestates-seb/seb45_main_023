@@ -18,7 +18,7 @@ export default function BarList() {
         </span>
         <div className="flex w-full justify-between items-center bg-white rounded-3xl ml-[-1.2rem]">
           <span className="ml-[3rem]">미션내용 블라블라</span>
-          <Button text={'인증글 쓰러가기'} color={'green'} />
+          <Button text={'Mission Clear!'} color={'green'} />
         </div>
       </div>
       <div className="flex h-[4rem] rounded-3xl shadow-2xl">
@@ -27,7 +27,7 @@ export default function BarList() {
         </span>
         <span className="flex w-full justify-between items-center bg-white rounded-3xl ml-[-1.2rem]">
           <span className="ml-[3rem]">미션내용 블라블라</span>
-          <Button text={'인증글 쓰러가기'} color={'pink'} />
+          <Button text={'Mission Clear!'} color={'pink'} />
         </span>
       </div>
     </div>

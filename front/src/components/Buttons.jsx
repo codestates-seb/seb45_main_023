@@ -1,7 +1,7 @@
 // 테일윈드는 동적으로 prop 값을 못 받는다네요... 여기서 그냥 가져다 쓰세여 색상별로 만들어 둘게요
 // SignUpButton, GoogleLogInButton의 컴포넌트명과 컴포넌트 크기 등... 약간 수정하였습니다.
 // ${color}
-export const Button = ({ text,color }) => {
+export const Button = ({ text, color }) => {
   return (
     <button
       className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-${color}-300 bg-white text-black shadow-md font-semibold hover:bg-${color}-300 active:bg-${color}-500 active:border-${color}-500 active:text-white transition duration-300 ease-in-out`}
@@ -11,7 +11,22 @@ export const Button = ({ text,color }) => {
   );
 };
 
-export const CardButton = ({ text,color }) => {
+export const CardButton = ({ text }) => {
+  let color = '';
+  switch (text) {
+    case '맛집':
+      color = 'purple';
+      break;
+    case '놀거리':
+      color = 'green';
+      break;
+    case '숙소':
+      color = 'blue';
+      break;
+
+    default:
+      break;
+  }
   return (
     <button
       className={`inline-flex items-center justify-center gap-2 px-2 rounded-full mr-1 border-4 border-solid border-${color}-300 bg-white text-black shadow-md font-semibold hover:bg-${color}-300 active:bg-${color}-500 active:border-${color}-500 active:text-white transition duration-300 ease-in-out`}

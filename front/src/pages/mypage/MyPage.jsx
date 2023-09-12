@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { User, userInfo } from '../../recoil/mypage';
+import Follower from '../../components/mypage/Follower';
 
 export default function MyPage() {
   const [data, setData] = useRecoilState(User);
@@ -14,6 +15,7 @@ export default function MyPage() {
   const [nationality, setNationality] = useState(data.nationality);
   const [password, setPassword] = useState('');
   const [birth, setBirth] = useState(data.birth);
+  console.log(data);
   useEffect(() => {
     const getData = async () => {
       try {
@@ -50,6 +52,7 @@ export default function MyPage() {
         <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
         <div className="bg-white h-[0.5rem] w-[50rem] rounded-b-3xl shadow-xss">&nbsp;</div>
       </div>
+      <Follower/>
     </div>
   );
 }
