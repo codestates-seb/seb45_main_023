@@ -10,7 +10,7 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
-    url: jdbc:mysql://${AWS_RDS_Endpoint}/pre15DB?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://${AWS_RDS_Endpoint}/marbleusDb?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
     username: admin
     password: ${RDS_Mysql_password}
     driver-class-name: com.mysql.cj.jdbc.Driver
