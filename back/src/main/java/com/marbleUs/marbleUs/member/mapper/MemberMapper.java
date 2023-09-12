@@ -10,6 +10,7 @@ import com.marbleUs.marbleUs.common.tools.enums.UserLocations;
 import org.mapstruct.Mapper;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ public interface MemberMapper {
         member.setPassword(register.getPassword());
         member.setNationality(register.getNationality());
 
+
         return member;
     };
     default Member patchToMember(MemberDto.Patch patch){
@@ -46,7 +48,7 @@ public interface MemberMapper {
 
         UserLocations currentLocation = patch.getCurrentLocation();
         if (currentLocation != null) {
-            currentLocation.setCityCode(patch.getCurrentCityCode());
+            currentLocation.setCityName(patch.getCurrentCityCode());
             member.setCurrentLocation(currentLocation);
         }
         member.setNationality( patch.getNationality() );

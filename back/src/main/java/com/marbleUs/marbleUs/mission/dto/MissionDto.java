@@ -11,6 +11,7 @@ public class MissionDto {
     @Getter
     @Setter
     public static class MissionPostDto{
+        private int level;
         private String content;
         private Mission.MissionType missionType;
 

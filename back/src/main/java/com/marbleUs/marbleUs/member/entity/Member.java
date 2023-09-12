@@ -10,9 +10,12 @@ import com.marbleUs.marbleUs.common.tools.enums.Stamps;
 import com.marbleUs.marbleUs.common.tools.enums.UserLocations;
 import com.marbleUs.marbleUs.mission.entity.MemberMission;
 import lombok.*;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +42,9 @@ public class Member extends Auditable {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private Status memberStatus = Status.MEMBER_ACTIVE;
 
 
     //for Game play
@@ -158,11 +164,21 @@ public class Member extends Auditable {
         }
     }
 
+
+    private LocalDateTime lastLogin = LocalDateTime.now();
+
+    public void addMemberMissions(MemberMission memberMission) {
+
+            if (!memberMission.getMember().equals(this)) memberMission.setMember(this);
+            myMissions.add(memberMission);
+
+    }
+
     public enum Status{
 
         MEMBER_ACTIVE("member is active"),
 
-        MEMBER_DEACTIVATED("member is deactivated");
+        MEMBER_INACTIVE("member is deactivated");
 
         @Getter
         private String description;

@@ -45,10 +45,8 @@ public class MemberController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity postMember(@RequestBody MemberDto.Register register
-                                     ){
+    public ResponseEntity postMember(@RequestBody MemberDto.Register register){
 
-//
 
         Member memberToSave = service.create(mapper.memberRegisterToMember(register));
 

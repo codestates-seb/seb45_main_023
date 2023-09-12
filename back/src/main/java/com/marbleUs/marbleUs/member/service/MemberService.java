@@ -5,7 +5,9 @@ import com.marbleUs.marbleUs.blog.repository.BlogRepository;
 import com.marbleUs.marbleUs.common.auth.utils.CustomAuthorityUtils;
 import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
 import com.marbleUs.marbleUs.common.exception.ExceptionCode;
+import com.marbleUs.marbleUs.common.tools.calculator.Calculators;
 import com.marbleUs.marbleUs.common.tools.enums.UserLocations;
+import com.marbleUs.marbleUs.common.tools.verifier.MemberVerifier;
 import com.marbleUs.marbleUs.member.entity.Follow;
 import com.marbleUs.marbleUs.member.entity.Follower;
 import com.marbleUs.marbleUs.member.entity.Member;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -40,12 +43,14 @@ public class MemberService {
     private final FollowerRepository followerRepository;
     private final CustomAuthorityUtils authorityUtils;
     private final MemberNickNameGenerator nickNameGenerator;
+    private final MemberVerifier memberVerifier;
+    private final Calculators calculator;
 
     // (2) 생성자 DI용 파라미터 추가
 
 
     public Member create(Member member) {
-        verifyExistsEmail(member.getEmail());
+        memberVerifier.verifyExistsEmail(member.getEmail());
 
         // Password 암호화
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
@@ -79,7 +84,7 @@ public class MemberService {
 
         Optional.ofNullable(member.getCurrentLocation())
                 .ifPresent( location -> {
-                    memberLocationCalculator(findMember, location);
+                    calculator.memberLocationCalculator(findMember, location);
                 });
 
 
@@ -109,21 +114,10 @@ public class MemberService {
 
     public void deleteMember(Long memberId) {
         Member findMember = findVerifiedMember(memberId);
-
-
-        memberRepository.delete(findMember);
+        findMember.setMemberStatus(Member.Status.MEMBER_INACTIVE);
+        memberRepository.save(findMember);
     }
 
-
-    //Utils
-
-    private void verifyExistsEmail(String email) {
-
-        Optional<Member> member = memberRepository.findByEmail(email);
-        if (member.isPresent())
-            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
-
-        }
 
     @Transactional(readOnly = true)
     public Member findVerifiedMember(Long id) {
@@ -136,26 +130,13 @@ public class MemberService {
     }
 
     public Member findMemberByEmail(String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = memberRepository.findByEmail(email).orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         return member;
     }
 
-    private static void memberLocationCalculator(Member findMember, UserLocations location) {
-        if (findMember.getCurrentLocation() != location && findMember.getCurrentLocation().getNum()>= location.getNum()){
-            memberLevelup(findMember);
-            findMember.setCurrentLocation(location);
-            findMember.addLocation(location);
-        }
-    }
-
-    private static void memberLevelup(Member findMember) {
-        int currentLevel = findMember.getLevel() +1;
-        findMember.setLevel(currentLevel);
-    }
-
-
     public void saveFollowing(Member findMember, Member followedMember) {
 
+        if(memberVerifier.verifyIsMemberActive(followedMember)){
 
         Follow follow = new Follow();
         follow.setMember(findMember);
@@ -169,7 +150,8 @@ public class MemberService {
         follower.setFollower(findMember);
         followerRepository.save(follower);
         followedMember.addFollower(follower);
-        saveMember(followedMember);
+        saveMember(followedMember);}
+        else throw new BusinessLogicException(ExceptionCode.MEMBER_INACTIVE);
     }
 
     public void unfollowMember(Member findMember, Member followedMember) {
@@ -186,11 +168,15 @@ public class MemberService {
     }
 
     public Page<Member> findFollows(Member findMember,int page,int size) {
+
+
+
         List<Member> follows = findMember.getFollows().stream().map(
                 follow-> {
                     Member followedMember = follow.getFollowedMember();
-                return followedMember;
-                }).collect(Collectors.toList());
+                    if (memberVerifier.verifyIsMemberActive(followedMember)) {return followedMember;
+                    }else return null;
+                }).filter(Objects::nonNull).collect(Collectors.toList());
         PageRequest pageRequest = PageRequest.of(page-1, size, Sort.by("createdAt").descending());
 
         return new PageImpl<>(follows,pageRequest,follows.size());
@@ -200,8 +186,9 @@ public class MemberService {
         List<Member> followers = findMember.getFollowers().stream().map(
                 follower-> {
                     Member findFollower = follower.getFollower();
-                    return findFollower;
-                }).collect(Collectors.toList());
+                    if (memberVerifier.verifyIsMemberActive(findFollower)) {return findFollower;}
+                    else return null;
+                }).filter(Objects::nonNull).collect(Collectors.toList());
         PageRequest pageRequest = PageRequest.of(page-1, size, Sort.by("createdAt").descending());
 
         return new PageImpl<>(followers,pageRequest,followers.size());
