@@ -4,7 +4,7 @@ import lombok.Getter;
 
 public enum ExceptionCode {
     MISSION_EXISTS(404, "Mission not found"),
-    MISSION_NOT_FOUND(404, "Member exists"),
+    MISSION_NOT_FOUND(409, "Mission exists"),
     MEMBER_NOT_FOUND(404, "Member not found"),
     MEMBER_INACTIVE(404,"Member is inactive"),
     CITY_NOT_FOUND(404, "City not found"),
