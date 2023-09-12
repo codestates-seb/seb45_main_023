@@ -27,14 +27,14 @@ public enum UserLocations {
     BLOCK_S(19, "");
 
     @Getter
-    private int num;
+    private final int num;
 
     @Getter
     @Setter
-    private String cityCode;
+    private String cityName;
 
-    UserLocations(int num, String cityCode) {
+    UserLocations(int num, String cityName) {
         this.num = num;
-        this.cityCode = cityCode;
+        this.cityName = cityName;
     }
 }

@@ -2,6 +2,7 @@ package com.marbleUs.marbleUs.common.tools.counter;
 
 import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.common.redis.service.RedisServiceUtil;
+import com.marbleUs.marbleUs.common.redis.tools.ClientIpInterceptor;
 import com.marbleUs.marbleUs.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,47 +14,18 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.mysql.cj.conf.PropertyKey.logger;
 
 @RequiredArgsConstructor
 @Component
 @Slf4j
 public class ViewCounter {
     private final RedisServiceUtil redisServiceUtil;
+    private final ClientIpInterceptor interceptor;
 
-
-    public String getClientIP(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
-        log.info("> X-FORWARDED-FOR : " + ip);
-
-        if (ip == null) {
-            ip = request.getHeader("Proxy-Client-IP");
-            log.info("> Proxy-Client-IP : " + ip);
-        }
-        if (ip == null) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-            log.info(">  WL-Proxy-Client-IP : " + ip);
-        }
-        if (ip == null) {
-            ip = request.getHeader("HTTP_CLIENT_IP");
-            log.info("> HTTP_CLIENT_IP : " + ip);
-        }
-        if (ip == null) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-            log.info("> HTTP_X_FORWARDED_FOR : " + ip);
-        }
-        if (ip == null) {
-            ip = request.getRemoteAddr();
-            log.info("> getRemoteAddr : "+ip);
-        }
-        log.info("> Result : IP Address : "+ip);
-
-        return ip;
-    }
 
     public void verifyIsViewed(HttpServletRequest request, Blog blog) {
 
-        String ip = getClientIP(request);
+        String ip = interceptor.getClientIP(request);
 
         String viewCount = redisServiceUtil.getData(ip);
         if (viewCount == null) {
