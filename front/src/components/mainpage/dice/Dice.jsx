@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, forwardRef } from "react";
 import { useRecoilState } from "recoil";
-import "./Dice.css";
 import { diceValueState } from "../../../recoil/main";
+import "./Dice.css";
 
 const DICE_SIDES = {
 	FRONT: "1",
@@ -36,7 +36,7 @@ function Side({ direction, isVisible }) {
 
 	return (
 		<div
-			className={`side ${direction} visible`}
+			className={`side ${direction} ${isVisible ? "visible" : ""}`}
 			style={{ transform: transformStyle }}
 		>
 			{direction}
@@ -44,10 +44,11 @@ function Side({ direction, isVisible }) {
 	);
 }
 
-function Dice({ onRollDice }) {
-	const [diceValue, setDiceValue] = useRecoilState(diceValueState); // diceValueState를 상태로 사용
+const Dice = forwardRef(({ onRollDice }, ref) => {
+	const [diceValue, setDiceValue] = useRecoilState(diceValueState);
 	const [visibleSide, setVisibleSide] = useState(DICE_SIDES.FRONT);
 	const [diceAnimationClass, setDiceAnimationClass] = useState("dice");
+	const diceRef = useRef();
 
 	useEffect(() => {
 		if (diceValue !== undefined) {
@@ -66,17 +67,21 @@ function Dice({ onRollDice }) {
 
 	const rollDiceHandler = async () => {
 		const newValue = Math.floor(Math.random() * 6) + 1;
-		setDiceValue(newValue); // 주사위 값을 업데이트
-		return newValue; // 주사위 값 반환
+		setDiceValue(newValue);
+		return newValue;
 	};
+
+	useEffect(() => {
+		if (ref) {
+			ref.current = diceRef.current;
+		}
+	}, [ref]);
 
 	return (
 		<div
 			className={`dice absolute top-1/2 left-1/2 z-100 cursor-pointer ${diceAnimationClass}`}
 			onClick={async () => {
 				const newValue = await rollDiceHandler();
-				// 주사위 값을 부모 컴포넌트로 전달
-				// 아래와 같이 주사위 값 변경 이벤트를 부모 컴포넌트에서 처리하도록 콜백 함수를 호출
 				onRollDice(newValue);
 			}}
 		>
@@ -106,6 +111,6 @@ function Dice({ onRollDice }) {
 			/>
 		</div>
 	);
-}
+});
 
 export default Dice;
