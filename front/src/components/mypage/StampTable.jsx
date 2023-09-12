@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { RouteConst } from '../../interface/RouteConst';
 
 export default function StampTable({ topData, bottomData }) {
   return (
@@ -15,7 +16,9 @@ export default function StampTable({ topData, bottomData }) {
                   </td>
                 ) : (
                   <td key={item.id} className="border border-black p-2 w-[10rem] h-[10rem]">
-                    <div className="flex justify-center items-center w-[9rem] h-[8rem]">인증글 쓰러가기</div>
+                    <Link to={RouteConst.blog_list}>
+                      <div className="flex justify-center items-center w-[9rem] h-[8rem]">인증글 쓰러가기</div>
+                    </Link>
                     <span className="flex justify-center border-t border-black">{item.city}</span>
                   </td>
                 );
@@ -31,7 +34,9 @@ export default function StampTable({ topData, bottomData }) {
                   </td>
                 ) : (
                   <td key={item.id} className="border border-black p-2 w-[10rem] h-[10rem]">
-                    <div className="flex justify-center items-center w-[9rem] h-[8rem]">인증글 쓰러가기</div>
+                    <Link to={RouteConst.blog_list}>
+                      <div className="flex justify-center items-center w-[9rem] h-[8rem]">인증글 쓰러가기</div>
+                    </Link>
                     <span className="flex justify-center border-t border-black">{item.city}</span>
                   </td>
                 );
@@ -49,7 +54,9 @@ export default function StampTable({ topData, bottomData }) {
                   </td>
                 ) : (
                   <td key={item.id} className="border border-black p-2 w-[10rem] h-[10rem]">
-                    <div className="flex justify-center items-center w-[9rem] h-[8rem]">인증글 쓰러가기</div>
+                    <Link to={RouteConst.blog_list}>
+                      <div className="flex justify-center items-center w-[9rem] h-[8rem]">인증글 쓰러가기</div>
+                    </Link>
                     <span className="flex justify-center border-t border-black">{item.city}</span>
                   </td>
                 );
@@ -65,7 +72,9 @@ export default function StampTable({ topData, bottomData }) {
                   </td>
                 ) : (
                   <td key={item.id} className="border border-black p-2 w-[10rem] h-[10rem]">
-                    <div className="flex justify-center items-center w-[9rem] h-[8rem]">인증글 쓰러가기</div>
+                    <Link to={RouteConst.blog_list}>
+                      <div className="flex justify-center items-center w-[9rem] h-[8rem]">인증글 쓰러가기</div>
+                    </Link>
                     <span className="flex justify-center border-t border-black">{item.city}</span>
                   </td>
                 );
