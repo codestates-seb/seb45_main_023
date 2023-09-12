@@ -28,6 +28,7 @@ public interface BlogMapper {
         blogResponseDto.setTitle( blog.getTitle() );
         blogResponseDto.setBody( blog.getBody() );
         blogResponseDto.setView(blog.getViews());
+        blogResponseDto.setCityName(blog.getCity().getName());
         List<ImageResponseDto> images = blog.getImages().stream().map(image -> {
             ImageResponseDto response = new ImageResponseDto();
             response.setName(image.getName());
