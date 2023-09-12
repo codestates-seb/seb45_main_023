@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { Blogs, Comments, User } from '../../recoil/mypage';
+import Follower from '../../components/mypage/Follower';
 
 export default function MyBlog() {
   const data = useRecoilValue(User);
@@ -54,6 +55,7 @@ export default function MyBlog() {
         <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
         <div className="bg-white h-[0.5rem] w-[50rem] rounded-b-[2rem]"></div>
       </div>
+      <Follower/>
     </div>
   );
 }
