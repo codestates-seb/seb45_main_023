@@ -1,5 +1,4 @@
 import PostLink from "../../components/blog/post_link";
-import data from '../../dummy/dummy';
 import React, { useState, useEffect } from "react";
 import Tag from '../../components/blog/tag';
 import BlogHeader from "../../components/blog/blogtitle";
@@ -7,12 +6,15 @@ import { NegativeButton } from "../../components/Buttons";
 import axios from 'axios';
 import { useRecoilState } from "recoil";
 import { BlogList } from "../../recoil/blog";
+import { bookmarkedPostsState } from "../../recoil/blog";
+import { useParams } from "react-router-dom";
 
 export default function Bloglist() {
   const [selectedTag, setSelectedTag] = useState([]); // 태그
   const [filteredPosts, setFilteredPosts] = useState([]);
-  // const [locationName, setLocationName] = useState('Jeju'); // 지역 이름 : 서버 연결 시 초기값 '' 지정하기
   const [posts, setPosts] = useRecoilState(BlogList);
+  const [bookmarkedPosts, setBookmarkedPosts] = useRecoilState(bookmarkedPostsState);
+  const city_id = useParams().cityId;
 
   const availableTag = ['인기글', '음식', '숙소', '교통', '쇼핑', '관광지', '액티비티'];
 
@@ -25,25 +27,43 @@ export default function Bloglist() {
   };
 
   useEffect(() => {
-      // 게시물 목록 get
-      axios.get('blogs/{blog_id}')
-        .then(response => {
-          setPosts(response.data);
-        })
-        .catch(error => {
-          console.error('Error fetching posts:', error);
-        });
-  }, [setPosts]); 
+    // 게시물 목록 get
+    const getData = async () => {
+      try {
+        const response = await axios.get(
+          `https://9129-116-126-166-12.ngrok-free.app/blogs/cities/${city_id}?page=1&size=10`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': '69420',
+            },
+          }
+        );
+        setPosts(response.data.data);
+      } catch (error) {
+        console.error("게시물 불러오기 실패 : ", error);
+      }
+    };
+
+    getData();
+  }, [city_id, setPosts]);
 
   useEffect(() => {
     // 태그 filter
-    const filtered = data.filter((datas) =>
-      selectedTag.every((tag) => datas.blog.info.tags.includes(tag))
+    const filtered = posts.filter((post) =>
+      selectedTag.every((tag) => post.tags.includes(tag))
     );
     setFilteredPosts(filtered);
   }, [selectedTag]);
 
-  // console.log({selectedTag.join(', ')})
+  const handleBookmarkToggle = (blog_id) => {
+    if (bookmarkedPosts.includes(blog_id)) {
+      setBookmarkedPosts(bookmarkedPosts.filter(id => id !== blog_id));
+    } else {
+      setBookmarkedPosts([...bookmarkedPosts, blog_id]);
+    }
+  }
+
 
   return (
     <div className="relative">
@@ -68,26 +88,22 @@ export default function Bloglist() {
           </div>
         </div>
       </div>
-        {(selectedTag.length === 0 ? data : filteredPosts).map((datas, idx) => (
-          <div key={idx} className="w-600 h-300 opacity-1 p-4 border border-DDE7EC rounded-lg shadow-lg m-10">
-              <PostLink 
-                title={datas.blog.info.title}
-                body={datas.blog.info.body}
-                profile_pic={datas.blog.info.profile_pic}
-                member_id={datas.blog.info.member_id}
-                // comments,
-                city_id={datas.blog.info.city_id}
-                created_at={datas.blog.info.created_at}
-                modified_at={datas.blog.info.modified_at}
-                tags={datas.blog.info.tags}
-              />
-            </div>
-        ))}
-              {posts.map((post) => (
-        <div key={post.id} className="w-600 h-300 opacity-1 p-4 border border-DDE7EC rounded-lg shadow-lg m-10">
-          <PostLink />
+        {(selectedTag.length === 0 ? posts : filteredPosts).map((post, index) => (
+          <div key={index} className="w-600 h-300 opacity-1 p-4 border border-DDE7EC rounded-lg shadow-lg m-10">
+          <PostLink 
+            title={post.title}
+            body={post.body}
+            profile_pic={post.profile_pic}
+            member_id={post.member_id}
+            city_id={post.city_id}
+            created_at={post.created_at}
+            modified_at={post.modified_at}
+            tags={post.tags}/>
+            <button onClick={() => handleBookmarkToggle(post.blog_id)}>
+              {bookmarkedPosts.includes(post.blog_id) ? 'Unbookmark' : 'Bookmark'}
+            </button>
         </div>
-      ))}
+        ))}
       </div>
     </div>
   );

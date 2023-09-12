@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 export default function PostDetail({
   title,
@@ -8,15 +9,16 @@ export default function PostDetail({
   member_id,
   // comments,
   // city_id,
-  // tags,
+  tags,
   created_at,
   modified_at,
-  blog_id
 }) {
-
+  
+  const [blogData, setBlogData] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const blog_id = useParams().blogId;
 
   useEffect(() => {
     // 서버에서 댓글 목록을 가져오는 함수
@@ -40,6 +42,30 @@ export default function PostDetail({
 
     fetchComments();
   }, [blog_id]); // blog_id가 변경될 때마다 실행
+
+  useEffect(() => {
+    // 서버에서 특정 게시물 가져오기
+    const fetchBlogPost = async () => {
+      try {
+        const response = await axios.get(`https://9129-116-126-166-12.ngrok-free.app/blogs/${blog_id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+          },
+        });
+        setBlogData(response.data);
+      } catch (error) {
+        console.error('Error fetching blog post data:', error);
+      }
+    };
+
+    fetchBlogPost();
+  }, [blog_id]);
+
+  if (!blogData) {
+    return <div>Loading...</div>;
+  }
+
 
   const handleCommentSubmit = async () => {
     try {
@@ -82,12 +108,33 @@ export default function PostDetail({
     }
   };
 
+  const handlePostDelete = async () => {
+    try {
+      const response = await axios.delete(`https://9129-116-126-166-12.ngrok-free.app/blogs/${blog_id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+
+      if (response.status === 200) {
+        alert('게시물이 성공적으로 삭제되었습니다.');
+        console.log('게시물이 성공적으로 삭제되었습니다.');
+      } else {
+        console.error('게시물 삭제 실패');
+      }
+    } catch (error) {
+      console.error('게시물 삭제 실패:', error);
+    }
+  };
+
+
   return (
     <div 
       className='PostContainer'
     >
       <div className='TitleSection pb-3'>
-        <h2 className='post_title text-2xl font-bold'>{title}</h2>
+        <h2 className='post_title text-2xl font-bold'>{blogData.title}</h2>
       </div>
       <div className='UserSection flex justify-between items-center pb-3'>
         <div className='user_createdat flex items-center'>
@@ -100,8 +147,22 @@ export default function PostDetail({
       </div>
 
       <div className='ContentSection border border-[#0387FA] rounded-lg h-[500px]'>
-        {body}
+        {blogData.body}
       </div>
+
+      <div className='inline-block mt-4'>
+        {blogData.tags.map((tag, index) => (
+          <span 
+          key={index} 
+          className='bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-blue-700 mr-2 mb-2'>
+          {tag}
+          </span>
+        ))}
+      </div>
+
+      <button onClick={handlePostDelete} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 float-right mt-2">
+        삭제하기
+      </button>
 
       <div className="comment_form mt-4">
         <h4 className="comment_form_heading text-lg font-semibold mb-2">댓글</h4>

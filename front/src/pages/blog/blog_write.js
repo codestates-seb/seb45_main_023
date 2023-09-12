@@ -3,7 +3,7 @@ import Tag from '../../components/blog/tag';
 import BlogHeader from "../../components/blog/blogtitle";
 import { NegativeButton } from "../../components/Buttons";
 import axios from 'axios';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 // Toast 에디터
 import { Editor } from '@toast-ui/react-editor';
@@ -11,7 +11,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 
 
 export default function BlogWrite() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const {cityId, member_id} = useParams();
   const editorRef = useRef();
   const MarkDownClick = () => {
@@ -56,6 +56,7 @@ export default function BlogWrite() {
       console.log('title : ' + blogTitle);
       console.log('content : ' + blogContent);
       console.log(selectedTag);
+      navigate(`/blogdetail/${response.data.id}`);
     } catch (error) {
       console.error('게시물 글쓰기 실패:', error);
     }
