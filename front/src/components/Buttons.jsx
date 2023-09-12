@@ -31,6 +31,16 @@ export const Button = ({ text,color }) => {
   );
 };
 
+export const CardButton = ({ text,color }) => {
+  return (
+    <button
+      className={`inline-flex items-center justify-center gap-2 pl-3 pr-3 rounded-full mr-1 border-4 border-solid border-${color}-300 bg-white text-black shadow-md font-semibold hover:bg-${color}-300 active:bg-${color}-500 active:border-${color}-500 active:text-white transition duration-300 ease-in-out`}
+    >
+      {text}
+    </button>
+  );
+};
+
 export const GreenButton = ({ text }) => {
   return (
     <button
