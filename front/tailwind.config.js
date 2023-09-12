@@ -138,6 +138,10 @@ module.exports = {
 			},
 			boxShadow: {
 				xss: "2px 2px 10px -3px rgba(0, 0, 0, 0.3)",
+				blogList:"8px 8px 12px -3px rgba(0, 0, 0, 0.3)",
+				pageCenter:"0px -5px 10px -4px rgba(0, 0, 0, 0.3)",
+				cardList:"2px 2px 10px 2px rgba(0, 0, 0, 0.2)",
+				bottomlesspage:"0px 5px 10px -4px rgba(0, 0, 0, 0.5)"
 			},
 			flexGrow: {
 				2: "2",

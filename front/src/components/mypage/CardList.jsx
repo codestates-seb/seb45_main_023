@@ -1,17 +1,24 @@
-import data from '../../pages/mypage/bookmark.json'
+import { useRecoilValue } from 'recoil';
+import { CardButton } from '../Buttons';
+import { bookmarkInfo } from '../../recoil/mypage';
 
-export default function CardList({start,end}) {
+export default function CardList({ start, end }) {
+  const data = useRecoilValue(bookmarkInfo)
   return (
-    <div className="flex flex-col w-[42.5rem] h-[25rem] justify-around bg-white">
+    <div className="flex flex-col w-[42.5rem] h-[25rem] justify-around bg-white ">
       <div className="flex flex-col h-[20rem]">
         <div className="flex flex-row flex-wrap pt-2 h-[20rem] justify-between space-y-between bg-white">
-          {data.data.slice(start, end).map((item) => {
+          {data?.slice(start, end).map((item) => {
             return (
-              <div className="flex flex-col justify-between w-[13rem] h-[8rem]">
-                <div key={item.id}>{item.city}</div>
+              <div className="flex flex-col justify-between w-[13rem] h-[8rem] shadow-cardList p-2">
+                <div key={item.id} className="flex justify-between">
+                  <div className='font-bold'>경기</div>
+                  <div className='mr-2'>x</div>
+                </div>
                 <div key={item.id}>
-                  {item.tags.map((item) => {
-                    return <span>{item}</span>;
+                  {item.tags?.map((item) => {
+                    return <CardButton text={item} color={'green'}/>;
+                    //enum 값으로 처리 or 함수로 작성해서 처리
                   })}
                 </div>
                 <div key={item.id}>{item.title}</div>
@@ -20,7 +27,6 @@ export default function CardList({start,end}) {
           })}
         </div>
       </div>
-      <div>페이지네이션 구역</div>
     </div>
   );
 }
