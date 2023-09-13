@@ -59,6 +59,13 @@ public class MissionController {
 
     }
 
+    @GetMapping("/{member-id}/{city-id}")
+    public ResponseEntity getMemberMissionsForCity(@Positive @PathVariable("city-id") Long cityId,
+                                              @Positive @PathVariable("member-id") Long memberId) {
+        List<MemberMission> memberMissions = service.findMemberMissionsInCity(cityId,memberId);
+        return new ResponseEntity<>(mapper.memberMissionsToResponses(memberMissions), HttpStatus.OK);
+    }
+
     @GetMapping("/{member-id}/{city-id}/stamps")
     public ResponseEntity getStamps(@Positive @PathVariable("city-id") Long cityId,
                                     @Positive @PathVariable("member-id") Long memberId){
