@@ -90,9 +90,9 @@ public class MissionService {
 
 
         /*
-        * Notice: create Level1Mission if the member instance's myMission List is empty
-        * and there is no memberMission mapped with the member and city with level 1 mission.
-        */
+         * Notice: create Level1Mission if the member instance's myMission List is empty
+         * and there is no memberMission mapped with the member and city with level 1 mission.
+         */
 
         if (member.getMyMissions().isEmpty() || memberMissionRepository.findByMemberAndLevelAndCity(member, 1, city) == null) {
             List<Mission> level1CommonMissions = repository.findAllByLevelAndType(1, Mission.MissionType.COMMON);
@@ -122,13 +122,13 @@ public class MissionService {
 
                 //Notice: iterates to check if each mission in each level is made
 
-                if (memberMission.getMission().getLevel() == 1 ){
+                if (memberMission.getMission().getLevel() == 1) {
                     isMission1alreadyMade = true;
-                } else if (memberMission.getMission().getLevel() == 2 ){
+                } else if (memberMission.getMission().getLevel() == 2) {
                     isMission2alreadyMade = true;
-                } else if (memberMission.getMission().getLevel() == 3 ){
+                } else if (memberMission.getMission().getLevel() == 3) {
                     isMission3alreadyMade = true;
-                }else if (memberMission.getMission().getLevel() == 4 ){
+                } else if (memberMission.getMission().getLevel() == 4) {
                     isMission4alreadyMade = true;
                 }
 
@@ -149,7 +149,7 @@ public class MissionService {
     }
 
     public MemberMission completeMission(Long id) {
-        MemberMission mission = memberMissionRepository.findById(id).orElseThrow(()->new BusinessLogicException(ExceptionCode.MISSION_NOT_FOUND));
+        MemberMission mission = memberMissionRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MISSION_NOT_FOUND));
         mission.setComplete(true);
         memberMissionRepository.save(mission);
         return mission;
@@ -165,7 +165,17 @@ public class MissionService {
 
         PageRequest pageRequest = PageRequest.of(1, 3, Sort.by("createdAt").descending());
 
-        return new PageImpl<>(memberMissions,pageRequest,memberMissions.size());
+        return new PageImpl<>(memberMissions, pageRequest, memberMissions.size());
+    }
+
+    public List<MemberMission> findMemberMissionsInCity(Long cityId, Long memberId) {
+
+        Member member = memberService.findVerifiedMember(memberId);
+        City city = cityRepository.findById(cityId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.CITY_NOT_FOUND));
+
+        List<MemberMission> memberMissions = member.getMyMissions().stream().filter(memberMission -> memberMission.getCity().equals(city)).sorted(Comparator.comparing(MemberMission::getCreatedAt))
+                .collect(Collectors.toList());
+        return memberMissions;
     }
 
 
@@ -185,7 +195,7 @@ public class MissionService {
         boolean lvl3Complete = false;
         boolean lvl4Complete = false;
 
-        for(MemberMission memberMission: myMissions) {
+        for (MemberMission memberMission : myMissions) {
             if (memberMission.getMission().getLevel() == 1) {
                 lvl1Complete = true;
             } else if (memberMission.getMission().getLevel() == 2) {
@@ -197,7 +207,7 @@ public class MissionService {
             }
         }
 
-        for(MemberMission memberMission: myMissions){
+        for (MemberMission memberMission : myMissions) {
             if (memberMission.getMission().getLevel() == 4 && lvl1Complete && lvl2Complete && lvl3Complete && lvl4Complete) {
                 Stamps findStamp = Stamps.find(memberMission.getCity().getName(), 4);
                 myStamps.add(findStamp);
@@ -213,14 +223,12 @@ public class MissionService {
             }
         }
 
-        if (myStamps.isEmpty())throw new BusinessLogicException(ExceptionCode.MISSION_NOT_COMPLETE);
-        return myStamps ;
+        if (myStamps.isEmpty()) throw new BusinessLogicException(ExceptionCode.MISSION_NOT_COMPLETE);
+        return myStamps;
     }
 
 
-
     //Utils
-
 
 
     private MemberMission MemberMissionAssigner(Random random, Member member, City city, boolean missionLevel1Complete, boolean isMission1alreadyMade, boolean missionLevel2Complete, boolean isMission2alreadyMade, boolean missionLevel3Complete, boolean isMission3alreadyMade, boolean isMission4alreadyMade) {
@@ -273,6 +281,7 @@ public class MissionService {
 
         memberService.saveMember(member);
     }
-
-
 }
+
+
+

@@ -49,6 +49,7 @@ public class MissionController {
     @PatchMapping("/mission-complete/{member-mission-id}")
     public ResponseEntity setCompleteMission(@Positive @PathVariable("member-mission-id") Long id) {
         MemberMission memberMission = service.completeMission(id);
+
         return new ResponseEntity<>(mapper.memberMissionToResponse(memberMission), HttpStatus.CREATED);
     }
 
@@ -57,6 +58,13 @@ public class MissionController {
         Page<MemberMission> memberMission = service.findMemberMissions(memberId);
         return new ResponseEntity<>(mapper.memberMissionsToResponses(memberMission.getContent()), HttpStatus.OK);
 
+    }
+
+    @GetMapping("/{member-id}/{city-id}")
+    public ResponseEntity getMemberMissionsForCity(@Positive @PathVariable("city-id") Long cityId,
+                                              @Positive @PathVariable("member-id") Long memberId) {
+        List<MemberMission> memberMissions = service.findMemberMissionsInCity(cityId,memberId);
+        return new ResponseEntity<>(mapper.memberMissionsToResponses(memberMissions), HttpStatus.OK);
     }
 
     @GetMapping("/{member-id}/{city-id}/stamps")
