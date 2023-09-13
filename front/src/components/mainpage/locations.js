@@ -19,8 +19,8 @@ export const locations = [
 	{ name: "전북", ENG: "JNB", direction: "V", cityId: "17" },
 	{ name: "강원", ENG: "GWN", direction: "V", cityId: "18" },
 	{ name: "경기", ENG: "GNG", direction: "V", cityId: "19" },
-	{ name: "시작", ENG: "STR", direction: "S" },
 ];
+
 
 export const moveOrder = [
 	[5, 5],
