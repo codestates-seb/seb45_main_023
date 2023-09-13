@@ -8,10 +8,13 @@ import com.marbleUs.marbleUs.weather.entity.Weather;
 import com.marbleUs.marbleUs.weather.repository.WeatherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class WeatherService {
 
@@ -34,10 +37,12 @@ public class WeatherService {
         return weatherRepository.save(findWeather);
     }
 
+    @Transactional(readOnly = true)
     public Weather findWeatherByCity(Long cityId) {
         return weatherRepository.findByCityId(cityId);
     }
 
+    @Transactional(readOnly = true)
     public Weather findWeatherByCityName(String cityName) {
         return weatherRepository.findByCityName(cityName);
     }
@@ -46,6 +51,7 @@ public class WeatherService {
         weatherRepository.deleteAll();
     }
 
+    @Transactional(readOnly = true)
     public Weather findVerifiedWeather(Long weatherId) {
         return weatherRepository.findById(weatherId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.WEATHER_NOT_FOUND));
