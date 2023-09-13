@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import Editor from './editor';
+
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 
 export default function PostDetail({
   title,
@@ -13,8 +18,8 @@ export default function PostDetail({
   createdAt,
   modifiedAt,
 }) {
-  
-  const [blogData, setBlogData] = useState(null);
+
+  const [blogData, setBlogData] = useState('');
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -156,12 +161,12 @@ export default function PostDetail({
       );
   
       if (response.status === 200) {
-        setIsEditing(false);
         setBlogData({
           ...blogData,
           title: editedTitle,
           body: editedBody,
         });
+        setIsEditing(false);
       } else {
         console.error('게시물 수정 실패');
       }
@@ -174,19 +179,26 @@ export default function PostDetail({
 
   return (
     <div className='PostContainer'>
-          {isEditing ? (
+      {isEditing ? (
       <div>
         <input
           type="text"
           value={editedTitle}
           onChange={(e) => setEditedTitle(e.target.value)}
         />
-        <textarea
-          value={editedBody}
-          onChange={(e) => setEditedBody(e.target.value)}
-        ></textarea>
-        <button onClick={handleSaveEdit}>저장</button>
-        <button onClick={() => setIsEditing(false)}>취소</button>
+          <CKEditor
+            editor={ClassicEditor}
+            data={editedBody}
+            onReady={(editor) => {
+              
+            }}
+            onChange={(event, editor) => {
+              const data = editor.getData();
+              setEditedBody(data);
+            }}
+          />
+          <button onClick={handleSaveEdit}>저장</button>
+          <button onClick={() => setIsEditing(false)}>취소</button>
       </div>
     ) : (
       <>
@@ -264,7 +276,5 @@ export default function PostDetail({
       </div>
 
     </div>
-
-    
   )
 }

@@ -5,19 +5,11 @@ import { NegativeButton } from "../../components/Buttons";
 import axios from 'axios';
 import { useParams, useNavigate } from "react-router-dom";
 
-// Toast 에디터
-import { Editor } from '@toast-ui/react-editor';
-import '@toast-ui/editor/dist/toastui-editor.css';
-
+import Editor from '../../components/blog/editor';
 
 export default function BlogWrite() {
   const navigate = useNavigate();
   const {cityId, member_id} = useParams();
-  const editorRef = useRef();
-  const MarkDownClick = () => {
-    setBlogContent(editorRef.current.getInstance().getMarkdown())
-  }
-  const blog_id = 1;
 
   const [selectedTag, setSelectedTag] = useState([]); // 태그
 
@@ -35,7 +27,6 @@ export default function BlogWrite() {
   };
 
   const handleSave = async () => {
-    MarkDownClick()
     const postData = {
       title: blogTitle,
       body: blogContent,
@@ -59,7 +50,6 @@ export default function BlogWrite() {
     } catch (error) {
       console.error('게시물 글쓰기 실패:', error);
     }
-    // navigate(`/blogdetail`);
   }
 
   return (
@@ -84,59 +74,7 @@ export default function BlogWrite() {
             Content
           </h1>
           <div>
-            <Editor
-              initialValue="이미지와 내용을 작성해주세요."
-              ref={editorRef}
-              previewStyle="vertical" // 미리보기 스타일 지정
-              height="300px" // 에디터 창 높이
-              initialEditType="markdown" // 초기 입력모드 설정(디폴트 markdown)
-              hideModeSwitch={true}
-              toolbarItems={[
-                // 툴바 옵션 설정
-                ['heading', 'bold', 'italic', 'strike'],
-                ['hr', 'quote'],
-                ['ul', 'ol', 'task', 'indent', 'outdent'],
-                ['table', 'image', 'link'],
-                ['code', 'codeblock']
-              ]}
-              hooks={{
-                addImageBlobHook: async (blob, callback) => {
-                  try { // 에디터에 업로드한 이미지를 formData 객체에 저장
-                    const formData = new FormData();
-                    formData.append("image", blob);
-
-                    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/blogs/${blog_id}/upload-images`, {
-                      method: 'POST',
-                      headers: {
-                        'ngrok-skip-browser-warning': '69420'
-                      },
-                      body: formData,
-                    })
-
-                    const filename = await response.json();
-                    console.log('서버에 저장된 파일명 : ' , filename);
-                    console.log(blob);
-                    console.log(filename);
-
-                    const getResponse = await fetch(`${process.env.REACT_APP_SERVER_URL}/blogs/print-image?name=${filename.name}`, {
-                      method: 'GET',
-                      headers: {
-                        'ngrok-skip-browser-warning': '69420'
-                      }
-                    });
-
-                    const imageUrl = await getResponse.json();
-                    callback(imageUrl.path, 'image alt attribute');
-
-                  } catch (error) {
-                    console.error('업로드 실패 : ', error);
-                  }
-                }
-              }}
-              useCommandShortcut={true} // 키보드 입력 컨트롤 방지
-              value={blogContent}
-              onChange={MarkDownClick}
-            ></Editor>
+            <Editor body={blogContent} setBody={setBlogContent}/>
           </div>
 
           <h1 className="text-xl font-bold pt-10">
