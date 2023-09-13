@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import Tag from '../../components/blog/tag';
+import Tag from "../../components/blog/tag";
 import BlogHeader from "../../components/blog/blogtitle";
 import { NegativeButton } from "../../components/Buttons";
-import axios from 'axios';
+import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
 import Editor from '../../components/blog/editor';
@@ -13,19 +13,28 @@ export default function BlogWrite() {
 
   const [selectedTag, setSelectedTag] = useState([]); // 태그
 
-  const availableTag = ['인기글', '음식', '숙소', '교통', '쇼핑', '관광지', '액티비티'];
 
-  const [blogTitle, setBlogTitle] = useState('');
-  const [blogContent, setBlogContent] = useState('');
+	const availableTag = [
+		"인기글",
+		"음식",
+		"숙소",
+		"교통",
+		"쇼핑",
+		"관광지",
+		"액티비티",
+	];
 
-  const toggleTag = (tag) => {
-    if (selectedTag.includes(tag)) {
-      setSelectedTag(selectedTag.filter((t) => t !== tag));
-    } else {
-      setSelectedTag([...selectedTag, tag]);
-    }
-  };
+	const [blogTitle, setBlogTitle] = useState("");
+	const [blogContent, setBlogContent] = useState("");
 
+	const toggleTag = (tag) => {
+		if (selectedTag.includes(tag)) {
+			setSelectedTag(selectedTag.filter((t) => t !== tag));
+		} else {
+			setSelectedTag([...selectedTag, tag]);
+		}
+	};
+  
   const handleSave = async () => {
     const postData = {
       title: blogTitle,
