@@ -19,7 +19,6 @@ import java.util.List;
 @RestController //RESTful. HTTP 요청과 응답을 처리
 @RequestMapping("/comments") //api 엔드포인트의 기본 경로 설정
 @RequiredArgsConstructor //의존성 주입을 위한 생성자를 자동으로 생성
-@CrossOrigin(origins = "*", allowedHeaders = "*") //Cors 정책(도메인, http헤더)
 public class CommentController {
     private final CommentService commentService;
     private final CommentMapper commentMapper;

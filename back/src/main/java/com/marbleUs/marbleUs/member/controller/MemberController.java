@@ -104,6 +104,7 @@ public class MemberController {
         return new ResponseEntity<>(mapper.memberToResponse(foundMember),HttpStatus.OK);
     }
 
+    //admin 기능
     @GetMapping
     public ResponseEntity getMembers(@Positive @RequestParam int page,
                                     @Positive @RequestParam int size){

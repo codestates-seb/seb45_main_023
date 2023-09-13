@@ -38,7 +38,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfiguration {
 
 
-    //TODO:
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
@@ -53,13 +52,13 @@ public class SecurityConfiguration {
 
 
 
-    @Bean//개발환경
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .headers().frameOptions().sameOrigin() //h2 이용하기위한 설정
                 .and()
                 .csrf().disable()
-                .cors(withDefaults())
+//                .cors(withDefaults())
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -87,12 +86,12 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("chrome-extension://ggnhohnkfcpcanfekomdkjffnfcjnjam","http://jxy.me","http://localhost:3000","http://localhost:8080", "https://9129-116-126-166-12.ngrok-free.app","http://seb45-pre-015.s3-website.ap-northeast-2.amazonaws.com"));
+        configuration.setAllowedOrigins(Arrays.asList("chrome-extension://ggnhohnkfcpcanfekomdkjffnfcjnjam","http://jxy.me","http://localhost:3000","http://localhost:8080", "https://9129-116-126-166-12.ngrok-free.app","http://marbleus-s3.s3-website.ap-northeast-2.amazonaws.com"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "DELETE","OPTION"));
         configuration.addAllowedHeader("*");
-        configuration.addExposedHeader("*");//Authorization으로 배포시 변경
-        configuration.setMaxAge(3000L);
+        configuration.setExposedHeaders(Arrays.asList("*","Authorization"));//Authorization으로 배포시 변경
+        configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -103,10 +102,10 @@ public class SecurityConfiguration {
         public void configure(HttpSecurity builder) throws Exception {
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer,authorityUtils);
 
-            AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);  // (2-3)
+            AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, memberService,redisServiceUtil,interceptor);  // (2-4)
-            jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");  //기본 로그인 시도 주소 프론트에서 이 URL로 로그인을 시도한다.       // (2-5)
+            jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");  //기본 로그인 시도 주소 프론트에서 이 URL로 로그인을 시도한다.       //
 
             builder.addFilter(jwtAuthenticationFilter);
             builder.addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
