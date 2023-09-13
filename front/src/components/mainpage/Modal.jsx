@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { modalState } from "../../recoil/main";
+import { modalState, diceControlState } from "../../recoil/main";
 import { Button, ToPageCustomButton } from "../Buttons";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -61,6 +61,8 @@ function MissionCard({
 
 function Modal({ city }) {
 	const [isOpen, setIsOpen] = useRecoilState(modalState);
+	const [diceControl, setDiceControl] = useRecoilState(diceControlState);
+
 	const [cityInfo, setCityInfo] = useState("");
 
 	const closeModal = () => {
@@ -84,8 +86,10 @@ function Modal({ city }) {
 			}
 		};
 
-		fetchCityInfo();
-	}, [city]);
+		if (isOpen) {
+			fetchCityInfo();
+		}
+	}, [city, isOpen]);
 
 	return (
 		<>
@@ -99,10 +103,11 @@ function Modal({ city }) {
 					onClick={(e) => {
 						if (e.target === e.currentTarget) {
 							closeModal();
+							setDiceControl(true);
 						}
 					}}
 				>
-					<div className="bg-slate-200 relative w-5/6 h-3/4 flex rounded-lg shadow-lg transform scale-100 transition-transform duration-500 overflow-hidden">
+					<div className="bg-slate-200 relative w-5/6 h-3/4 min-w-[1000px] flex rounded-lg shadow-lg transform scale-100 transition-transform duration-500 overflow-hidden">
 						<div className="w-full h-1/2 top-0 object-cover">
 							<img src={`/region/${city.ENG}.png`} alt="cityPicture" />
 						</div>
@@ -119,7 +124,8 @@ function Modal({ city }) {
 									환영합니다! {city.name}의 방방곡곡으로 당신을 초대합니다.
 								</h2>
 								<section className="mt-4">
-									지역 정보? 인기글?{cityInfo}{" "}
+									지역 정보? 인기글?{cityInfo}
+									{}
 								</section>
 								<p className="text-xs text-slate-500">
 									미션은 선택적으로 수행하실 수 있습니다. 미션 완료 후 후기 작성

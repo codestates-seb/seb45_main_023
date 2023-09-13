@@ -8,6 +8,7 @@ import Dice from "./dice/Dice";
 import Modal from "./Modal";
 import {
 	diceValueState,
+	diceControlState,
 	beadIndexState,
 	modalState,
 	currentLocationNameState,
@@ -20,6 +21,7 @@ const Board = () => {
 	const [isOpen, setIsOpen] = useRecoilState(modalState);
 	const [diceValue, setDiceValue] = useRecoilState(diceValueState);
 	const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
+	const [diceControl, setDiceControl] = useRecoilState(diceControlState);
 	const [currentLocationName, setCurrentLocationName] = useRecoilState(
 		currentLocationNameState
 	);
@@ -88,16 +90,18 @@ const Board = () => {
 
 	// 주사위 값 변경시 이동 시작
 	const handleRollDice = async (newValue) => {
-		// 주사위 굴린 후 4초 딜레이
-		await new Promise((resolve) => setTimeout(resolve, 4000));
+		if (diceControl) {
+			// 주사위 굴린 후 4초 딜레이
+			await new Promise((resolve) => setTimeout(resolve, 4000));
 
-		// 구슬 이동 시작
-		await moveBead(newValue, () => {
-			// 이동 완료 후 2초 뒤에 모달 열기
-			setTimeout(() => {
-				setIsOpen(true);
-			}, 2000);
-		});
+			// 구슬 이동 시작
+			await moveBead(newValue, () => {
+				// 이동 완료 후 2초 뒤에 모달 열기
+				setTimeout(() => {
+					setIsOpen(true);
+				}, 2000);
+			});
+		} else return;
 	};
 
 	const getCurrentLocation = () => {
@@ -122,12 +126,9 @@ const Board = () => {
 
 	const postCurrentLocationName = useCallback(async () => {
 		try {
-			await axios.post(
-				`${process.env.REACT_APP_SERVER_URL}/어디로/보내야/할까요?`,
-				{
-					currentLocationName: currentLocationName,
-				}
-			);
+			await axios.post(`${process.env.REACT_APP_SERVER_URL}`, {
+				currentLocationName: currentLocationName,
+			});
 			console.log("POST 요청 성공");
 		} catch (error) {
 			console.error("POST 요청 중 오류 발생:", error);
@@ -140,8 +141,6 @@ const Board = () => {
 			postCurrentLocationName();
 		}
 	}, [isOpen, postCurrentLocationName]);
-
-	console.log(getCurrentLocation());
 
 	return (
 		<main
