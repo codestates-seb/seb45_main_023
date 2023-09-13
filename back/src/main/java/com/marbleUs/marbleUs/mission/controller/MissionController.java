@@ -39,7 +39,7 @@ public class MissionController {
 
 
     //MemberMission Controller
-    @PostMapping("{member-id}/{city-id}")
+    @PostMapping("/{member-id}/{city-id}")
     public ResponseEntity assignMemberMission(@Positive @PathVariable("city-id") Long cityId,
                                                @Positive @PathVariable("member-id") Long memberId) {
         MemberMission memberMission = service.assignMemberMissions(cityId,memberId);
@@ -52,7 +52,7 @@ public class MissionController {
         return new ResponseEntity<>(mapper.memberMissionToResponse(memberMission), HttpStatus.CREATED);
     }
 
-    @GetMapping("member-mission/{member-id}")
+    @GetMapping("/member-mission/{member-id}")
     public ResponseEntity getMemberMissions(@Positive @PathVariable("member-id") Long memberId){
         Page<MemberMission> memberMission = service.findMemberMissions(memberId);
         return new ResponseEntity<>(mapper.memberMissionsToResponses(memberMission.getContent()), HttpStatus.OK);

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
@@ -67,6 +68,7 @@ public class BlogController {
 //        List<Image> images = imageService.uploadBlogImage(multipartFileList,blogId);
 //        return new ResponseEntity<>(imageMapper.imagesToResponses(images), HttpStatus.OK);
 //    }
+    @Transactional
     @PostMapping(value = "blogs/{blog-id}/upload-images", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity postBlogImagesWithEditor(@RequestParam("image") MultipartFile multipartFile,
                                                    @PathVariable("blog-id") Long blogId) throws IOException {
@@ -109,6 +111,7 @@ public class BlogController {
         return new ResponseEntity<>(imagesAsBase64, headers, HttpStatus.OK);
     }
 
+    @Transactional
     @PatchMapping(value = "/blogs/{blog-id}/image-update", consumes = "multipart/form-data")
     public ResponseEntity patchBlogImagesWithEditor(@RequestPart("images") List<MultipartFile> multipartFileList,
                                                     @RequestParam List<String> names,
@@ -120,39 +123,40 @@ public class BlogController {
         return new ResponseEntity<>(imageMapper.imagesToResponses(images), HttpStatus.OK);
     }
 
+    @Transactional
     @DeleteMapping("blogs/image-delete")
     public ResponseEntity deleteBlogImageWithEditor(@RequestParam List<String> names){
         imageService.deleteBlogImage(names);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
 
 
     //후기글 수정
-    @PatchMapping("blogs/{blog-id}")
+    @PatchMapping("/blogs/{blog-id}")
     public ResponseEntity patchBlog (@PathVariable("blog-id") Long blogId,
                                     @Valid @RequestBody BlogPatchDto blogPatchDto) {
         Blog blog = blogService.updateBlog(blogMapper.toBlog(blogPatchDto),blogId);
-        return new ResponseEntity(blogMapper.toBlogResponseDto(blog),HttpStatus.CREATED);
+        return new ResponseEntity<>(blogMapper.toBlogResponseDto(blog),HttpStatus.CREATED);
     }
 
     //후기글 삭제
-    @DeleteMapping("blogs/{blog-id}")
+    @DeleteMapping("/blogs/{blog-id}")
     public ResponseEntity deleteBlog (@PathVariable("blog-id") Long blogId) {
         blogService.deleteBlog(blogId);
-        return new ResponseEntity("게시글이 삭제되었습니다.", HttpStatus.OK);
+        return new ResponseEntity<>("게시글이 삭제되었습니다.", HttpStatus.OK);
     }
 
     //특정 후기글 조회
-    @GetMapping("blogs/{blog-id}")
+    @GetMapping("/blogs/{blog-id}")
     public ResponseEntity getBlog (HttpServletRequest request,
                                    @PathVariable("blog-id") Long blogId
                                    ) {
 
         Blog blog = blogService.findBlog(request,blogId);
 
-        return new ResponseEntity(blogMapper.toBlogResponseDto(blog),HttpStatus.OK);
+        return new ResponseEntity<>(blogMapper.toBlogResponseDto(blog),HttpStatus.OK);
     }
 
     //모든 후기글 조회
@@ -162,7 +166,7 @@ public class BlogController {
         Page<Blog> pageBlogs = blogService.findBlogs(page - 1, size);
         List<Blog> blogs = pageBlogs.getContent();
 
-        return new ResponseEntity(new MultiResponseDto<>(blogMapper.toBlogResponseDtos(blogs),pageBlogs),HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(blogMapper.toBlogResponseDtos(blogs),pageBlogs),HttpStatus.OK);
     }
 
     //특정 태그 후기글 조회
@@ -172,7 +176,7 @@ public class BlogController {
                                          @PathVariable("tag") String tag) {
         Page<Blog> pageBlogs = blogService.findBlogsByTag(page-1, size, tag);
         List<Blog> blogs = pageBlogs.getContent();
-        return new ResponseEntity(new MultiResponseDto<>(blogMapper.toBlogResponseDtos(blogs),pageBlogs),HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(blogMapper.toBlogResponseDtos(blogs),pageBlogs),HttpStatus.OK);
     }
 
     //특정 멤버의 후기글 조회
@@ -182,7 +186,7 @@ public class BlogController {
                                          @PathVariable("member-id") Long memberId) {
         Page<Blog> pageBlogs = blogService.findBlogsByMemberId(page-1, size, memberId);
         List<Blog> blogs = pageBlogs.getContent();
-        return new ResponseEntity(new MultiResponseDto<>(blogMapper.toBlogResponseDtos(blogs),pageBlogs),HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(blogMapper.toBlogResponseDtos(blogs),pageBlogs),HttpStatus.OK);
     }
 
     //특정 도시의 후기글 조회
@@ -192,7 +196,7 @@ public class BlogController {
                                          @PathVariable("city-id") Long cityId) {
         Page<Blog> pageBlogs = blogService.findBlogsByCity(page-1, size, cityId);
         List<Blog> blogs = pageBlogs.getContent();
-        return new ResponseEntity(new MultiResponseDto<>(blogMapper.toBlogResponseDtos(blogs),pageBlogs),HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(blogMapper.toBlogResponseDtos(blogs),pageBlogs),HttpStatus.OK);
     }
 
     @GetMapping("/blogs/my-bookmarks")
@@ -202,7 +206,7 @@ public class BlogController {
         Page<Blog> pageBlogs = blogService.findBookMarkedBlogs(bookmarkIds,page - 1, size);
         List<Blog> blogs = pageBlogs.getContent();
 
-        return new ResponseEntity(new MultiResponseDto<>(blogMapper.toBlogResponseDtos(blogs),pageBlogs),HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(blogMapper.toBlogResponseDtos(blogs),pageBlogs),HttpStatus.OK);
     }
 
 

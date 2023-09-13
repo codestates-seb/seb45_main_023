@@ -25,13 +25,9 @@ public class WeatherApiScheduler {
     private final CityService cityService;
     private final WeatherApiService weatherApiService;
 
-    public Double rainProbability = null;  //강수확률
-    public Double maxTemp = null;          //최고 기온
-    public Double minTemp = null;          //최저 기온
 
-
-    //테스트용, 2분마다 작동
-    @Scheduled(cron = "0 */2 * * * *")
+    //첫 실행시 1분 뒤에 작동하고 그 다음부터 3시간마다 작동
+    @Scheduled(initialDelay = 60000, fixedRate = 10800000)
     public void updateWeatherAutomatically() throws IOException {
 
         LocalDateTime now = LocalDateTime.now(); //데이터 조회 날짜와 시간
