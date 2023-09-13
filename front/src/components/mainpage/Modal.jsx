@@ -2,6 +2,8 @@ import { useRecoilState } from "recoil";
 import { modalState } from "../../recoil/main";
 import { Button, ToPageCustomButton } from "../Buttons";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 // 더미입니다
 const missions = [
@@ -59,12 +61,31 @@ function MissionCard({
 
 function Modal({ city }) {
 	const [isOpen, setIsOpen] = useRecoilState(modalState);
+	const [cityInfo, setCityInfo] = useState("");
 
 	const closeModal = () => {
 		setIsOpen(false);
 	};
 
-	console.log(city.cityId);
+	useEffect(() => {
+		const fetchCityInfo = async () => {
+			try {
+				const response = await axios.get(
+					`${process.env.REACT_APP_SERVER_URL}/cities/${city.cityId}`,
+					{
+						headers: {
+							"Content-Type": "application/json",
+						},
+					}
+				);
+				setCityInfo(response.data);
+			} catch (error) {
+				console.error("city not found", error);
+			}
+		};
+
+		fetchCityInfo();
+	}, [city]);
 
 	return (
 		<>
@@ -87,16 +108,19 @@ function Modal({ city }) {
 						</div>
 						<div
 							className="fixed top-0 right-0 w-0 h-0 border-l-[120px] border-l-transparent border-t-[120px] opacity-70 shadow-2xl curser-pointer"
-							onClick={closeModal}
+							onClick={(e) => {
+								closeModal();
+							}}
 						/>
 						<main className="absolute top-0 left-0 h-full flex">
-							<div className="flex-1 flex flex-col m-10 p-10 gap-4 bg-white bg-opacity-80 rounded-lg shadow-md">
+							<div className="flex-1 flex flex-col m-10 p-10 gap-4 min-w-[380px] bg-white bg-opacity-80 rounded-lg shadow-md">
 								<h1 className="text-xxl font-black">{city.name}</h1>
-								<h2 className="text-xl font-bold">{city.ENG}</h2>
-								<p className="text-xl font-semibold mt-2">
-									환영합니다! {city.name}으로의 여정에 초대합니다.
-								</p>
-								<section className="mt-4">인기글? </section>
+								<h2 className="text-xl font-bold">
+									환영합니다! {city.name}의 방방곡곡으로 당신을 초대합니다.
+								</h2>
+								<section className="mt-4">
+									지역 정보? 인기글?{cityInfo}{" "}
+								</section>
 								<p className="text-xs text-slate-500">
 									미션은 선택적으로 수행하실 수 있습니다. 미션 완료 후 후기 작성
 									시 마이 페이지 - 스탬프 페이지에 스탬프 적립이 가능합니다.
@@ -106,8 +130,8 @@ function Modal({ city }) {
 									수 있고, 초과 시 오래된 순서로 삭제되니 주의를 부탁드립니다.
 								</p>
 							</div>
-							<div className="flex-1 flex flex-col m-10 p-10 bg-white bg-opacity-80 rounded-lg shadow-md">
-								<div className="flex flex-col w-full h-3/5 justify-around">
+							<div className="relative flex-1 flex flex-col m-10 p-10 bg-white bg-opacity-80 rounded-lg shadow-md">
+								<div className="flex flex-col w-full h-3/5 min-w-[380px] justify-around">
 									{missions.map((mission, index) => (
 										<MissionCard
 											key={index}
@@ -120,7 +144,7 @@ function Modal({ city }) {
 										/>
 									))}
 								</div>
-								<section className="fixed right-20 bottom-28 flex flex-col gap-4 justify-end">
+								<section className="absolute right-10 bottom-18 flex flex-col gap-4 justify-end">
 									<Link to="/mymissions">
 										<ToPageCustomButton
 											text={"마이페이지 미션탭으로"}
