@@ -20,7 +20,6 @@ export default function BlogWrite() {
   const blog_id = 1;
 
   const [selectedTag, setSelectedTag] = useState([]); // 태그
-  // const [locationName, setLocationName] = useState('Jeju'); // 지역 이름 : 서버 연결 시 초기값 '' 지정하기
 
   const availableTag = ['인기글', '음식', '숙소', '교통', '쇼핑', '관광지', '액티비티'];
 
@@ -44,7 +43,7 @@ export default function BlogWrite() {
     }
 
     try {
-      const response = await axios.post(`https://9129-116-126-166-12.ngrok-free.app/blogs/${member_id}/${cityId}`, postData, {
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/blogs/${member_id}/${cityId}`, postData, {
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420'
@@ -106,7 +105,7 @@ export default function BlogWrite() {
                     const formData = new FormData();
                     formData.append("image", blob);
 
-                    const response = await fetch(`https://9129-116-126-166-12.ngrok-free.app/blogs/${blog_id}/upload-images`, {
+                    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/blogs/${blog_id}/upload-images`, {
                       method: 'POST',
                       headers: {
                         'ngrok-skip-browser-warning': '69420'
@@ -119,7 +118,7 @@ export default function BlogWrite() {
                     console.log(blob);
                     console.log(filename);
 
-                    const getResponse = await fetch(`https://9129-116-126-166-12.ngrok-free.app/blogs/print-image?name=${filename.name}`, {
+                    const getResponse = await fetch(`${process.env.REACT_APP_SERVER_URL}/blogs/print-image?name=${filename.name}`, {
                       method: 'GET',
                       headers: {
                         'ngrok-skip-browser-warning': '69420'
