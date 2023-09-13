@@ -20,11 +20,10 @@ export default function MyPage() {
 		const getData = async () => {
 			try {
 				const data = await axios.get(
-					"${process.env.REACT_APP_SERVER_URL}/members/test@gmail.com",
+					`${process.env.REACT_APP_SERVER_URL}/members/test@gmail.com`,
 					{
 						headers: {
 							"Content-Type": "application/json",
-							"ngrok-skip-browser-warning": "69420",
 						},
 					}
 				);

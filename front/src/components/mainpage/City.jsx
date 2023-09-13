@@ -1,52 +1,77 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const City = ({ location, onClick }) => {
-	let width, height, textcolor, additionalClass;
+const City = ({ location }) => {
+	let width, height;
+	let frontColor, backColor;
 
 	if (location.direction === "H") {
 		width = "w-28";
-		height = "h-36";
-		textcolor = "white";
-		additionalClass = "bg-opacity-80 hover:scale-105 active:scale-110";
+		height = "h-34";
 	} else if (location.direction === "V") {
 		width = "w-36";
 		height = "h-28";
-		textcolor = "white";
-		additionalClass = "bg-opacity-80 hover:scale-105 active:scale-110";
 	} else if (location.direction === "S") {
-		width = "w-40";
-		height = "h-40";
-		textcolor = "grey-300";
-		additionalClass =
-			"bg-white opacity-50 hover:opacity-90 transform active:scale-105";
+		width = "w-36";
+		height = "h-34";
+	}
+
+	if (location.cityId <= 4) {
+		frontColor = "red-500";
+		backColor = "red-700";
+	} else if (location.cityId >= 6 && location.cityId <= 9) {
+		frontColor = "yellow-500";
+		backColor = "yellow-700";
+	} else if (location.cityId >= 11 && location.cityId <= 14) {
+		frontColor = "green-500";
+		backColor = "green-700";
+	} else if (location.cityId >= 16 && location.cityId <= 19) {
+		frontColor = "blue-300";
+		backColor = "blue-500";
+	} else {
+		frontColor = "slate-500";
+		backColor = "slate-700";
 	}
 
 	return (
-		<article className="flex w-180px items-start gap-10 rounded-20px shadow-md">
-			<img
-				src="<path-to-image>"
-				alt="City"
-				className="w-180px h-240px flex-shrink-0 rounded-20px"
-				style={{
-					background: "url(), lightgray 50% / cover no-repeat",
-				}}
-			/>
-			<section className="flex w-180px h-134px flex-col justify-center items-start absolute rounded-20px 20px 0px 0px">
-				<div className="flex h-107px p-0px-10px flex-col justify-center items-center flex-shrink-0 self-stretch bg-white rounded-20px 20px 0px 0px">
-					<h1 className="flex p-10px items-center text-black text-24px font-bold">
-						City Name
-					</h1>
-					<h2 className="flex p-0px-10px items-center gap-10px text-black text-14px font-semibold">
-						<span>Population:</span>
-						<span>1,000,000</span>
-					</h2>
-				</div>
-				<footer className="flex h-27px flex-col items-center gap--34px flex-shrink-0 self-stretch">
-					<div className="w-0px h-0px border-b-180px border-solid border-gray-600 border-l-0px border-transparent border-r-255px fill-white filter drop-shadow-0px-6px-10px rgba-0-0-0-0-1"></div>
-					<div className="w-0px h-0px border-b-180px border-solid border-gray-600 border-l-255px border-transparent border-r-0px fill-gray-600 filter drop-shadow-0px-6px-10px rgba-0-0-0-0-1"></div>
-				</footer>
-			</section>
-		</article>
+		<Link to={`/bloglist/${location.cityId}`} className="overflow-hidden">
+			<article
+				className={`elative flex flex-col m-5 ${width} ${height} items-start rounded-lg shadow-md overflow-hidden`}
+			>
+				{location.cityId ? (
+					<img
+						src={`/region/${location.ENG}.png`}
+						alt="cityPicture"
+						className="h-16 flex-shrink-0 rounded-lt-20px rounded-rt-20px object-cover"
+					/>
+				) : (
+					<div className="h-4 flex-shrink-0" />
+				)}
+				<header
+					className="relative flex h-20px flex-col items-start flex-shrink-0 self-stretch"
+					style={{ marginTop: "-20px" }}
+				>
+					<div
+						className={`absolute w-0 h-0 border-l-[0px] border-l-transparent border-b-[30px] border-b-${frontColor} border-r-[145px] border-r-transparent`}
+					/>
+					<div
+						className={`w-0 h-0 border-l-[145px] border-l-transparent border-b-[20px] border-b-${backColor} border-r-[0px] border-r-transparent`}
+					/>
+				</header>
+				<section className="flex w-full h-full flex-col justify-center items-start">
+					<div
+						className={` bottom-0 flex w-full h-full bg-${frontColor} flex-col justify-center items-start pl-3 flex-shrink-0`}
+					>
+						<h1 className=" flex z-10 items-center text-white text-md font-black">
+							{location.name}
+						</h1>
+						<h2 className="flex items-center gap-10px text-slate-900 text-xs font-medium">
+							{location.ENG}
+						</h2>
+					</div>
+				</section>
+			</article>
+		</Link>
 	);
 };
 

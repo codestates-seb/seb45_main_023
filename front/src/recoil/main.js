@@ -5,6 +5,15 @@ export const diceValueState = atom({
 	default: 0,
 });
 
+export const beadIndexState = atom({
+	key: "beadIndexState",
+	default: 0,
+});
+
+export const currentLocationNameState = atom({
+	key: "currentLocationNameState",
+	default: "시작",
+});
 
 export const modalState = atom({
 	key: "modalState",

@@ -56,7 +56,7 @@ function Dice({ onRollDice }) {
 				setTimeout(() => {
 					setDiceAnimationClass("dice-stop");
 					setVisibleSide(diceValue.toString());
-				}, 3000);
+				}, 2000);
 			} else {
 				setDiceAnimationClass("dice");
 			}

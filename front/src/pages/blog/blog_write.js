@@ -57,7 +57,6 @@ export default function BlogWrite() {
 				{
 					headers: {
 						"Content-Type": "application/json",
-						"ngrok-skip-browser-warning": "69420",
 					},
 				}
 			);
@@ -119,7 +118,6 @@ export default function BlogWrite() {
 												{
 													method: "POST",
 													headers: {
-														"ngrok-skip-browser-warning": "69420",
 													},
 													body: formData,
 												}
@@ -135,7 +133,6 @@ export default function BlogWrite() {
 												{
 													method: "GET",
 													headers: {
-														"ngrok-skip-browser-warning": "69420",
 													},
 												}
 											);
