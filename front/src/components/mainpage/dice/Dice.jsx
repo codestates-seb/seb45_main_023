@@ -45,7 +45,7 @@ function Side({ direction, isVisible }) {
 }
 
 function Dice({ onRollDice }) {
-	const [diceValue, setDiceValue] = useRecoilState(diceValueState); // diceValueState를 상태로 사용
+	const [diceValue, setDiceValue] = useRecoilState(diceValueState);
 	const [visibleSide, setVisibleSide] = useState(DICE_SIDES.FRONT);
 	const [diceAnimationClass, setDiceAnimationClass] = useState("dice");
 

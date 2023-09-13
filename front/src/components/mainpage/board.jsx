@@ -122,18 +122,14 @@ const Board = () => {
 
 	const postCurrentLocationName = useCallback(async () => {
 		try {
-			// Axios를 사용하여 서버에 POST 요청을 보냅니다.
 			await axios.post(
 				`${process.env.REACT_APP_SERVER_URL}/어디로/보내야/할까요?`,
 				{
 					currentLocationName: currentLocationName,
 				}
 			);
-
-			// POST 요청이 성공한 경우 여기에서 추가 작업을 수행할 수 있습니다.
-			console.log("POST 요청이 성공했습니다.");
+			console.log("POST 요청 성공");
 		} catch (error) {
-			// POST 요청이 실패한 경우 여기에서 오류 처리를 수행할 수 있습니다.
 			console.error("POST 요청 중 오류 발생:", error);
 		}
 	}, [currentLocationName]);
