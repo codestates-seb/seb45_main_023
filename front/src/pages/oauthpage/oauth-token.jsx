@@ -5,7 +5,7 @@ export default function MyTokens () {
     const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
 
     const urlParams = new URLSearchParams(window.location.search);
-    const Authorization = urlParams.get('Authorization');
+    const Authorization = urlParams.get('access_token');
     
     // local에 authorizationToken 저장하기
     localStorage.setItem('Authorization', Authorization ?? '');
