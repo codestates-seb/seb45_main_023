@@ -15,9 +15,9 @@ export const beadIndexState = atom({
 	default: 0,
 });
 
-export const currentLocationNameState = atom({
-	key: "currentLocationNameState",
-	default: "시작",
+export const currentLocationState = atom({
+	key: "current",
+	default: "BLOCK_0",
 });
 
 export const modalState = atom({
