@@ -5,24 +5,26 @@ import City from "./City";
 import { locations, moveOrder } from "./locations";
 import Bead from "./Bead";
 import Dice from "./dice/Dice";
-import Modal from "./Modal";
+import Modal from "./modal/Modal";
+import { userInfo } from "../../recoil/mypage";
 import {
 	diceValueState,
+	diceControlState,
 	beadIndexState,
 	modalState,
-	currentLocationNameState,
+	currentLocationState,
 } from "../../recoil/main";
 import axios from "axios";
 
 const ANIMATION_INTERVAL = 1000;
 
 const Board = () => {
+	const [info, setInfo] = useRecoilState(userInfo);
 	const [isOpen, setIsOpen] = useRecoilState(modalState);
 	const [diceValue, setDiceValue] = useRecoilState(diceValueState);
 	const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
-	const [currentLocationName, setCurrentLocationName] = useRecoilState(
-		currentLocationNameState
-	);
+	const [diceControl, setDiceControl] = useRecoilState(diceControlState);
+	const [current, setcurrent] = useRecoilState(currentLocationState);
 
 	// 도시 컴포넌트 렌더링
 	const renderLocations = (locations) => {
@@ -40,7 +42,6 @@ const Board = () => {
 			const [x, y] = moveOrder[beadIndex];
 			return { x, y };
 		}
-		return { x: 5, y: 5 }; // 초기 위치
 	}, [beadIndex]);
 
 	const [currentBeadPosition, setCurrentBeadPosition] = useState([
@@ -88,16 +89,18 @@ const Board = () => {
 
 	// 주사위 값 변경시 이동 시작
 	const handleRollDice = async (newValue) => {
-		// 주사위 굴린 후 4초 딜레이
-		await new Promise((resolve) => setTimeout(resolve, 4000));
+		if (diceControl) {
+			// 주사위 굴린 후 4초 딜레이
+			await new Promise((resolve) => setTimeout(resolve, 4000));
 
-		// 구슬 이동 시작
-		await moveBead(newValue, () => {
-			// 이동 완료 후 2초 뒤에 모달 열기
-			setTimeout(() => {
-				setIsOpen(true);
-			}, 2000);
-		});
+			// 구슬 이동 시작
+			await moveBead(newValue, () => {
+				// 이동 완료 후 2초 뒤에 모달 열기
+				setTimeout(() => {
+					setIsOpen(true);
+				}, 2000);
+			});
+		} else return;
 	};
 
 	const getCurrentLocation = () => {
@@ -118,34 +121,7 @@ const Board = () => {
 		return "여기가 어디지";
 	};
 
-	setCurrentLocationName(getCurrentLocation().name);
-
-	const postCurrentLocationName = useCallback(async () => {
-		try {
-			// Axios를 사용하여 서버에 POST 요청을 보냅니다.
-			await axios.post(
-				`${process.env.REACT_APP_SERVER_URL}/어디로/보내야/할까요?`,
-				{
-					currentLocationName: currentLocationName,
-				}
-			);
-
-			// POST 요청이 성공한 경우 여기에서 추가 작업을 수행할 수 있습니다.
-			console.log("POST 요청이 성공했습니다.");
-		} catch (error) {
-			// POST 요청이 실패한 경우 여기에서 오류 처리를 수행할 수 있습니다.
-			console.error("POST 요청 중 오류 발생:", error);
-		}
-	}, [currentLocationName]);
-
-	useEffect(() => {
-		// currentLocationName을 서버에 POST
-		if (isOpen) {
-			postCurrentLocationName();
-		}
-	}, [isOpen, postCurrentLocationName]);
-
-	console.log(getCurrentLocation());
+	setcurrent(getCurrentLocation());
 
 	return (
 		<main
