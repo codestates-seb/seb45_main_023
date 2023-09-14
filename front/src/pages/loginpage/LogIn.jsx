@@ -82,6 +82,8 @@ export default function LogInPage() {
 				}
 			);
 
+			console.log(response)
+
 			// 로그인 성공 시 AuthorizationToken 을 받아옴
 			const Authorization = response.headers.authorization;
 
@@ -238,11 +240,7 @@ export default function LogInPage() {
 						</Link>
 					</div>
 					<div className="flex justify-center">
-						<Link
-							to={`${process.env.REACT_APP_SERVER_URL}/login/oauth2/code/google`}
-						>
-							<GoogleLogInButton />
-						</Link>
+						<GoogleLogInButton />
 					</div>
 				</section>
 			</form>

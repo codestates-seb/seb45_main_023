@@ -162,8 +162,11 @@ export const SignUpWithMarbleUsButton = () => {
 };
 
 export const GoogleLogInButton = () => {
+  const oauthUrl = `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/google`;
+
+  // s3에서 소셜 로그인한 다음에 author~~ 토큰 확인하기.
   return (
-    <button
+    <button onClick={() => window.open(oauthUrl)}
       className="inline-flex items-center justify-center w-[280px] h-[60px] p-1 rounded-full shadow-md font-semibold transition duration-300 ease-in-out"
       style={{
         backgroundImage: 'linear-gradient(to right, #FF3D00, #FFC107, #4CAF50, #1976D2)',
@@ -286,7 +289,7 @@ export const FindMethodButton = ({ linkName, text }) => {
 
 export const FindSubmitButton = ({text}) => {
   return (
-    <button className="w-[400px] h-[80px] rounded-[14px] shadow-xss font-semibold text-[20px] text-white bg-[#0088F8]  hover:bg-[#2557e0] active:bg-[#1d43ac]">
+    <button type="submit" className="w-[400px] h-[80px] rounded-[14px] shadow-xss font-semibold text-[20px] text-white bg-[#0088F8]  hover:bg-[#2557e0] active:bg-[#1d43ac]">
     {text}
   </button>
   )
