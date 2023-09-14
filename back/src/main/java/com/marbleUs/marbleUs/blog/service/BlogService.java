@@ -7,6 +7,8 @@ import com.marbleUs.marbleUs.city.service.CityService;
 import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
 import com.marbleUs.marbleUs.common.exception.ExceptionCode;
 import com.marbleUs.marbleUs.common.tools.counter.ViewCounter;
+import com.marbleUs.marbleUs.image.entity.Image;
+import com.marbleUs.marbleUs.image.repository.ImageRepository;
 import com.marbleUs.marbleUs.member.entity.Member;
 import com.marbleUs.marbleUs.member.repository.MemberRepository;
 import com.marbleUs.marbleUs.member.service.MemberService;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -31,9 +34,11 @@ public class BlogService {
     private final ViewCounter viewCounter;
     private final MemberService memberService;
     private final CityService cityService;
+    private final ImageRepository imageRepository;
 
 
-    public Blog createBlog(Blog blog,long memberId, long cityId) {
+    @Transactional
+    public Blog createBlog(Blog blog,long memberId, long cityId,List<String> images) {
         blog.setMember(memberRepository.findById(memberId));
         City findCity = cityService.findVerifiedCity(cityId);
         blog.setCity(findCity);
@@ -41,6 +46,13 @@ public class BlogService {
         member.addBlogs(blog);
         blog.setCreatedAt(LocalDateTime.now());
         blog.setModifiedAt(LocalDateTime.now());
+
+        for (String image:images){
+
+            Image img = imageRepository.findByName(image).orElseThrow(()->new BusinessLogicException(ExceptionCode.IMAGE_NOT_FOUND));
+
+            blog.addBlogImage(img);
+        }
 
         return blogRepository.save(blog);
     }

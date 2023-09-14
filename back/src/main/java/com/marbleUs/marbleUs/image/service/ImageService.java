@@ -82,7 +82,8 @@ public class ImageService {
 
     }
 
-    public Image uploadBlogImage(MultipartFile multipartFile, Long blogId)throws IOException{
+    @Transactional
+    public Image uploadBlogImage(MultipartFile multipartFile)throws IOException{
 
 
 
@@ -95,11 +96,9 @@ public class ImageService {
             // 파일데이터와 파일명 넘겨서 S3에 저장 / 이미지 테이블에 path저장
             image.setPath(s3Service.upload(multipartFile, "images/blog-images/"+fileName));
 
-            Blog blog = blogRepository.findById(blogId).get();
-            blog.addBlogImage(image);
+//            Blog blog = blogRepository.findById(blogId).get();
+//            blog.addBlogImage(image);
 
-
-            // DB에는 전체 url말고 파일명으로 저장할 것임
             imageRepository.save(image);
 
 
@@ -138,6 +137,7 @@ public class ImageService {
 
     //Transaction 관리에 대해 연구 요망
 
+    @Transactional
     public void deleteBlogImage(List<String> names){
         for (String name:names){
             imageRepository.delete(imageRepository.findByName(name).get());
