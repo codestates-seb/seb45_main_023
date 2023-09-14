@@ -5,26 +5,26 @@ import City from "./City";
 import { locations, moveOrder } from "./locations";
 import Bead from "./Bead";
 import Dice from "./dice/Dice";
-import Modal from "./Modal";
+import Modal from "./modal/Modal";
+import { userInfo } from "../../recoil/mypage";
 import {
 	diceValueState,
 	diceControlState,
 	beadIndexState,
 	modalState,
-	currentLocationNameState,
+	currentLocationState,
 } from "../../recoil/main";
 import axios from "axios";
 
 const ANIMATION_INTERVAL = 1000;
 
 const Board = () => {
+	const [info, setInfo] = useRecoilState(userInfo);
 	const [isOpen, setIsOpen] = useRecoilState(modalState);
 	const [diceValue, setDiceValue] = useRecoilState(diceValueState);
 	const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
 	const [diceControl, setDiceControl] = useRecoilState(diceControlState);
-	const [currentLocationName, setCurrentLocationName] = useRecoilState(
-		currentLocationNameState
-	);
+	const [current, setcurrent] = useRecoilState(currentLocationState);
 
 	// 도시 컴포넌트 렌더링
 	const renderLocations = (locations) => {
@@ -42,7 +42,6 @@ const Board = () => {
 			const [x, y] = moveOrder[beadIndex];
 			return { x, y };
 		}
-		return { x: 5, y: 5 }; // 초기 위치
 	}, [beadIndex]);
 
 	const [currentBeadPosition, setCurrentBeadPosition] = useState([
@@ -122,25 +121,7 @@ const Board = () => {
 		return "여기가 어디지";
 	};
 
-	setCurrentLocationName(getCurrentLocation().name);
-
-	const postCurrentLocationName = useCallback(async () => {
-		try {
-			await axios.post(`${process.env.REACT_APP_SERVER_URL}`, {
-				currentLocationName: currentLocationName,
-			});
-			console.log("POST 요청 성공");
-		} catch (error) {
-			console.error("POST 요청 중 오류 발생:", error);
-		}
-	}, [currentLocationName]);
-
-	useEffect(() => {
-		// currentLocationName을 서버에 POST
-		if (isOpen) {
-			postCurrentLocationName();
-		}
-	}, [isOpen, postCurrentLocationName]);
+	setcurrent(getCurrentLocation());
 
 	return (
 		<main
