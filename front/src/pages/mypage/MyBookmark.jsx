@@ -8,9 +8,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { User, bookmarkInfo } from "../../recoil/mypage";
 
 export default function MyBookmark() {
-	const info = useRecoilValue(User);
+  const info = useRecoilValue(User);
 	const [bookmark, setBookmark] = useRecoilState(bookmarkInfo);
-	console.log(bookmark);
 	useEffect(() => {
 		const getData = async () => {
 			try {
@@ -29,23 +28,19 @@ export default function MyBookmark() {
 		};
 		getData();
 	}, []);
-	return (
-		<div className="flex justify-center bookshelf-animation">
-			<TopSidebar />
-			<BottomSidebar />
-			<div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white">
-				<CardList start={0} end={6} />
-				<div className="shadow-pageCenter">
-					<CardList start={6} end={12} />
-					<BookmarkPagenation />
-				</div>
-				<div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">
-					&nbsp;
-				</div>
-				<div className="flex bg-white h-[0.75rem] w-[50rem] rounded-[10rem]">
-					&nbsp;
-				</div>
-			</div>
-		</div>
-	);
+  return (
+    <div className="flex justify-center">
+      <TopSidebar />
+      <BottomSidebar />
+      <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white">
+        <CardList start={0} end={6} />
+        <div className="shadow-pageCenter">
+          <CardList start={6} end={12} />
+          <BookmarkPagenation />
+        </div>
+        <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
+        <div className="flex bg-white h-[0.75rem] w-[50rem] rounded-[10rem]">&nbsp;</div>
+      </div>
+    </div>
+  );
 }

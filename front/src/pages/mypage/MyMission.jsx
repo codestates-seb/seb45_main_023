@@ -52,7 +52,7 @@ export default function MyMission() {
 		console.log(mission);
 	};
 
-	const handleClear = () => {
+  const handleClear = () => {
 		const postData = async () => {
 			try {
 				const request = await axios.patch(
@@ -70,17 +70,16 @@ export default function MyMission() {
 		};
 		postData();
 	};
-	return (
-		<div className="flex justify-center bookshelf-animation">
-			<TopSidebar />
-			<BottomSidebar />
-			<div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white">
-				<BarList />
-				<MissionNotice />
-				<button onClick={handlePostMission}>TEST POST BUTTON</button>{" "}
-				{/*POST 테스트용 버튼 */}
-				<button onClick={handleClear}>TEST CLEAR BUTTON</button>
-			</div>
-		</div>
-	);
+  return (
+    <div className="flex justify-center">
+      <TopSidebar />
+      <BottomSidebar />
+      <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white">
+        <BarList />
+        <MissionNotice />
+        <button onClick={handlePostMission}>TEST POST BUTTON</button> {/*POST 테스트용 버튼 */}
+        <button onClick={handleClear}>TEST CLEAR BUTTON</button>
+      </div>
+    </div>
+  );
 }

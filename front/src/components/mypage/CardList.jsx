@@ -4,6 +4,7 @@ import { User, bookmarkInfo } from "../../recoil/mypage";
 import axios from "axios";
 
 export default function CardList({ start, end }) {
+
 	const data = useRecoilValue(bookmarkInfo);
 	console.log(data);
 	const info = useRecoilValue(User);

@@ -41,25 +41,19 @@ export default function MyBlog() {
 		getData();
 	}, []);
 
-	return (
-		<div className="flex justify-center bookshelf-animation">
-			<TopSidebar />
-			<BottomSidebar />
-			<div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white ">
-				<BlogList />
-				<ComentList />
-				<div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">
-					&nbsp;
-				</div>
-				<div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">
-					&nbsp;
-				</div>
-				<div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">
-					&nbsp;
-				</div>
-				<div className="bg-white h-[0.5rem] w-[50rem] rounded-b-[2rem]"></div>
-			</div>
-			<Follower />
-		</div>
-	);
+  return (
+    <div className="flex justify-center">
+      <TopSidebar />
+      <BottomSidebar />
+      <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white ">
+        <BlogList />
+        <ComentList />
+        <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
+        <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
+        <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
+        <div className="bg-white h-[0.5rem] w-[50rem] rounded-b-[2rem]"></div>
+      </div>
+      <Follower/>
+    </div>
+  );
 }
