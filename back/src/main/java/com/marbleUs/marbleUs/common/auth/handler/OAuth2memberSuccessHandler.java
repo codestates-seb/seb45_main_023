@@ -54,7 +54,7 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         String birth = String.valueOf(oAuth2User.getAttributes().get("email"));
 //        String profilePic = String.valueOf(oAuth2User.getAttributes().get("picture"));
         List<String> authorities = authorityUtils.createRoles(email);
-        saveMember(email, authorities);
+        if (!memberVerifier.verifyExistMember(email)) {saveMember(email, authorities);}
 
 
         log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
@@ -89,9 +89,8 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         return UriComponentsBuilder.newInstance()
                 .scheme("http")
-                .host("localhost")
-//                .port(3000)
-                .path("/receive-token.html")//redirect 받기 위한 주소
+                .host("marbleus-s3.s3-website.ap-northeast-2.amazonaws.com")
+                .path("/oauth-token")//redirect 받기 위한 주소
                 .queryParams(queryParams)
                 .build().toUri();
     }
