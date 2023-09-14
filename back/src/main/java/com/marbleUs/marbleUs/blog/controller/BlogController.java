@@ -50,11 +50,13 @@ public class BlogController {
 
 
     //후기글 작성
+    @Transactional
     @PostMapping("blogs/{member-id}/{city-id}")
     public ResponseEntity postBlog (@PathVariable("member-id") Long memberId,
                                     @PathVariable("city-id") Long cityId,
+                                    @RequestParam List<String> imageNames,
                                     @Valid @RequestBody BlogPostDto blogPostDto) {
-        Blog blog = blogService.createBlog(blogMapper.toBlog(blogPostDto), memberId, cityId);
+        Blog blog = blogService.createBlog(blogMapper.toBlog(blogPostDto), memberId, cityId,imageNames);
         return new ResponseEntity(blogMapper.toBlogResponseDto(blog),HttpStatus.CREATED);
     }
 
@@ -69,11 +71,11 @@ public class BlogController {
 //        return new ResponseEntity<>(imageMapper.imagesToResponses(images), HttpStatus.OK);
 //    }
     @Transactional
-    @PostMapping(value = "blogs/{blog-id}/upload-images", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity postBlogImagesWithEditor(@RequestParam("image") MultipartFile multipartFile,
-                                                   @PathVariable("blog-id") Long blogId) throws IOException {
+    @PostMapping(value = "blogs/upload-images", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity postBlogImagesWithEditor(@RequestParam("image") MultipartFile multipartFile)
+                                                   throws IOException {
 
-        Image image = imageService.uploadBlogImage(multipartFile,blogId);
+        Image image = imageService.uploadBlogImage(multipartFile);
         return new ResponseEntity<>(imageMapper.imageToResponse(image), HttpStatus.OK);
     }
 
