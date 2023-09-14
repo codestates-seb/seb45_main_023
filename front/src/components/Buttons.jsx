@@ -14,7 +14,7 @@ export const BasicCustomButton = ({ text, colorName }) => {
 
   return (
     <button
-    type="button" className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold ${color[colorName]} active:text-white transition duration-300 ease-in-out`}
+    className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold ${color[colorName]} active:text-white transition duration-300 ease-in-out`}
     >
       {text}
     </button>
@@ -24,7 +24,7 @@ export const BasicCustomButton = ({ text, colorName }) => {
 export const Button = ({ text, color }) => {
   return (
     <button
-    type="button" className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-${color}-300 bg-white text-black shadow-md font-semibold hover:bg-${color}-300 active:bg-${color}-500 active:border-${color}-500 active:text-white transition duration-300 ease-in-out`}
+    className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-${color}-300 bg-white text-black shadow-md font-semibold hover:bg-${color}-300 active:bg-${color}-500 active:border-${color}-500 active:text-white transition duration-300 ease-in-out`}
     >
       {text}
     </button>
@@ -49,7 +49,7 @@ export const CardButton = ({ text }) => {
   }
   return (
     <button
-    type="button" className={`inline-flex items-center justify-center gap-2 px-2 rounded-full mr-1 border-4 border-solid border-${color}-300 bg-white text-black shadow-md font-semibold hover:bg-${color}-300 active:bg-${color}-500 active:border-${color}-500 active:text-white transition duration-300 ease-in-out`}
+    className={`inline-flex items-center justify-center gap-2 px-2 rounded-full mr-1 border-4 border-solid border-${color}-300 bg-white text-black shadow-md font-semibold hover:bg-${color}-300 active:bg-${color}-500 active:border-${color}-500 active:text-white transition duration-300 ease-in-out`}
     >
       {text}
     </button>
@@ -59,7 +59,7 @@ export const CardButton = ({ text }) => {
 export const GreenButton = ({ text }) => {
   return (
     <button
-    type="button" className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold border-green-300 hover:bg-green-300 active:bg-green-500 active:border-green-500 active:text-white transition duration-300 ease-in-out`}
+    className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold border-green-300 hover:bg-green-300 active:bg-green-500 active:border-green-500 active:text-white transition duration-300 ease-in-out`}
     >
       {text}
     </button>
@@ -69,7 +69,7 @@ export const GreenButton = ({ text }) => {
 export const PurpleButton = ({ text }) => {
   return (
     <button
-    type="button" className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold border-purple-300 hover:bg-purple-300 active:bg-purple-500 active:border-purple-500 active:text-white transition duration-300 ease-in-out`}
+    className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold border-purple-300 hover:bg-purple-300 active:bg-purple-500 active:border-purple-500 active:text-white transition duration-300 ease-in-out`}
     >
       {text}
     </button>
@@ -84,7 +84,7 @@ export const NegativeCustomButton = ({ text, colorName}) => {
   }
 
   return (
-    <button type="button" className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-white shadow-md hover:bg-white hover:text-black text-white font-semibold ${color[colorName]} active:text-black transition duration-300 ease-in-out`}>
+    <button className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-white shadow-md hover:bg-white hover:text-black text-white font-semibold ${color[colorName]} active:text-black transition duration-300 ease-in-out`}>
       {text}
     </button>
   );
@@ -92,7 +92,7 @@ export const NegativeCustomButton = ({ text, colorName}) => {
 
 export const NegativeButton = ({ text }) => {
   return (
-    <button type="button" className="inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-white  shadow-md hover:bg-white hover:text-black text-white font-semibold bg-blue-300 active:bg-blue-100 active:border-blue-100 active:text-black transition duration-300 ease-in-out">
+    <button className="inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-white  shadow-md hover:bg-white hover:text-black text-white font-semibold bg-blue-300 active:bg-blue-100 active:border-blue-100 active:text-black transition duration-300 ease-in-out">
       {text}
     </button>
   );
@@ -100,7 +100,7 @@ export const NegativeButton = ({ text }) => {
 
 export const NegativeButtonGreen = ({ text }) => {
   return (
-    <button type="button" className="inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-white  shadow-md hover:bg-white hover:text-black text-white font-semibold bg-green-500 active:bg-green-100 active:border-green-100 active:text-black transition duration-300 ease-in-out">
+    <button className="inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-white  shadow-md hover:bg-white hover:text-black text-white font-semibold bg-green-500 active:bg-green-100 active:border-green-100 active:text-black transition duration-300 ease-in-out">
       {text}
     </button>
   );
@@ -119,7 +119,7 @@ export const ToPageCustomButton = ({ text, colorName, iconColorName }) => {
   }
 
   return (
-    <button type="button" className={`inline-flex items-center justify-center gap-2 p-3 pr-6 rounded-full border-4 border-solid  bg-white shadow-md text-black font-bold active:bg-white active:border-white hover:text-white ${color[colorName]} transition duration-300 ease-in-out`}>
+    <button className={`inline-flex items-center justify-center gap-2 p-3 pr-6 rounded-full border-4 border-solid  bg-white shadow-md text-black font-bold active:bg-white active:border-white hover:text-white ${color[colorName]} transition duration-300 ease-in-out`}>
       <div className="pl-6 pr-2">{text}</div>
       <div className={`inline-flex items-center justify-center w-10 h-10 flex-shrink-0 ${iconColor[iconColorName]} rounded-full text-white`}>
         <i className="fa-solid fa-arrow-right text-2xl" />
@@ -130,7 +130,7 @@ export const ToPageCustomButton = ({ text, colorName, iconColorName }) => {
 
 export const ToMypage = () => {
   return (
-    <button type="button" className="inline-flex items-center justify-center gap-2 p-3 pr-6 rounded-full border-4 border-solid  bg-white shadow-md text-black font-bold hover:text-white active:bg-white active:border-white border-purple-300 hover:bg-purple-300 active:text-purple-300 transition duration-300 ease-in-out">
+    <button className="inline-flex items-center justify-center gap-2 p-3 pr-6 rounded-full border-4 border-solid  bg-white shadow-md text-black font-bold hover:text-white active:bg-white active:border-white border-purple-300 hover:bg-purple-300 active:text-purple-300 transition duration-300 ease-in-out">
       <div className="pl-6 pr-2">마이페이지 미션 탭으로</div>
       <div className="inline-flex items-center justify-center w-10 h-10 flex-shrink-0 bg-purple-300 rounded-full text-white">
         <i className="fa-solid fa-arrow-right text-2xl" />
@@ -141,7 +141,7 @@ export const ToMypage = () => {
 
 export const ToBoard = () => {
   return (
-    <button type="button" className="inline-flex items-center justify-center gap-2 p-3 pr-6 rounded-full border-4 border-solid  bg-white shadow-md text-black font-bold hover:text-white active:bg-white active:border-white border-sky-300 hover:bg-sky-300 active:text-sky-300 transition duration-300 ease-in-out">
+    <button className="inline-flex items-center justify-center gap-2 p-3 pr-6 rounded-full border-4 border-solid  bg-white shadow-md text-black font-bold hover:text-white active:bg-white active:border-white border-sky-300 hover:bg-sky-300 active:text-sky-300 transition duration-300 ease-in-out">
       <div className="pl-6 pr-2">여행 후기 게시판으로</div>
       <div className="inline-flex items-center justify-center w-10 h-10 flex-shrink-0 bg-sky-300 rounded-full text-white">
         <i className="fa-solid fa-arrow-right text-2xl" />
@@ -162,11 +162,17 @@ export const SignUpWithMarbleUsButton = () => {
 };
 
 export const GoogleLogInButton = () => {
-  const oauthUrl = `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/google`;
+  
+  const redirectToExternalSite = () => {
+    // 외부 사이트의 URL을 여기에 입력합니다.
+    const oauthUrl = `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/google`;
 
-  // s3에서 소셜 로그인한 다음에 author~~ 토큰 확인하기.
+    // 현재 페이지를 외부 사이트로 이동합니다.
+    window.location.href = oauthUrl;
+  };
+
   return (
-    <button onClick={() => window.open(oauthUrl)} type="button"
+    <button onClick={redirectToExternalSite} type="button"
       className="inline-flex items-center justify-center w-[280px] h-[60px] p-1 rounded-full shadow-md font-semibold transition duration-300 ease-in-out"
       style={{
         backgroundImage: 'linear-gradient(to right, #FF3D00, #FFC107, #4CAF50, #1976D2)',
