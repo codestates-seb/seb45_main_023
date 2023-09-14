@@ -65,7 +65,7 @@ function Dice({ onRollDice }) {
 			}
 		}
 		DICE_SIDES.FRONT = diceValue;
-	}, [diceValue]);
+	}, [diceValue, setDiceControl]);
 
 	const rollDiceHandler = async () => {
 		if (!diceControl) {
@@ -85,8 +85,6 @@ function Dice({ onRollDice }) {
 			return newValue;
 		}
 	};
-
-	console.log(diceControl);
 
 	return (
 		<div
