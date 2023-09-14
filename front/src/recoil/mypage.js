@@ -59,3 +59,8 @@ export const bookmarkInfo = atom({
 		},
 	],
 });
+
+export const validate = atom({
+  key:'validate',
+  default:{}
+})

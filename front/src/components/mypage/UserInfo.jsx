@@ -1,11 +1,11 @@
 import { useRecoilValue } from 'recoil';
-import { Edit, User } from '../../recoil/mypage';
+import { Edit, User, validate } from '../../recoil/mypage';
 
-export default function UserInfo({setNickname,setNationality,setPassword,setBirth}) {
-  const data = useRecoilValue(User);
-  const footer = `M A R B L E U S < < ${data.nickname} < < < < < < < < < < < < < < < < < < < < < < < < S E B 4 5 < < < < < < < < < < < < < < < < A L L R I G H T S R E S E R V E D`;
+export default function UserInfo({ setNickname, setNationality, setPassword, setBirth }) {
   const isEdit = useRecoilValue(Edit);
   const userData = useRecoilValue(User);
+  const validataErrors = useRecoilValue(validate)
+  const footer = `M A R B L E U S < < ${userData.nickname} < < < < < < < < < < < < < < < < < < < < < < < < S E B 4 5 < < < < < < < < < < < < < < < < A L L R I G H T S R E S E R V E D`;
 
   const handleValue = (e) => {
     const value = e.target.value;
@@ -38,7 +38,11 @@ export default function UserInfo({setNickname,setNationality,setPassword,setBirt
           <div className="flex bg-white mx-4 text-[2.5rem]">P A S S P O R T</div>
         </div>
         <div className="flex h-[17rem] bg-white justify-between">
-          <img src='https://img.seoul.co.kr/img/upload/2017/10/07/SSI_20171007154542_O2.jpg' alt='profileImg' className=" border-1 border-black w-[12.5rem] bg-white"/>
+          <img
+            src="https://img.seoul.co.kr/img/upload/2017/10/07/SSI_20171007154542_O2.jpg"
+            alt="profileImg"
+            className=" border-1 border-black w-[12.5rem] bg-white"
+          />
           <div className="flex flex-col w-[12rem] justify-between bg-white">
             <div className="flex flex-col">
               <label className="bg-white" htmlFor="nickname">
@@ -60,9 +64,10 @@ export default function UserInfo({setNickname,setNationality,setPassword,setBirt
               <label className="bg-white" htmlFor="birth">
                 생년월일/Date of birth
               </label>
-              {isEdit ? (
+              {isEdit ? (<div>
                 <input type="date" className="bg-white w-[12rem]" id="birth" onChange={handleValue}></input>
-              ) : (
+                {validataErrors.birth && <p className=' text-red-500 text-sm'>{validataErrors.birth}</p>}
+                </div>) : (
                 <div className="font-bold bg-white">{userData.birth}</div>
               )}
             </div>
@@ -71,13 +76,17 @@ export default function UserInfo({setNickname,setNationality,setPassword,setBirt
                 국적/nationality
               </label>
               {isEdit ? (
-                <input
-                  type="text"
-                  placeholder={`${userData.nationality}`}
-                  className="bg-white w-[12rem]"
-                  id="nation"
-                  onChange={handleValue}
-                ></input>
+                <select
+                  id="national"
+                  value={userData.nationality}
+                  onChange={(event) => setNationality(event.target.value)}
+                  className="w-[12rem] h-[30px] bg-white text-[#6C6C6C] border-2 border-[#D7D7D7] rounded-[10px] pl-[14px]"
+                >
+                  <option value="대한민국">대한민국 / Republic of Korea</option>
+                  <option value="미국">미국 / America</option>
+                  <option value="중국">중국 / China</option>
+                  <option value="일본">일본 / Japan</option>
+                </select>
               ) : (
                 <div className="font-bold bg-white">{userData.nationality}</div>
               )}
@@ -94,6 +103,7 @@ export default function UserInfo({setNickname,setNationality,setPassword,setBirt
                   placeholder="변경할 비밀번호"
                   onChange={handleValue}
                 ></input>
+                {validataErrors.password && <p className=' text-red-500 text-sm'>{validataErrors.password}</p>}
               </div>
             ) : (
               <div>
