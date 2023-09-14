@@ -7,7 +7,7 @@ export default function MyStamp() {
   const topData = stampList.data.slice(0, 8);
   const bottomData = stampList.data.slice(8, 16);
   return (
-    <div className="flex justify-center bookshelf-animation">
+    <div className="flex justify-center">
       <TopSidebar />
       <BottomSidebar />
       <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white">

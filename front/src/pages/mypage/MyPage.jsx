@@ -19,7 +19,7 @@ export default function MyPage() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const data = await axios.get('https://9129-116-126-166-12.ngrok-free.app/members/test@gmail.com', {
+        const data = await axios.get('http://ec2-43-201-106-244.ap-northeast-2.compute.amazonaws.com:8080/members/test@gmail.com', {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
@@ -36,7 +36,7 @@ export default function MyPage() {
     getData();
   }, []);
   return (
-    <div className="flex justify-center bookshelf-animation">
+    <div className="flex justify-center">
       <TopSidebar />
       <BottomSidebar />
       <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white ">

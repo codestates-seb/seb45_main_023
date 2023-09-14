@@ -10,7 +10,7 @@ export default function CardList({ start, end }) {
   const handleRemoveBookmark = async () => {
     try {
       const request = await axios.patch(
-        `https://9129-116-126-166-12.ngrok-free.app/members/${info.id}/no-bookmark/${data.id}`,
+        `http://ec2-43-201-106-244.ap-northeast-2.compute.amazonaws.com:8080/members/${info.id}/no-bookmark/${data.id}`,
         {
           headers: {
             'Content-Type': 'application/json',

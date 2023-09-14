@@ -54,7 +54,7 @@ export default function MyMission() {
   const handleClear = () => {
     const postData = async () => {
       try {
-        const request = await axios.patch(`https://9129-116-126-166-12.ngrok-free.app/missions/mission-complete/2`, {
+        const request = await axios.patch(`http://ec2-43-201-106-244.ap-northeast-2.compute.amazonaws.com:8080/missions/mission-complete/2`, {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
@@ -68,7 +68,7 @@ export default function MyMission() {
     postData();
   };
   return (
-    <div className="flex justify-center bookshelf-animation">
+    <div className="flex justify-center">
       <TopSidebar />
       <BottomSidebar />
       <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white">

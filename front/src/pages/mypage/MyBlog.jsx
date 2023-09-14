@@ -18,7 +18,7 @@ export default function MyBlog() {
   useEffect(() => {
     const getData = async () => {
       const BlogResponse = await axios.get(
-        `https://9129-116-126-166-12.ngrok-free.app/blogs/members/${data.id}?size=3&page=1`,
+        `http://ec2-43-201-106-244.ap-northeast-2.compute.amazonaws.com:8080/blogs/members/${data.id}?size=3&page=1`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -27,9 +27,10 @@ export default function MyBlog() {
         }
       );
       setBlogs(BlogResponse.data.data);
+      console.log(BlogResponse.data);
 
       const CommentResponse = await axios.get(
-        `https://9129-116-126-166-12.ngrok-free.app/comments/members/${data.id}?page=3&size=1`,
+        `http://ec2-43-201-106-244.ap-northeast-2.compute.amazonaws.com:8080/comments/members/${data.id}?page=3&size=1`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -44,7 +45,7 @@ export default function MyBlog() {
   }, []);
 
   return (
-    <div className="flex justify-center bookshelf-animation">
+    <div className="flex justify-center">
       <TopSidebar />
       <BottomSidebar />
       <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white ">
