@@ -1,12 +1,12 @@
-import TopSidebar from '../../components/mypage/TopSidebar';
-import BottomSidebar from '../../components/mypage/BottomSidebar';
-import MypageNotice from '../../components/mypage/MypageNotice';
-import UserInfo from '../../components/mypage/UserInfo';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useRecoilState } from 'recoil';
-import { User, userInfo } from '../../recoil/mypage';
-import Follower from '../../components/mypage/Follower';
+import TopSidebar from "../../components/mypage/TopSidebar";
+import BottomSidebar from "../../components/mypage/BottomSidebar";
+import MypageNotice from "../../components/mypage/MypageNotice";
+import UserInfo from "../../components/mypage/UserInfo";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { User, userInfo } from "../../recoil/mypage";
+import Follower from "../../components/mypage/Follower";
 
 export default function MyPage() {
   const [data, setData] = useRecoilState(User);
@@ -16,25 +16,27 @@ export default function MyPage() {
   const [password, setPassword] = useState('');
   const [birth, setBirth] = useState(data.birth);
   console.log(data);
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const data = await axios.get('http://ec2-43-201-106-244.ap-northeast-2.compute.amazonaws.com:8080/members/test@gmail.com', {
-          headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': '69420',
-          },
-        });
-        setData(data.data);
-        const { nickname, nationality, password, birth, id } = data.data;
-        setInfo({ nickname, nationality, password, birth, id });
-      } catch (err) {
-        console.log(err);
-      }
-    };
+ 	useEffect(() => {
+		const getData = async () => {
+			try {
+				const data = await axios.get(
+					`${process.env.REACT_APP_SERVER_URL}/members/test@gmail.com`,
+					{
+						headers: {
+							"Content-Type": "application/json",
+						},
+					}
+				);
+				setData(data.data);
+				const { nickname, nationality, password, birth, id } = data.data;
+				setInfo({ nickname, nationality, password, birth, id });
+			} catch (err) {
+				console.log(err);
+			}
+		};
 
-    getData();
-  }, []);
+		getData();
+	}, []);
   return (
     <div className="flex justify-center">
       <TopSidebar />

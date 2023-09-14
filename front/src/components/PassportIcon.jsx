@@ -8,7 +8,7 @@ export default function PassportIcon() {
 	const authorizationToken = useRecoilValue(authorizationTokenState);
 
 	return (
-		<div className="fixed bottom-48 right-48 cursor-pointer">
+		<div className="fixed bottom-52 right-58 cursor-pointer">
 			{authorizationToken ? (
 				<Link to="/mypage">
 					<section

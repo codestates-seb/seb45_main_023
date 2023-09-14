@@ -1,42 +1,41 @@
 import React, { useState, useEffect, useRef } from "react";
-import Tag from '../../components/blog/tag';
+import Tag from "../../components/blog/tag";
 import BlogHeader from "../../components/blog/blogtitle";
 import { NegativeButton } from "../../components/Buttons";
-import axios from 'axios';
+import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
-// Toast 에디터
-import { Editor } from '@toast-ui/react-editor';
-import '@toast-ui/editor/dist/toastui-editor.css';
-
+import Editor from '../../components/blog/editor';
 
 export default function BlogWrite() {
   const navigate = useNavigate();
   const {cityId, member_id} = useParams();
-  const editorRef = useRef();
-  const MarkDownClick = () => {
-    setBlogContent(editorRef.current.getInstance().getMarkdown())
-  }
-  const blog_id = 1;
 
   const [selectedTag, setSelectedTag] = useState([]); // 태그
-  // const [locationName, setLocationName] = useState('Jeju'); // 지역 이름 : 서버 연결 시 초기값 '' 지정하기
 
-  const availableTag = ['인기글', '음식', '숙소', '교통', '쇼핑', '관광지', '액티비티'];
 
-  const [blogTitle, setBlogTitle] = useState('');
-  const [blogContent, setBlogContent] = useState('');
+	const availableTag = [
+		"인기글",
+		"음식",
+		"숙소",
+		"교통",
+		"쇼핑",
+		"관광지",
+		"액티비티",
+	];
 
-  const toggleTag = (tag) => {
-    if (selectedTag.includes(tag)) {
-      setSelectedTag(selectedTag.filter((t) => t !== tag));
-    } else {
-      setSelectedTag([...selectedTag, tag]);
-    }
-  };
+	const [blogTitle, setBlogTitle] = useState("");
+	const [blogContent, setBlogContent] = useState("");
 
+	const toggleTag = (tag) => {
+		if (selectedTag.includes(tag)) {
+			setSelectedTag(selectedTag.filter((t) => t !== tag));
+		} else {
+			setSelectedTag([...selectedTag, tag]);
+		}
+	};
+  
   const handleSave = async () => {
-    MarkDownClick()
     const postData = {
       title: blogTitle,
       body: blogContent,
@@ -44,7 +43,7 @@ export default function BlogWrite() {
     }
 
     try {
-      const response = await axios.post(`https://9129-116-126-166-12.ngrok-free.app/blogs/${member_id}/${cityId}`, postData, {
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/blogs/${member_id}/${cityId}`, postData, {
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420'
@@ -60,7 +59,6 @@ export default function BlogWrite() {
     } catch (error) {
       console.error('게시물 글쓰기 실패:', error);
     }
-    // navigate(`/blogdetail`);
   }
 
   return (
@@ -85,59 +83,7 @@ export default function BlogWrite() {
             Content
           </h1>
           <div>
-            <Editor
-              initialValue="이미지와 내용을 작성해주세요."
-              ref={editorRef}
-              previewStyle="vertical" // 미리보기 스타일 지정
-              height="300px" // 에디터 창 높이
-              initialEditType="markdown" // 초기 입력모드 설정(디폴트 markdown)
-              hideModeSwitch={true}
-              toolbarItems={[
-                // 툴바 옵션 설정
-                ['heading', 'bold', 'italic', 'strike'],
-                ['hr', 'quote'],
-                ['ul', 'ol', 'task', 'indent', 'outdent'],
-                ['table', 'image', 'link'],
-                ['code', 'codeblock']
-              ]}
-              hooks={{
-                addImageBlobHook: async (blob, callback) => {
-                  try { // 에디터에 업로드한 이미지를 formData 객체에 저장
-                    const formData = new FormData();
-                    formData.append("image", blob);
-
-                    const response = await fetch(`https://9129-116-126-166-12.ngrok-free.app/blogs/${blog_id}/upload-images`, {
-                      method: 'POST',
-                      headers: {
-                        'ngrok-skip-browser-warning': '69420'
-                      },
-                      body: formData,
-                    })
-
-                    const filename = await response.json();
-                    console.log('서버에 저장된 파일명 : ' , filename);
-                    console.log(blob);
-                    console.log(filename);
-
-                    const getResponse = await fetch(`https://9129-116-126-166-12.ngrok-free.app/blogs/print-image?name=${filename.name}`, {
-                      method: 'GET',
-                      headers: {
-                        'ngrok-skip-browser-warning': '69420'
-                      }
-                    });
-
-                    const imageUrl = await getResponse.json();
-                    callback(imageUrl.path, 'image alt attribute');
-
-                  } catch (error) {
-                    console.error('업로드 실패 : ', error);
-                  }
-                }
-              }}
-              useCommandShortcut={true} // 키보드 입력 컨트롤 방지
-              value={blogContent}
-              onChange={MarkDownClick}
-            ></Editor>
+            <Editor body={blogContent} setBody={setBlogContent}/>
           </div>
 
           <h1 className="text-xl font-bold pt-10">

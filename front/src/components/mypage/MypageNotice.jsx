@@ -70,10 +70,9 @@ export default function MypageNotice({ nickname, nationality, password, birth })
   const handlePost = () => {
     const patchData = async () => {
       try {
-        const response = await axios.patch(`http://ec2-43-201-106-244.ap-northeast-2.compute.amazonaws.com:8080/members/${info.id}`, request, {
+        const response = await axios.patch(`${process.env.REACT_APP_SERVER_URL}/members/${info.id}`, request, {
           headers: {
             'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': '69420',
           },
         });
         setData(response.data);

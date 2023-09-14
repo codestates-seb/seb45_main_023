@@ -1,36 +1,33 @@
-import CardList from '../../components/mypage/CardList';
-import TopSidebar from '../../components/mypage/TopSidebar';
-import BottomSidebar from '../../components/mypage/BottomSidebar';
-import BookmarkPagenation from '../../components/mypage/Pagenation';
-import { useEffect } from 'react';
-import axios from 'axios';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { User, bookmarkInfo } from '../../recoil/mypage';
+import CardList from "../../components/mypage/CardList";
+import TopSidebar from "../../components/mypage/TopSidebar";
+import BottomSidebar from "../../components/mypage/BottomSidebar";
+import BookmarkPagenation from "../../components/mypage/Pagenation";
+import { useEffect } from "react";
+import axios from "axios";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { User, bookmarkInfo } from "../../recoil/mypage";
 
 export default function MyBookmark() {
-  const info = useRecoilValue(User)
-  const [bookmark,setBookmark] = useRecoilState(bookmarkInfo)
-  console.log(bookmark);
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await axios.get(
-          `http://ec2-43-201-106-244.ap-northeast-2.compute.amazonaws.com:8080/blogs/my-bookmarks?page=1&size=10&bookmarks=${info.bookmarks[0]}`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'ngrok-skip-browser-warning': '69420',
-            },
-          }
-        );
-        setBookmark(response.data.data)
-        
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getData();
-  }, []);
+  const info = useRecoilValue(User);
+	const [bookmark, setBookmark] = useRecoilState(bookmarkInfo);
+	useEffect(() => {
+		const getData = async () => {
+			try {
+				const response = await axios.get(
+					`${process.env.REACT_APP_SERVER_URL}/blogs/my-bookmarks?page=1&size=10&bookmarks=${info.bookmarks[0]}`,
+					{
+						headers: {
+							"Content-Type": "application/json",
+						},
+					}
+				);
+				setBookmark(response.data.data);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		getData();
+	}, []);
   return (
     <div className="flex justify-center">
       <TopSidebar />
