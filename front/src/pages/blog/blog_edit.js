@@ -13,7 +13,7 @@ export default function EditBlogPost() {
 		const fetchBlogPost = async () => {
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_SERVER_URL}/blogs/${blog_id}`,
+					`${process.env.REACT_APP_TEST_URL}/blogs/${blog_id}`,
 					{
 						headers: {
 							"ngrok-skip-browser-warning": "69420",

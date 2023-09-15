@@ -164,7 +164,7 @@ export const GoogleLogInButton = () => {
   
   const redirectToExternalSite = () => {
     // 외부 사이트의 URL을 여기에 입력합니다.
-    const oauthUrl = `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/google`;
+    const oauthUrl = `${process.env.REACT_APP_TEST_URL}/oauth2/authorization/google`;
 
     // 현재 페이지를 외부 사이트로 이동합니다.
     window.location.href = oauthUrl;

@@ -32,3 +32,5 @@ export default function FindEmail () {
         </div>
     )
 };
+
+// 이메일, 비밀번호 찾기 조건을 어떻게 해야할지?

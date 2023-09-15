@@ -10,6 +10,7 @@ import { currentLocationState, beadIndexState } from "../../recoil/main";
 import { locations } from "../../components/mainpage/locations";
 
 import { LogOutButton } from "../../components/LogOutButton";
+import WithdrawButton from "../../components/WithdrawButton";
 
 export default function WelcomePage() {
 	const [authorizationToken, setAuthorizationToken] = useRecoilState(
@@ -34,7 +35,7 @@ export default function WelcomePage() {
 		const getData = async () => {
 			try {
 				const data = await axios.get(
-					`${process.env.REACT_APP_SERVER_URL}/members/me`,
+					`${process.env.REACT_APP_TEST_URL}/members/me`,
 					{
 						headers: {
 							Authorization: `Bearer ${authorizationToken}`,
@@ -81,8 +82,9 @@ export default function WelcomePage() {
 						<div className="text-[70px] text-[#0088F8]">MarbleUs</div>
 					</div>
 					<section className="flex gap-[40px]">
-						{/* 로그아웃 버튼 나중에 삭제할 것! (test중...) */}
+						{/* 로그아웃, 회원탈퇴 버튼 나중에 삭제할 것! (test중...) */}
 						<LogOutButton/>
+						<WithdrawButton />
 						<ToSmallButton
 							linkName="mainpage"
 							Size="lg"
