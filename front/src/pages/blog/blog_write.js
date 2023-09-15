@@ -26,6 +26,7 @@ export default function BlogWrite() {
 
 	const [blogTitle, setBlogTitle] = useState("");
 	const [blogContent, setBlogContent] = useState("");
+  const [imageArr, setImageArr] = useState([]);
 
 	const toggleTag = (tag) => {
 		if (selectedTag.includes(tag)) {
@@ -38,12 +39,12 @@ export default function BlogWrite() {
   const handleSave = async () => {
     const postData = {
       title: blogTitle,
-      body: blogContent,
+      body: blogContent || imageArr,
       tags: selectedTag
     }
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/blogs/${member_id}/${cityId}`, postData, {
+      const response = await axios.post(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${member_id}/${cityId}?image-names=${imageArr}`, postData, {
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420'
@@ -51,6 +52,7 @@ export default function BlogWrite() {
       });
 
       console.log('게시물 글쓰기 성공:', response.data);
+      console.log('게시물 글쓰기 성공2:', imageArr);
       console.log(cityId);
       console.log('title : ' + blogTitle);
       console.log('content : ' + blogContent);
@@ -58,6 +60,11 @@ export default function BlogWrite() {
       navigate(`/blogdetail/${response.data.id}`);
     } catch (error) {
       console.error('게시물 글쓰기 실패:', error);
+      console.log(cityId);
+      console.log(member_id);
+      console.log('title : ' + blogTitle);
+      console.log('content : ' + blogContent);
+      console.log(selectedTag);
     }
   }
 
@@ -83,7 +90,7 @@ export default function BlogWrite() {
             Content
           </h1>
           <div>
-            <Editor body={blogContent} setBody={setBlogContent}/>
+            <Editor body={blogContent || imageArr} setBody={setBlogContent} setImageArr={setImageArr}/>
           </div>
 
           <h1 className="text-xl font-bold pt-10">
