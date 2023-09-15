@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useRecoilState } from "recoil";
 import Board from "../../components/mainpage/board";
 import PassportIcon from "../../components/PassportIcon";
@@ -77,7 +78,7 @@ export default function Main() {
 	}, [authorizationToken, setData, setInfo]);
 
 	return (
-		<div className="App">
+		<div class="App bg-slate-200 min-w-[1056px] min-h-[904px]">
 			<Board />
 			<PassportIcon />
 		</div>
