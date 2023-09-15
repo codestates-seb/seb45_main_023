@@ -30,15 +30,14 @@ export default function PostDetail({
   
   const navigate = useNavigate();
 
-  const blog_id = useParams().blogId;
-  const city_id = useParams().cityId;
+  const {blogId, cityId} = useParams();
 
   useEffect(() => {
     // 서버에서 댓글 목록을 가져오는 함수
     const fetchComments = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/blogs/${blog_id}?page=1&size=10`, {
+        const response = await axios.get(`${process.env.REACT_APP_TEST_URL}/comments/blogs/${blogId}?page=1&size=10`, {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
@@ -54,13 +53,13 @@ export default function PostDetail({
     };
 
     fetchComments();
-  }, [blog_id]); // blog_id가 변경될 때마다 실행
+  }, [blogId]); // blog_id가 변경될 때마다 실행
 
   useEffect(() => {
     // 서버에서 특정 게시물 가져오기
     const fetchBlogPost = async () => {
       try {
-        const response = await axios.get(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${blog_id}`, {
+        const response = await axios.get(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${blogId}`, {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
@@ -75,9 +74,7 @@ export default function PostDetail({
     };
 
     fetchBlogPost();
-  }, [blog_id]);
-
-  console.log("왜 안나와.." , blogData.images)
+  }, [blogId]);
 
   if (!blogData) {
     return <div>Loading...</div>;
@@ -88,7 +85,7 @@ export default function PostDetail({
     try {
       const imageNames = blogData.images.map(image => image.name);
 
-      const response = await axios.delete(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${blog_id}?names=${imageNames}`, {
+      const response = await axios.delete(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${blogId}?names=${imageNames}`, {
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
@@ -98,7 +95,7 @@ export default function PostDetail({
       if (response.status === 200) {
         alert('게시물이 성공적으로 삭제되었습니다.');
         console.log('게시물이 성공적으로 삭제되었습니다.');
-        navigate(`/bloglist/${city_id}`);
+        navigate(`/bloglist/${cityId}`);
       } else {
         console.error('게시물 삭제 실패');
       }
@@ -110,7 +107,7 @@ export default function PostDetail({
   const handleCommentSubmit = async () => {
     // 작성한 댓글 서버로 보내기
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/comments/${blog_id}/${member_id}`, {
+      const response = await axios.post(`${process.env.REACT_APP_TEST_URL}/comments/${blogId}/${member_id}`, {
         body: newComment,
       }, {
         headers: {
@@ -136,7 +133,7 @@ export default function PostDetail({
   const handleCommentDelete = async (comment_id) => {
     // 댓글 삭제
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/comments/${comment_id}`);
+      const response = await axios.delete(`${process.env.REACT_APP_TEST_URL}/comments/${comment_id}`);
 
       if (response.status === 201) {
         // 댓글이 성공적으로 삭제된 경우
@@ -160,7 +157,7 @@ export default function PostDetail({
   const handleSaveEdit = async () => {
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_SERVER_URL}/blogs/${blog_id}`,
+        `${process.env.REACT_APP_TEST_URL}/blogs/${blogId}`,
         {
           title: editedTitle,
           body: editedBody,

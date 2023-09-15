@@ -2,6 +2,7 @@ import data from '../../dummy/dummy';
 import React, { useState, useEffect } from "react";
 import BlogHeader from "../../components/blog/blogtitle";
 import PostDetail from "../../components/blog/post_detail";
+import { useParams } from 'react-router-dom';
 
 export default function Blogdetail() {
   const datas = data[0];
