@@ -5,16 +5,18 @@ export default function PostLink({
   title,
   body,
   profile_pic,
-  member_id,
+  id,
   city_id,
-  created_at,
-  modified_at,
-  tags
+  createdAt,
+  modifiedAt,
+  tags,
 }) {
   const navigate = useNavigate();
   const blog_id = useParams().blogId;
 
   const handlePostClick = () => {
+    console.log(blog_id)
+    console.log(title)
     navigate(`/blogdetail/${blog_id}`);
   }
 
@@ -43,10 +45,10 @@ export default function PostLink({
       <div className='BottomSection flex justify-between items-center'>
         <div className='user_info flex items-center'>
           <img src={profile_pic} alt='profile_pic' className='mr-2' />
-          {member_id}
+          {id}
         </div>
         <div className='user_createdat'>
-          {modified_at ? `${modified_at}에 수정` : `${created_at}`}
+          {createdAt ? `${createdAt}` : `${modifiedAt}에 수정`}
         </div>
       </div>
     </div>

@@ -7,7 +7,9 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { BlogList } from "../../recoil/blog";
 import { bookmarkedPostsState } from "../../recoil/blog";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import data from '../../dummy/dummy';
+import BlogPagenation from "../../components/mypage/BlogPagination";
 
 export default function Bloglist() {
 	const [selectedTag, setSelectedTag] = useState([]); // 태그
@@ -15,7 +17,8 @@ export default function Bloglist() {
 	const [posts, setPosts] = useRecoilState(BlogList);
 	const [bookmarkedPosts, setBookmarkedPosts] =
 		useRecoilState(bookmarkedPostsState);
-	const city_id = useParams().cityId;
+	const {member_id, cityId} = useParams();
+	const navigate = useNavigate();
 
 	const availableTag = [
 		"인기글",
@@ -40,7 +43,7 @@ export default function Bloglist() {
 		const getData = async () => {
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_SERVER_URL}/blogs/cities/${city_id}?page=1&size=10`,
+					`${process.env.REACT_APP_SERVER_URL}/blogs/cities/${cityId}?page=1&size=10`,
 					{
 						headers: {
 							"Content-Type": "application/json",
@@ -54,7 +57,7 @@ export default function Bloglist() {
 		};
 
 		getData();
-	}, [city_id, setPosts]);
+	}, [cityId, setPosts]);
 
 	useEffect(() => {
 		// 태그 filter
@@ -75,7 +78,7 @@ export default function Bloglist() {
 	return (
 		<div className="relative">
 			<BlogHeader />
-			<div className="relative h-[1034px] bg-gray-100 opacity-70 rounded-t-lg shadow-lg mt-[-100px] ml-10 mr-10">
+			<div className="relative h-[1000px] bg-gray-100 opacity-70 rounded-t-lg shadow-lg mt-[-100px] ml-10 mr-10">
 				<div className="tag_list m-10">
 					<div className="tag_container pt-10 flex justify-between">
 						<div className="tag_left">
@@ -89,7 +92,9 @@ export default function Bloglist() {
 							))}
 						</div>
 						<div className="tag_right">
-							<button className="w-[100px] h-[50px] text-[10px]">
+							<button className="w-[100px] h-[50px] text-[10px]"
+							onClick={() => navigate(`/blogwrite/${member_id}/${cityId}`)}
+							>
 								<NegativeButton text={"글 쓰기"} />
 							</button>
 						</div>
@@ -105,20 +110,25 @@ export default function Bloglist() {
 								title={post.title}
 								body={post.body}
 								profile_pic={post.profile_pic}
-								member_id={post.member_id}
+								id={post.id}
 								city_id={post.city_id}
-								created_at={post.created_at}
-								modified_at={post.modified_at}
+								createdAt={post.createdAt}
+								modifiedAt={post.modifiedAt}
 								tags={post.tags}
 							/>
-							<button onClick={() => handleBookmarkToggle(post.blog_id)}>
-								{bookmarkedPosts.includes(post.blog_id)
-									? "Unbookmark"
-									: "Bookmark"}
-							</button>
+            <div className="flex items-center justify-between mt-4">
+              <button onClick={() => handleBookmarkToggle(data.blog_id)}>
+                {bookmarkedPosts.includes(data.blog_id) ? (
+                  <img src="/unbookmark.png" alt="unbookmark" width="25" height="25" />
+                ) : (
+                  <img src="/bookmark.png" alt="bookmark" width="25" height="25" />
+                )}
+              </button>
+            </div>
 						</div>
 					)
 				)}
+				<BlogPagenation />
 			</div>
 		</div>
 	);
