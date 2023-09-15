@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useRecoilState } from "recoil";
 import {
@@ -41,6 +42,7 @@ function Modal({ city }) {
 					{
 						headers: {
 							"Content-Type": "application/json",
+							"ngrok-skip-browser-warning": "69420",
 						},
 					}
 				);
@@ -57,6 +59,7 @@ function Modal({ city }) {
 					{
 						headers: {
 							"Content-Type": "application/json",
+							"ngrok-skip-browser-warning": "69420",
 						},
 					}
 				);
@@ -68,23 +71,20 @@ function Modal({ city }) {
 
 		const postMission = async () => {
 			try {
-				const request = {
-					currentLocation: `${current.BLOCK}`,
-					currentCityCode: `${current.name}`,
-				};
-
-				const response = await axios.post(
-					`${process.env.REACT_APP_SERVER_URL}/${info.id}/${city.cityId}`,
-					request,
+				await axios.post(
+					`${process.env.REACT_APP_SERVER_URL}/missions/${info.id}/${city.cityId}`,
 					{
 						headers: {
 							"Content-Type": "application/json",
+							"ngrok-skip-browser-warning": "69420",
 						},
 					}
 				);
 				console.log("postMission done");
 			} catch (err) {
 				console.error("postMission", err);
+			} finally {
+				fetchMissions();
 			}
 		};
 
@@ -95,11 +95,16 @@ function Modal({ city }) {
 					{
 						headers: {
 							"Content-Type": "application/json",
+							"ngrok-skip-browser-warning": "69420",
 						},
 					}
 				);
-				if (response.data.cityName === city.name) {
-					setMissions(response);
+				if (Array.isArray(response.data)) {
+					// response.data가 배열인지 확인
+					const seoulMissions = response.data.filter(
+						(mission) => mission.cityName === `${current.name}`
+					);
+					setMissions(seoulMissions);
 				}
 			} catch (err) {
 				console.error("fetchMissions", err);
@@ -109,11 +114,9 @@ function Modal({ city }) {
 		patchLocation();
 		fetchCityInfo();
 		postMission();
-		fetchMissions();
-
-		console.log(current);
-		console.log(beadIndex);
 	}, [isOpen]);
+
+	console.log(missions);
 
 	return (
 		<>
