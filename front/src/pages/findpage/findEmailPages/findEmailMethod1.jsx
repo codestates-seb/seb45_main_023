@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { emailState, passwordState } from '../../../recoil/logInSignUpState';
 import {FindSubmitButton, ToSmallButton} from "../../../components/Buttons";
 

@@ -1,5 +1,7 @@
-import React from 'react';
 import './App.css';
+import React, { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { authorizationTokenState } from './recoil/logInSignUpState';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { RouteConst } from './interface/RouteConst';
 import Main from './pages/mainpage/Main';
@@ -25,6 +27,19 @@ import FindPasswordMethod2 from './pages/findpage/findPasswordPages/findPassword
 import FindPassword from './pages/findpage/findPasswordPages/findPassword';
 
 function App() {
+  const [, setAuthorizationToken] = useRecoilState(authorizationTokenState)
+
+  // 모든 페이지에서 새로고침 등으로 창이 초기화 되었을 때
+  useEffect(() => {
+    // 로컬 스토리지에서 로그인 시 저장했던 토큰 불러오기
+    const updateAuthorizationToken = localStorage.getItem('Authorization'); 
+
+    // 로컬 토큰이 존재하면(= 로그인을 했었으면) authorizationTokenState 상태 업데이트(= 로그인 상태 유지)
+    if (updateAuthorizationToken) {
+      setAuthorizationToken(updateAuthorizationToken);
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -39,7 +54,6 @@ function App() {
         <Route path={RouteConst.blog_write} element={<Blogwrite />} />
         <Route path={RouteConst.blog_detail} element={<Blogdetail />} />
 
-        <Route path={RouteConst.login} element={<LogInPage />} />
         <Route path={RouteConst.login} element={<LogInPage />} />
         <Route path={RouteConst.signup} element={<SignUpPage />} />
         <Route path={RouteConst.welcome} element={<WelcomePage />} />
