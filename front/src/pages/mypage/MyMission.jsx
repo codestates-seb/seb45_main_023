@@ -18,6 +18,7 @@ export default function MyMission() {
 					{
 						headers: {
 							"Content-Type": "application/json",
+							"ngrok-skip-browser-warning": "69420",
 						},
 					}
 				);
@@ -39,6 +40,7 @@ export default function MyMission() {
 					{
 						headers: {
 							"Content-Type": "application/json",
+							"ngrok-skip-browser-warning": "69420",
 						},
 					}
 				);
@@ -60,6 +62,7 @@ export default function MyMission() {
 					{
 						headers: {
 							"Content-Type": "application/json",
+							"ngrok-skip-browser-warning": "69420",
 						},
 					}
 				);

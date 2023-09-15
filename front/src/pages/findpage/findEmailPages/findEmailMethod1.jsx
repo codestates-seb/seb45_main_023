@@ -64,14 +64,15 @@ export default function FindEmailMethod1 () {
         try {
             // 서버 API 호출
             const response = await axios.post(
-                `${process.env.REACT_APP_SERVER_URL}/엔드포인트/???`,
-                requestData,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
+							`${process.env.REACT_APP_SERVER_URL}/엔드포인트/???`,
+							requestData,
+							{
+								headers: {
+									"Content-Type": "application/json",
+									"ngrok-skip-browser-warning": "69420",
+								},
+							}
+						);
 
             console.log(response)
             console.log(response.data)
