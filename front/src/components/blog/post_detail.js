@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import Editor from './editor';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import parse from 'html-react-parser';
 
 
 export default function PostDetail({
@@ -27,15 +27,17 @@ export default function PostDetail({
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(blogData.title);
   const [editedBody, setEditedBody] = useState(blogData.body);
+  
+  const navigate = useNavigate();
 
-  const blog_id = useParams().blogId;
+  const {blogId, cityId} = useParams();
 
   useEffect(() => {
     // 서버에서 댓글 목록을 가져오는 함수
     const fetchComments = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/blogs/${blog_id}?page=1&size=10`, {
+        const response = await axios.get(`${process.env.REACT_APP_TEST_URL}/comments/blogs/${blogId}?page=1&size=10`, {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
@@ -51,26 +53,28 @@ export default function PostDetail({
     };
 
     fetchComments();
-  }, [blog_id]); // blog_id가 변경될 때마다 실행
+  }, [blogId]); // blog_id가 변경될 때마다 실행
 
   useEffect(() => {
     // 서버에서 특정 게시물 가져오기
     const fetchBlogPost = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/${blog_id}`, {
+        const response = await axios.get(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${blogId}`, {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
         });
         setBlogData(response.data);
+        console.log("게시물 가져오기 성공 : ", response.data);
+        console.log("게시물 가져오기 성공2 : ", response.data.images);
       } catch (error) {
         console.error('게시물 가져오기 실패 : ', error);
       }
     };
 
     fetchBlogPost();
-  }, [blog_id]);
+  }, [blogId]);
 
   if (!blogData) {
     return <div>Loading...</div>;
@@ -79,7 +83,9 @@ export default function PostDetail({
   const handlePostDelete = async () => {
     // 게시글 삭제하기
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/blogs/${blog_id}`, {
+      const imageNames = blogData.images.map(image => image.name);
+
+      const response = await axios.delete(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${blogId}?names=${imageNames}`, {
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
@@ -89,6 +95,7 @@ export default function PostDetail({
       if (response.status === 200) {
         alert('게시물이 성공적으로 삭제되었습니다.');
         console.log('게시물이 성공적으로 삭제되었습니다.');
+        navigate(`/bloglist/${cityId}`);
       } else {
         console.error('게시물 삭제 실패');
       }
@@ -100,7 +107,7 @@ export default function PostDetail({
   const handleCommentSubmit = async () => {
     // 작성한 댓글 서버로 보내기
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/comments/${blog_id}/${member_id}`, {
+      const response = await axios.post(`${process.env.REACT_APP_TEST_URL}/comments/${blogId}/${member_id}`, {
         body: newComment,
       }, {
         headers: {
@@ -126,7 +133,7 @@ export default function PostDetail({
   const handleCommentDelete = async (comment_id) => {
     // 댓글 삭제
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/comments/${comment_id}`);
+      const response = await axios.delete(`${process.env.REACT_APP_TEST_URL}/comments/${comment_id}`);
 
       if (response.status === 201) {
         // 댓글이 성공적으로 삭제된 경우
@@ -142,12 +149,15 @@ export default function PostDetail({
 
   const handleEditClick = () => {
     setIsEditing(true);
+
+    setEditedTitle(blogData.title);
+    setEditedBody(blogData.body);
   };
   
   const handleSaveEdit = async () => {
     try {
-      const response = await axios.put(
-        `${process.env.REACT_APP_SERVER_URL}/blogs/${blog_id}`,
+      const response = await axios.patch(
+        `${process.env.REACT_APP_TEST_URL}/blogs/${blogId}`,
         {
           title: editedTitle,
           body: editedBody,
@@ -160,7 +170,7 @@ export default function PostDetail({
         }
       );
   
-      if (response.status === 200) {
+      if (response.status === 201) {
         setBlogData({
           ...blogData,
           title: editedTitle,
@@ -181,11 +191,19 @@ export default function PostDetail({
     <div className='PostContainer'>
       {isEditing ? (
       <div>
+        <h1 className="text-xl font-bold pt-10">
+            Title
+        </h1>
         <input
           type="text"
           value={editedTitle}
+          className="border border-gray-300 px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
           onChange={(e) => setEditedTitle(e.target.value)}
         />
+        <h1 className="text-xl font-bold pt-10">
+            Content
+        </h1>
+        <div>
           <CKEditor
             editor={ClassicEditor}
             data={editedBody}
@@ -197,8 +215,19 @@ export default function PostDetail({
               setEditedBody(data);
             }}
           />
-          <button onClick={handleSaveEdit}>저장</button>
-          <button onClick={() => setIsEditing(false)}>취소</button>
+          </div>
+            <button 
+              onClick={handleSaveEdit} 
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mr-2 mt-4"
+            >
+              저장
+            </button>
+            <button 
+              onClick={() => setIsEditing(false)} 
+              className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 mt-4"
+            >
+              취소
+            </button>
       </div>
     ) : (
       <>
@@ -211,12 +240,15 @@ export default function PostDetail({
         </div>
         <div className='user_info flex items-center'>
           <img src={profile_pic} alt='profile_pic' className='mr-2' />
-          {blogData.id}
+          {blogData.member.nickname}
         </div>
       </div>
 
       <div className='ContentSection border border-[#0387FA] rounded-lg h-[500px]'>
-        {blogData.body}
+        {parse(blogData.body)}
+        {blogData.images.map((image, index) => (
+          <img key={index} src={image.path} alt={`Blog Image ${index}`} />
+        ))}
       </div>
 
       <div className='inline-block mt-4'>
@@ -238,8 +270,6 @@ export default function PostDetail({
       </button>
       </>
     )}
-      
-    
 
     <div className="comment_form mt-4">
       <h4 className="comment_form_heading text-lg font-semibold mb-2">댓글</h4>
@@ -276,5 +306,7 @@ export default function PostDetail({
       </div>
 
     </div>
+
+    
   )
 }

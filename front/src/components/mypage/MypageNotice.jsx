@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Link, Route } from 'react-router-dom';
 import { RouteConst } from '../../interface/RouteConst';
 import { useEffect } from 'react';
+import AdminButton from '../AdminButton';
 
 export default function MypageNotice({ nickname, nationality, password, birth }) {
   const [isEdit, setIsEdit] = useRecoilState(Edit);
@@ -113,6 +114,8 @@ export default function MypageNotice({ nickname, nationality, password, birth })
         <button className="ml-4 w-[10rem]" onClick={handleEdit}>
           {isEdit ? <Button text={'수정완료'} color={'blue'} /> : <Button text={'개인정보수정'} color={'blue'} />}
         </button>
+
+        <AdminButton />
       </div>
     </div>
   );
