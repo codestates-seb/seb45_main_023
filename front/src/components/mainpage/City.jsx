@@ -16,7 +16,7 @@ const City = ({ location }) => {
 		height = "h-34";
 	}
 
-	if (location.cityId <= 4) {
+	if (location.cityId >= 1 && location.cityId <= 4) {
 		frontColor = "red-500";
 		backColor = "red-700";
 	} else if (location.cityId >= 6 && location.cityId <= 9) {
