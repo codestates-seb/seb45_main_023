@@ -7,7 +7,7 @@ export const LogOutButton = () => {
     const navigate = useNavigate();
     const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState)
   
-    const logOutHandler = async () => {
+    const logOutHandler = () => {
         if(authorizationToken) {
             // 로컬에 저장된 토큰 지우기
             localStorage.removeItem('Authorization');

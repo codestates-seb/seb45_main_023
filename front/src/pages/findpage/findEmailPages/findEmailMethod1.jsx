@@ -122,13 +122,19 @@ export default function FindEmailMethod1 () {
                         </label>
                         <input type="email" name="email" id="email" placeholder="email@example.com" value={email} onChange={(event) => setEmail(event.target.value)} className="w-[100%] h-[50px] bg-white text-[#6C6C6C] text-[18px] border-2 border-[#D7D7D7] rounded-[10px] pl-[14px]">
                         </input> 
+                        {errors.email && (
+							<p className="text-red-500 mb-[-24px]">{errors.email}</p>
+						)}
                     </div>
                     <div className="flex flex-col justify-center">
                         <label htmlFor="password" className="font-medium text-[20px] block mb-[7px]">
                             비밀번호 / Password
                         </label>
-                        <input type="password" name="password" id="password" placeholder="••••••••" value={email} onChange={(event) => setPassword(event.target.value)} className="w-[100%] h-[50px] bg-white text-[#6C6C6C] text-[18px] border-2 border-[#D7D7D7] rounded-[10px] pl-[14px]">
+                        <input type="password" name="password" id="password" placeholder="••••••••" value={password} onChange={(event) => setPassword(event.target.value)} className="w-[100%] h-[50px] bg-white text-[#6C6C6C] text-[18px] border-2 border-[#D7D7D7] rounded-[10px] pl-[14px]">
                         </input> 
+                        {errors.password && (
+							<p className="text-red-500 mb-[-24px]">{errors.password}</p>
+						)}
                     </div>
                     <div className="flex flex-col justify-center">
                         <label htmlFor="email" className="font-medium text-[20px] block mb-[7px]">
