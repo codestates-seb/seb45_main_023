@@ -27,7 +27,6 @@ const Editor = ({body, setBody, setImageArr}) => {
                             }
     
                             try {
-    
                                 const imageResponse = await axios.get(`https://b95e-116-126-166-12.ngrok-free.app/blogs/print-image?name=${res.data.name}`, {
                                     headers: {
                                         'ngrok-skip-browser-warning': '69420'
@@ -71,7 +70,7 @@ const Editor = ({body, setBody, setImageArr}) => {
             onChange={(event, editor) => {
                 const data = editor.getData();
                 setBody(data);
-               // console.log( { event, editor, data } );
+               console.log( { event, editor, data } );
             }}
             onBlur={(event, editor) => {
                 //console.log('Blur.', editor);
