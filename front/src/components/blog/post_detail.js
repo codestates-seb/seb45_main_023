@@ -17,43 +17,41 @@ export default function PostDetail({
   tags,
   createdAt,
   modifiedAt,
+  comment_id
 }) {
 
   const [blogData, setBlogData] = useState('');
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(blogData.title);
   const [editedBody, setEditedBody] = useState(blogData.body);
   
+  const [isEditingComment, setIsEditingComment] = useState(false);
+  const [editedComment, setEditedComment] = useState('');
+  
   const navigate = useNavigate();
 
   const {blogId, cityId} = useParams();
 
-  useEffect(() => {
-    // 서버에서 댓글 목록을 가져오는 함수
-    const fetchComments = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axios.get(`${process.env.REACT_APP_TEST_URL}/comments/blogs/${blogId}?page=1&size=10`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': '69420',
-          },
-        }); // axios로 GET 요청
-        setComments(response.data.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error('댓글 불러오기 실패:', error);
-      } finally {
-        setIsLoading(false);
-      } 
-    };
+  const fetchComments = async () => {
+    // 서버에서 댓글 불러오기
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_TEST_URL}/comments/blogs/${blogId}?page=1&size=10`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+        },
+      }); // axios로 GET 요청
+      setComments(response.data.data);
+      console.log('댓글 불러오기 성공: ', response.data);
+    } catch (error) {
+      console.error('댓글 불러오기 실패:', error);
+    } finally {
+    } 
+  };
 
-    fetchComments();
-  }, [blogId]); // blog_id가 변경될 때마다 실행
 
   useEffect(() => {
     // 서버에서 특정 게시물 가져오기
@@ -68,6 +66,7 @@ export default function PostDetail({
         setBlogData(response.data);
         console.log("게시물 가져오기 성공 : ", response.data);
         console.log("게시물 가져오기 성공2 : ", response.data.images);
+        fetchComments();
       } catch (error) {
         console.error('게시물 가져오기 실패 : ', error);
       }
@@ -119,9 +118,9 @@ export default function PostDetail({
       if (response.status === 201) {
         // 댓글이 성공적으로 작성된 경우
         setNewComment(''); // 입력 필드 초기화
-        // 서버에서 댓글 목록을 다시 가져올 수도 있음 (선택 사항)
+        fetchComments();
         console.log('댓글 작성 성공');
-        console.log(response.data.id);
+        console.log(response.data);
       } else {
         console.error('댓글 작성 실패');
       }
@@ -134,16 +133,11 @@ export default function PostDetail({
     // 댓글 삭제
     try {
       const response = await axios.delete(`${process.env.REACT_APP_TEST_URL}/comments/${comment_id}`);
-
-      if (response.status === 201) {
         // 댓글이 성공적으로 삭제된 경우
-        const updatedComments = comments.filter(comment => comment.comment_id !== comment_id);
+        const updatedComments = comments.filter(comment => comment.id !== comment_id);
         setComments(updatedComments); // 업데이트된 댓글 목록으로 상태 업데이트
-      } else {
-        console.error('댓글 삭제 실패');
-      }
-    } catch (error) {
-      console.error('댓글 삭제 실패:', error);
+      } catch (error) {
+        console.error('댓글 삭제 실패:', comments, error);
     }
   };
 
@@ -184,6 +178,41 @@ export default function PostDetail({
       console.error('게시물 수정 실패:', error);
     }
   };
+
+  const handleCommentEdit = (comment_id) => {
+    const commentToEdit = comments.find(comment => comment.id === comment_id);
+    setEditedComment(commentToEdit.body);
+    setIsEditingComment(true);
+  };
+  
+  const handleCommentEditSave = async (comment_id) => {
+    try {
+      const response = await axios.patch(`${process.env.REACT_APP_TEST_URL}/comments/${comment_id}`, {
+        body: editedComment,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+  
+        const updatedComments = comments.map(comment => {
+          if (comment.id === comment_id) {
+            return { ...comment, body: editedComment };
+          }
+          return comment;
+        });
+        setComments(updatedComments);
+        setIsEditingComment(false);
+    } catch (error) {
+      console.error('댓글 수정 실패:', error);
+    }
+  };
+  
+  const handleCommentEditCancel = () => {
+    setIsEditingComment(false);
+  };
+  
   
 
 
@@ -288,23 +317,41 @@ export default function PostDetail({
         </div>
       </div>
 
-      <div>
-      {/* 댓글 목록 표시 */}
-        <h3>댓글</h3> 
+      {comments.length > 0 && (
+        <div>
+          <h3>댓글</h3>
           <ul>
-          {isLoading ? (
-            <p>댓글을 불러오는 중...</p>
-          ) : (
-            comments.map((comment, index) => (
+            {comments.map((comment, index) => (
               <li key={index} className='mb-2'>
-                <strong>{comment.nickname}</strong>: {comment.body}
-                <button onClick={() => handleCommentDelete(index)}>삭제</button>
+                {isEditingComment && editedComment ? (
+                  <div>
+                    <textarea
+                      rows='3'
+                      value={editedComment}
+                      onChange={(e) => setEditedComment(e.target.value)}
+                    />
+                    <button onClick={() => handleCommentEditSave(comment.id)}>저장</button>
+                    <button onClick={handleCommentEditCancel}>취소</button>
+                  </div>
+                ) : (
+                  <>
+                    <strong>{blogData.member.nickname}</strong>: {comment.body}
+                    <button 
+                      onClick={() => handleCommentEdit(comment.id)}
+                      className='bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 mr-2'
+                      >수정</button>
+                    <button 
+                      onClick={() => handleCommentDelete(comment.id)}
+                      className='bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600'
+                    >삭제</button>
+                  </>
+                )}
               </li>
-            ))
-          )}
-        </ul>
-      </div>
+            ))}
 
+          </ul>
+        </div>
+      )}
     </div>
 
     

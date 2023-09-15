@@ -6,23 +6,27 @@ import { NegativeButton } from "../../components/Buttons";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { BlogList } from "../../recoil/blog";
-import { bookmarkedPostsState } from "../../recoil/blog";
+// import { bookmarkedPostsState } from "../../recoil/blog";
 import { useParams, useNavigate } from "react-router-dom";
 import BlogPagenation from "../../components/mypage/BlogPagination";
 import { userInfo } from "../../recoil/mypage";
 import { useRecoilValue } from "recoil";
+import { authorizationTokenState } from "../../recoil/logInSignUpState";
 
 export default function Bloglist() {
 	const [selectedTag, setSelectedTag] = useState([]); // 태그
 	const [filteredPosts, setFilteredPosts] = useState([]);
 	const [posts, setPosts] = useRecoilState(BlogList);
-	const [bookmarkedPosts, setBookmarkedPosts] =
-		useRecoilState(bookmarkedPostsState);
+	const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
 	const navigate = useNavigate();
 	
 	const userinfo = useRecoilValue(userInfo);
   const userId = userinfo.id;
 	const {cityId} = useParams();
+
+	const [authorizationToken, setAuthorizationToken] = useRecoilState(
+		authorizationTokenState
+	);
 
 	const availableTag = [
 		"인기글",
@@ -73,13 +77,40 @@ export default function Bloglist() {
 		setFilteredPosts(filtered);
 	}, [selectedTag]);
 
-	const handleBookmarkToggle = (blog_id) => {
-		if (bookmarkedPosts.includes(blog_id)) {
-			setBookmarkedPosts(bookmarkedPosts.filter((id) => id !== blog_id));
-		} else {
-			setBookmarkedPosts([...bookmarkedPosts, blog_id]);
-		}
-	};
+	const handleBookmarkToggle = async (blog_id) => {
+    try {
+        if (bookmarkedPosts.includes(blog_id)) {
+            await axios.patch( // 나중에 delete를 바꾸고 숫자를 userId로 바꾸기
+                `${process.env.REACT_APP_TEST_URL}/members/10/no-bookmark/${blog_id}`, 
+                {
+                    headers: {
+                        Authorization: `Bearer ${authorizationToken}`,
+                        "ngrok-skip-browser-warning": "69420",
+                    },
+                }
+            );
+            setBookmarkedPosts(bookmarkedPosts.filter((id) => id !== blog_id));
+            console.log("북마크 삭제 성공");
+        } else {
+            await axios.patch(
+                `${process.env.REACT_APP_TEST_URL}/members/10/bookmark/${blog_id}`,
+                null,
+                {
+                    headers: {
+                        Authorization: `Bearer ${authorizationToken}`,
+                        "ngrok-skip-browser-warning": "69420",
+                    },
+                }
+            );
+            setBookmarkedPosts([...bookmarkedPosts, blog_id]);
+            console.log("북마크 추가 성공");
+        }
+    } catch (error) {
+        console.error("북마크 토글 에러 : ", authorizationToken, error);
+    }
+};
+
+	
 
 	return (
 		<div className="relative">
@@ -117,17 +148,18 @@ export default function Bloglist() {
 								body={post.body}
 								profile_pic={post.profile_pic}
 								nickname={post.member.nickname}
-								city_id={post.city_id}
+								cityId={post.cityId}
+								postId={post.id}
 								createdAt={post.createdAt}
 								modifiedAt={post.modifiedAt}
 								tags={post.tags}
 							/>
             <div className="flex items-center justify-between mt-4">
-              <button onClick={() => handleBookmarkToggle(post.blog_id)}>
-                {bookmarkedPosts.includes(post.blog_id) ? (
-                  <img src="/unbookmark.png" alt="unbookmark" width="25" height="25" />
-                ) : (
+              <button onClick={() => handleBookmarkToggle(post.id)}>
+                {bookmarkedPosts.includes(post.id) ? (
                   <img src="/bookmark.png" alt="bookmark" width="25" height="25" />
+                ) : (
+                  <img src="/unbookmark.png" alt="unbookmark" width="25" height="25" />
                 )}
               </button>
             </div>
