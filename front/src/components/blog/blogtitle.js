@@ -6,7 +6,8 @@ import axios from 'axios';
 
 const LocationTitle = () => {
   const { cityId } = useParams();
-  const cityName = CityMapping[cityId] || 'Unknown City';
+  const cityInfo = CityMapping[cityId];
+  const cityName = cityInfo ? cityInfo.name : 'Unknown City';
 
   return (
     <h1 className="text-2xl font-bold mb-4">
@@ -16,9 +17,11 @@ const LocationTitle = () => {
 };
 
 function BlogHeader({ locationName }) {
-  const { cityId, img } = useParams();
+  const { cityId } = useParams();
   const [ weather, setWeather ] = useState(null);
-  const cityName = CityMapping[cityId];
+  const cityInfo = CityMapping[cityId];
+  const cityName = cityInfo ? cityInfo.name : 'Unknown City';
+  const cityImage = cityInfo ? cityInfo.image : '';
 
   useEffect(() => {
     const apiUrl = `${process.env.REACT_APP_SERVER_URL}/weather/${cityName}`;
@@ -36,7 +39,7 @@ function BlogHeader({ locationName }) {
 
   return (
     <div className="relative">
-      <img src={`/cities/${cityId}/${img}`} alt="region_img" className="w-full h-70" />
+      <img src={`${cityImage}`} alt="region_img" className="w-full h-70" />
       <div className="absolute top-0 left-10 w-[300px] h-[150px] bg-gray-100 opacity-70 rounded-b-lg flex items-center">
         <div className="flex flex-row items-center justify-center w-full">
           <div className="mr-2">
