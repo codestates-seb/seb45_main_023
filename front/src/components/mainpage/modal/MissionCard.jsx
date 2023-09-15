@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useRecoilState } from "recoil";
 import { currentLocationState } from "../../../recoil/main";
 import { userInfo } from "../../../recoil/mypage";
@@ -9,8 +10,8 @@ function MissionCard({ mission, level }) {
 	const color = ["yellow", "green", "blue", "purple"];
 
 	const [info, setInfo] = useRecoilState(userInfo);
-	const [current, setcurrent] = useRecoilState(currentLocationState);
-
+    const [current, setcurrent] = useRecoilState(currentLocationState);
+    
 	if (mission === undefined) {
 		// 미션이 닫힌 상태인 경우
 		return (
@@ -48,7 +49,7 @@ function MissionCard({ mission, level }) {
 				</span>
 				{mission.isComplete ? (
 					<Link to={`/blogwrite/${info.id}/${current.cityId}`}>
-						<Button text={"인증 글 쓰러 가기"} color={color} />
+						<Button text={"인증하기"} color={color} />
 					</Link>
 				) : (
 					<Button text={"인증 완료!"} color={color} />

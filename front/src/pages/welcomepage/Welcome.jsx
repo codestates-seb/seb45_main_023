@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { ToSmallButton } from "../../components/Buttons";
 import { useEffect } from "react";
@@ -37,6 +38,7 @@ export default function WelcomePage() {
 					{
 						headers: {
 							Authorization: `Bearer ${authorizationToken}`,
+							"ngrok-skip-browser-warning": "69420",
 						},
 					}
 				);
