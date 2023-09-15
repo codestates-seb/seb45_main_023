@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./City.css";
 
 const City = ({ location }) => {
 	let width, height;
@@ -36,7 +37,7 @@ const City = ({ location }) => {
 	return (
 		<Link to={`/bloglist/${location.cityId}`} className="overflow-hidden">
 			<article
-				className={`elative flex flex-col m-5 ${width} ${height} items-start rounded-lg shadow-md overflow-hidden`}
+				className={`elative flex flex-col m-5 ${width} ${height} items-start rounded-lg overflow-hidden card-container`}
 			>
 				{location.cityId ? (
 					<img

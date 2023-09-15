@@ -46,7 +46,6 @@ function Modal({ city }) {
 						},
 					}
 				);
-				console.log("patchLocation done");
 			} catch (err) {
 				console.log("patchLocation" + err);
 			}
@@ -80,7 +79,6 @@ function Modal({ city }) {
 						},
 					}
 				);
-				console.log("postMission done");
 			} catch (err) {
 				console.error("postMission", err);
 			} finally {
@@ -115,8 +113,6 @@ function Modal({ city }) {
 		fetchCityInfo();
 		postMission();
 	}, [isOpen]);
-
-	console.log(missions);
 
 	return (
 		<>
