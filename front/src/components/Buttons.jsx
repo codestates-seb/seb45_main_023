@@ -13,7 +13,7 @@ export const BasicCustomButton = ({ text, colorName }) => {
 
   return (
     <button
-      className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold ${color[colorName]} active:text-white transition duration-300 ease-in-out`}
+    className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold ${color[colorName]} active:text-white transition duration-300 ease-in-out`}
     >
       {text}
     </button>
@@ -23,7 +23,7 @@ export const BasicCustomButton = ({ text, colorName }) => {
 export const Button = ({ text, color }) => {
   return (
     <button
-      className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-${color}-300 bg-white text-black shadow-md font-semibold hover:bg-${color}-300 active:bg-${color}-500 active:border-${color}-500 active:text-white transition duration-300 ease-in-out`}
+    className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-${color}-300 bg-white text-black shadow-md font-semibold hover:bg-${color}-300 active:bg-${color}-500 active:border-${color}-500 active:text-white transition duration-300 ease-in-out`}
     >
       {text}
     </button>
@@ -48,7 +48,7 @@ export const CardButton = ({ text }) => {
   }
   return (
     <button
-      className={`inline-flex items-center justify-center gap-2 px-2 rounded-full mr-1 border-4 border-solid border-${color}-300 bg-white text-black shadow-md font-semibold hover:bg-${color}-300 active:bg-${color}-500 active:border-${color}-500 active:text-white transition duration-300 ease-in-out`}
+    className={`inline-flex items-center justify-center gap-2 px-2 rounded-full mr-1 border-4 border-solid border-${color}-300 bg-white text-black shadow-md font-semibold hover:bg-${color}-300 active:bg-${color}-500 active:border-${color}-500 active:text-white transition duration-300 ease-in-out`}
     >
       {text}
     </button>
@@ -58,7 +58,7 @@ export const CardButton = ({ text }) => {
 export const GreenButton = ({ text }) => {
   return (
     <button
-      className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold border-green-300 hover:bg-green-300 active:bg-green-500 active:border-green-500 active:text-white transition duration-300 ease-in-out`}
+    className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold border-green-300 hover:bg-green-300 active:bg-green-500 active:border-green-500 active:text-white transition duration-300 ease-in-out`}
     >
       {text}
     </button>
@@ -68,7 +68,7 @@ export const GreenButton = ({ text }) => {
 export const PurpleButton = ({ text }) => {
   return (
     <button
-      className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold border-purple-300 hover:bg-purple-300 active:bg-purple-500 active:border-purple-500 active:text-white transition duration-300 ease-in-out`}
+    className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold border-purple-300 hover:bg-purple-300 active:bg-purple-500 active:border-purple-500 active:text-white transition duration-300 ease-in-out`}
     >
       {text}
     </button>
@@ -151,7 +151,7 @@ export const ToBoard = () => {
 
 export const SignUpWithMarbleUsButton = () => {
   return (
-    <button className="inline-flex items-center w-[280px] h-[60px] pl-[4px] rounded-full border-4 border-solid border-white bg-sky-400 shadow-md text-white font-bold hover:bg-white hover:text-black active:bg-sky-200 active:border-sky-200 active:text-black transition duration-300 ease-in-out">
+    <button type="button" className="inline-flex items-center w-[280px] h-[60px] pl-[4px] rounded-full border-4 border-solid border-white bg-sky-400 shadow-md text-white font-bold hover:bg-white hover:text-black active:bg-sky-200 active:border-sky-200 active:text-black transition duration-300 ease-in-out">
       <div className="inline-flex items-center justify-center w-[45px] h-[45px] flex-shrink-0 bg-white rounded-full text-sky-400">
         <i className="fa-solid fa-plane text-[24px] rotate-[-45deg]" />
       </div>
@@ -161,11 +161,17 @@ export const SignUpWithMarbleUsButton = () => {
 };
 
 export const GoogleLogInButton = () => {
-  const oauthUrl = `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/google`;
+  
+  const redirectToExternalSite = () => {
+    // 외부 사이트의 URL을 여기에 입력합니다.
+    const oauthUrl = `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/google`;
 
-  // s3에서 소셜 로그인한 다음에 author~~ 토큰 확인하기.
+    // 현재 페이지를 외부 사이트로 이동합니다.
+    window.location.href = oauthUrl;
+  };
+
   return (
-    <button onClick={() => window.open(oauthUrl)}
+    <button onClick={redirectToExternalSite} type="button"
       className="inline-flex items-center justify-center w-[280px] h-[60px] p-1 rounded-full shadow-md font-semibold transition duration-300 ease-in-out"
       style={{
         backgroundImage: 'linear-gradient(to right, #FF3D00, #FFC107, #4CAF50, #1976D2)',
@@ -205,7 +211,7 @@ export const SkillButton = ({ iconName }) => {
     close : 'fa-solid fa-xmark',
   }
   return (
-    <button className="inline-flex items-center justify-center gap-2 p-4 rounded-full shadow-md bg-slate-300 hover:bg-white hover:text-black text-white font-semibold active:bg-grey-500 active:bg-slate-500 active:text-white transition duration-300 ease-in-out">
+    <button type="button" className="inline-flex items-center justify-center gap-2 p-4 rounded-full shadow-md bg-slate-300 hover:bg-white hover:text-black text-white font-semibold active:bg-grey-500 active:bg-slate-500 active:text-white transition duration-300 ease-in-out">
       <i class={`${icon[iconName]} text-2xl pr-1 pl-1`} />
     </button>
   );
@@ -213,7 +219,7 @@ export const SkillButton = ({ iconName }) => {
 
 export const RefreshButton = ({ text }) => {
   return (
-    <button className="inline-flex items-center justify-center gap-2 p-4 rounded-full shadow-md bg-slate-300 hover:bg-white hover:text-black text-white font-semibold active:bg-grey-500 active:bg-slate-500 active:text-white transition duration-300 ease-in-out">
+    <button type="button" className="inline-flex items-center justify-center gap-2 p-4 rounded-full shadow-md bg-slate-300 hover:bg-white hover:text-black text-white font-semibold active:bg-grey-500 active:bg-slate-500 active:text-white transition duration-300 ease-in-out">
       <i class="fa-solid fa-arrows-rotate text-2xl pr-1 pl-1" />
     </button>
   );
@@ -221,7 +227,7 @@ export const RefreshButton = ({ text }) => {
 
 export const CloseButton = ({ text }) => {
   return (
-    <button className="inline-flex items-center justify-center gap-2 p-4 rounded-full shadow-md bg-slate-300 hover:bg-white hover:text-black text-white font-semibold active:bg-grey-500 active:bg-slate-500 active:text-white transition duration-300 ease-in-out">
+    <button type="button" className="inline-flex items-center justify-center gap-2 p-4 rounded-full shadow-md bg-slate-300 hover:bg-white hover:text-black text-white font-semibold active:bg-grey-500 active:bg-slate-500 active:text-white transition duration-300 ease-in-out">
       <i class="fa-solid fa-xmark text-2xl pr-2 pl-2" />
     </button>
   );
@@ -279,7 +285,7 @@ export const FindMethodButton = ({ linkName, text }) => {
 
   return (
     <Link to={`${link[linkName]}`}>
-      <button className="w-[400px] h-[80px] rounded-[14px] shadow-xss font-semibold text-[20px] text-[#6C6C6C] hover:text-[#0088F8] bg-white hover:bg-sky-100 active:bg-[#0088F8] active:text-white">
+      <button type="button" className="w-[400px] h-[80px] rounded-[14px] shadow-xss font-semibold text-[20px] text-[#6C6C6C] hover:text-[#0088F8] bg-white hover:bg-sky-100 active:bg-[#0088F8] active:text-white">
         {text}
       </button>
     </Link>

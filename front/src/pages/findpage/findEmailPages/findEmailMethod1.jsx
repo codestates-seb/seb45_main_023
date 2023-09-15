@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { emailState, passwordState } from '../../../recoil/logInSignUpState';
 import {FindSubmitButton, ToSmallButton} from "../../../components/Buttons";
 
@@ -135,7 +135,7 @@ export default function FindEmailMethod1 () {
                         <label htmlFor="email" className="font-medium text-[20px] block mb-[7px]">
                             입력 3
                         </label>
-                        <input type="email" name="email" placeholder="못하였습니다." className="w-[100%] h-[50px] bg-white text-[#6C6C6C] text-[18px] border-2 border-[#D7D7D7] rounded-[10px] pl-[14px]">
+                        <input type="email" name="email" placeholder="아직 기능구현을 못하였습니다." className="w-[100%] h-[50px] bg-white text-[#6C6C6C] text-[18px] border-2 border-[#D7D7D7] rounded-[10px] pl-[14px]">
                         </input> 
                     </div>
                     <FindSubmitButton text='Submit' />

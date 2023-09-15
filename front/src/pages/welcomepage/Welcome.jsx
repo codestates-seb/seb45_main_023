@@ -9,6 +9,8 @@ import { User, userInfo } from "../../recoil/mypage";
 import { currentLocationState, beadIndexState } from "../../recoil/main";
 import { locations } from "../../components/mainpage/locations";
 
+import { LogOutButton } from "../../components/LogOutButton";
+
 export default function WelcomePage() {
 	const [authorizationToken, setAuthorizationToken] = useRecoilState(
 		authorizationTokenState
@@ -79,6 +81,8 @@ export default function WelcomePage() {
 						<div className="text-[70px] text-[#0088F8]">MarbleUs</div>
 					</div>
 					<section className="flex gap-[40px]">
+						{/* 로그아웃 버튼 나중에 삭제할 것! (test중...) */}
+						<LogOutButton/>
 						<ToSmallButton
 							linkName="mainpage"
 							Size="lg"
@@ -103,7 +107,3 @@ export default function WelcomePage() {
 		</form>
 	);
 }
-
-// advanced
-// 비밀번호 찾기, 이메일 찾기
-// 2차인증 (ex - 해당 이메일로 회원가입하면 기입한 이메일이 실제 존재하는 이메일인지 서버에서 코드보내서 5분?내로 인증해야함)
