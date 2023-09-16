@@ -8,8 +8,9 @@ import { useRecoilState } from "recoil";
 import { BlogList } from "../../recoil/blog";
 import { bookmarkedPostsState } from "../../recoil/blog";
 import { useParams, useNavigate } from "react-router-dom";
-import data from '../../dummy/dummy';
 import BlogPagenation from "../../components/mypage/BlogPagination";
+import { userInfo } from "../../recoil/mypage";
+import { useRecoilValue } from "recoil";
 
 export default function Bloglist() {
 	const [selectedTag, setSelectedTag] = useState([]); // 태그
@@ -17,8 +18,11 @@ export default function Bloglist() {
 	const [posts, setPosts] = useRecoilState(BlogList);
 	const [bookmarkedPosts, setBookmarkedPosts] =
 		useRecoilState(bookmarkedPostsState);
-	const {member_id, cityId} = useParams();
 	const navigate = useNavigate();
+	
+	const userinfo = useRecoilValue(userInfo);
+  const userId = userinfo.id;
+	const {cityId} = useParams();
 
 	const availableTag = [
 		"인기글",
@@ -52,6 +56,7 @@ export default function Bloglist() {
 					}
 				);
 				setPosts(response.data.data);
+				console.log(posts)
 			} catch (error) {
 				console.error("게시물 불러오기 실패 : ", error);
 			}
@@ -94,7 +99,7 @@ export default function Bloglist() {
 						</div>
 						<div className="tag_right">
 							<button className="w-[100px] h-[50px] text-[10px]"
-							onClick={() => navigate(`/blogwrite/${member_id}/${cityId}`)}
+							onClick={() => navigate(`/blogwrite/${userId}/${cityId}`)}
 							>
 								<NegativeButton text={"글 쓰기"} />
 							</button>
@@ -111,15 +116,15 @@ export default function Bloglist() {
 								title={post.title}
 								body={post.body}
 								profile_pic={post.profile_pic}
-								id={post.id}
+								nickname={post.member.nickname}
 								city_id={post.city_id}
 								createdAt={post.createdAt}
 								modifiedAt={post.modifiedAt}
 								tags={post.tags}
 							/>
             <div className="flex items-center justify-between mt-4">
-              <button onClick={() => handleBookmarkToggle(data.blog_id)}>
-                {bookmarkedPosts.includes(data.blog_id) ? (
+              <button onClick={() => handleBookmarkToggle(post.blog_id)}>
+                {bookmarkedPosts.includes(post.blog_id) ? (
                   <img src="/unbookmark.png" alt="unbookmark" width="25" height="25" />
                 ) : (
                   <img src="/bookmark.png" alt="bookmark" width="25" height="25" />

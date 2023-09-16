@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
-import { authorizationTokenState } from "../recoil/logInSignUpState";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { authorizationTokenState } from "../recoil/logInSignUpState";
 
-// 임시로 welcome페이지에 넣어봤습니다. (test 중...)
-// 일단 alert창으로 경고문구를 대신하고, 추후에 모달창을 구현하여 경고창을 구현할 예정임...
+// 임시로 welcome페이지에 넣어봤습니다. 
+// 마이페이지에 해당 컴포넌트 사용해주세용~.~ & 버튼 스타일 맘대로 변경해도 됩니다.
+// 일단 alert창으로 경고문구를 대신하고, 추후에 모달창을 구현하여 경고창을 구현할 예정이에요..ㅠ
 export const LogOutButton = () => {
     const navigate = useNavigate();
     const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
@@ -38,7 +39,7 @@ export const LogOutButton = () => {
             // 상태 토큰 삭제
             setAuthorizationToken('');
             
-            // 로그아웃 후 로그인페이지로 이동한다.
+            // 로그아웃 후 로그인페이지로 이동
             navigate('/login');
             alert('로그아웃 되었습니다.');
           } else {

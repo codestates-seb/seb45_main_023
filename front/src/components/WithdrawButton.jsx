@@ -3,6 +3,7 @@ import axios from 'axios';
 import { authorizationTokenState } from '../recoil/logInSignUpState';
 import { useRecoilState } from 'recoil';
 
+// 기능 구현 중...
 export default function WithdrawButton() {
     const [, setAuthorizationToken] = useRecoilState(authorizationTokenState);
 
@@ -24,20 +25,20 @@ export default function WithdrawButton() {
                 });
     
                 if (response.status === 200) {
-                    // 로컬 스토리지에서 사용자 정보 삭제
+                    // 로컬 스토리지의 토큰 삭제
                     localStorage.removeItem('Authorization');
                     
                     // 상태 토큰 삭제
                     setAuthorizationToken('');
                     
-                    // 회원 탈퇴 성공
+                    // 회원 탈퇴 성공 알림
                     alert('회원 탈퇴가 완료되었습니다.')
                 } else {
-                    // 회원 탈퇴 실패
+                    // 회원 탈퇴 실패 알림
                     alert('회원 탈퇴에 실패했습니다.');
                 }
             } catch (error) {
-            // 에러 처리
+            // 에러 처리 알림
             alert('회원 탈퇴에 실패했습니다.');
             }
         } 

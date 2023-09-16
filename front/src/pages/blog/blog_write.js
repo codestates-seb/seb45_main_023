@@ -6,10 +6,14 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
 import Editor from '../../components/blog/editor';
+import { userInfo } from "../../recoil/mypage";
+import { useRecoilValue } from "recoil";
 
 export default function BlogWrite() {
   const navigate = useNavigate();
-  const {cityId, member_id} = useParams();
+  const {cityId} = useParams();
+  const userinfo = useRecoilValue(userInfo);
+  const userId = userinfo.id;
 
   const [selectedTag, setSelectedTag] = useState([]); // 태그
 
@@ -44,7 +48,7 @@ export default function BlogWrite() {
     }
 
     try {
-      const response = await axios.post(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${member_id}/${cityId}?image-names=${imageArr}`, postData, {
+      const response = await axios.post(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${userId}/${cityId}?image-names=${imageArr}`, postData, {
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420'
@@ -52,19 +56,18 @@ export default function BlogWrite() {
       });
 
       console.log('게시물 글쓰기 성공:', response.data);
-      console.log('게시물 글쓰기 성공2:', imageArr);
       console.log(cityId);
       console.log('title : ' + blogTitle);
       console.log('content : ' + blogContent);
       console.log(selectedTag);
-      navigate(`/blogdetail/${response.data.id}`);
+      navigate(`/blogdetail/${response.data.id}/${cityId}`);
     } catch (error) {
       console.error('게시물 글쓰기 실패:', error);
       console.log(cityId);
-      console.log(member_id);
       console.log('title : ' + blogTitle);
       console.log('content : ' + blogContent);
       console.log(selectedTag);
+      console.log(userId);
     }
   }
 
