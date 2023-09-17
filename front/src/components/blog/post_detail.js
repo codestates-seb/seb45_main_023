@@ -5,6 +5,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import parse from 'html-react-parser';
+import { useRecoilValue } from 'recoil';
+import { authorizationTokenState } from '../../recoil/logInSignUpState';
 
 
 export default function PostDetail({
@@ -30,6 +32,7 @@ export default function PostDetail({
   
   const [isEditingComment, setIsEditingComment] = useState(false);
   const [editedComment, setEditedComment] = useState('');
+  const token = useRecoilValue(authorizationTokenState)
   
   const navigate = useNavigate();
 
@@ -42,6 +45,7 @@ export default function PostDetail({
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
+          "Authorization": `Bearer ${token}`
         },
       }); // axios로 GET 요청
       setComments(response.data.data);
@@ -73,7 +77,7 @@ export default function PostDetail({
     };
 
     fetchBlogPost();
-  }, [blogId]);
+  }, []);
 
   if (!blogData) {
     return <div>Loading...</div>;

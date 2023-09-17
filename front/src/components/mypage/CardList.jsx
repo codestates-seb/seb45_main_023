@@ -2,12 +2,14 @@ import { useRecoilValue } from "recoil";
 import { CardButton } from "../Buttons";
 import { User, bookmarkInfo } from "../../recoil/mypage";
 import axios from "axios";
+import { authorizationTokenState } from "../../recoil/logInSignUpState";
 
 export default function CardList({ start, end }) {
 
 	const data = useRecoilValue(bookmarkInfo);
 	console.log(data);
 	const info = useRecoilValue(User);
+	const token = useRecoilValue(authorizationTokenState)
 	const handleRemoveBookmark = async () => {
 		try {
 			const request = await axios.patch(
@@ -16,6 +18,7 @@ export default function CardList({ start, end }) {
 					headers: {
 						"Content-Type": "application/json",
 						"ngrok-skip-browser-warning": "69420",
+						"Authorization": `Bearer ${token}`
 					},
 				}
 			);
