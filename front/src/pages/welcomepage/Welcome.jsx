@@ -19,6 +19,7 @@ export default function WelcomePage() {
 	const [info, setInfo] = useRecoilState(userInfo);
 	const [current, setCurrent] = useRecoilState(currentLocationState);
 	const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
+	console.log(data);
 
 	function findLocationIndex() {
 		const index = locations.findIndex(
@@ -34,7 +35,7 @@ export default function WelcomePage() {
 		const getData = async () => {
 			try {
 				const data = await axios.get(
-					`${process.env.REACT_APP_SERVER_URL}/members/me`,
+					`${process.env.REACT_APP_TEST_URL}/members/me`,
 					{
 						headers: {
 							Authorization: `Bearer ${authorizationToken}`,

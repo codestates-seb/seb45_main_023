@@ -43,7 +43,7 @@ export default function BlogWrite() {
     }
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/blogs/${member_id}/${cityId}`, postData, {
+      const response = await axios.post(`${process.env.REACT_APP_TEST_URL}/blogs/${member_id}/${cityId}`, postData, {
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420'

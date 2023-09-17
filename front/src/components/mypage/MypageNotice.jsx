@@ -2,10 +2,11 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { Edit, User, userInfo, validate } from '../../recoil/mypage';
 import { Button } from '../Buttons';
 import axios from 'axios';
-import { Link, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { RouteConst } from '../../interface/RouteConst';
 import { useEffect } from 'react';
 import AdminButton from '../AdminButton';
+import { LogOutButton } from '../LogOutButton';
 
 export default function MypageNotice({ nickname, nationality, password, birth }) {
   const [isEdit, setIsEdit] = useRecoilState(Edit);
@@ -71,16 +72,12 @@ export default function MypageNotice({ nickname, nationality, password, birth })
   const handlePost = () => {
     const patchData = async () => {
       try {
-        const response = await axios.patch(
-					`${process.env.REACT_APP_SERVER_URL}/members/${info.id}`,
-					request,
-					{
-						headers: {
-							"Content-Type": "application/json",
-							"ngrok-skip-browser-warning": "69420",
-						},
-					}
-				);
+        const response = await axios.patch(`${process.env.REACT_APP_TEST_URL}/members/${info.id}`, request, {
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+          },
+        });
         setData(response.data);
         setErrors({});
       } catch (err) {
@@ -108,7 +105,7 @@ export default function MypageNotice({ nickname, nationality, password, birth })
         </Link>
         <Link to={RouteConst.login}>
           <button className="mr-8 w-[10rem]">
-            <Button text={'로그아웃'} color={'blue'} />
+            <LogOutButton />
           </button>
         </Link>
         <button className="ml-4 w-[10rem]" onClick={handleEdit}>

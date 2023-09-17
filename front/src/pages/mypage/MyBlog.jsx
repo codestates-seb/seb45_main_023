@@ -18,7 +18,7 @@ export default function MyBlog() {
 	useEffect(() => {
 		const getData = async () => {
 			const BlogResponse = await axios.get(
-				`${process.env.REACT_APP_SERVER_URL}/blogs/members/${data.id}?size=3&page=1`,
+				`${process.env.REACT_APP_TEST_URL}/blogs/members/${data.id}?size=3&page=1`,
 				{
 					headers: {
 						"Content-Type": "application/json",
@@ -29,7 +29,7 @@ export default function MyBlog() {
 			setBlogs(BlogResponse.data.data);
 
 			const CommentResponse = await axios.get(
-				`${process.env.REACT_APP_SERVER_URL}/comments/members/${data.id}?page=3&size=1`,
+				`${process.env.REACT_APP_TEST_URL}/comments/members/${data.id}?page=3&size=1`,
 				{
 					headers: {
 						"Content-Type": "application/json",
