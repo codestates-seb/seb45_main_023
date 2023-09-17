@@ -19,6 +19,7 @@ export default function WelcomePage() {
 	const [info, setInfo] = useRecoilState(userInfo);
 	const [current, setCurrent] = useRecoilState(currentLocationState);
 	const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
+	console.log(data);
 
 	function findLocationIndex() {
 		const index = locations.findIndex(

@@ -1,3 +1,4 @@
+
 import PostLink from "../../components/blog/post_link";
 import React, { useState, useEffect } from "react";
 import Tag from "../../components/blog/tag";
@@ -28,23 +29,16 @@ export default function Bloglist() {
 		authorizationTokenState
 	);
 
-	const availableTag = [
-		"인기글",
-		"음식",
-		"숙소",
-		"교통",
-		"쇼핑",
-		"관광지",
-		"액티비티",
-	];
+  const availableTag = ['인기글', '음식', '숙소', '교통', '쇼핑', '관광지', '액티비티'];
 
-	const toggleTag = (tag) => {
-		if (selectedTag.includes(tag)) {
-			setSelectedTag(selectedTag.filter((t) => t !== tag));
-		} else {
-			setSelectedTag([...selectedTag, tag]);
-		}
-	};
+  const toggleTag = (tag) => {
+    if (selectedTag.includes(tag)) {
+      setSelectedTag(selectedTag.filter((t) => t !== tag));
+    } else {
+      setSelectedTag([...selectedTag, tag]);
+    }
+  };
+
 
 	useEffect(() => {
 		// 게시물 목록 get
@@ -69,13 +63,12 @@ export default function Bloglist() {
 		getData();
 	}, [cityId, setPosts]);
 
-	useEffect(() => {
-		// 태그 filter
-		const filtered = posts.filter((post) =>
-			selectedTag.every((tag) => post.tags.includes(tag))
-		);
-		setFilteredPosts(filtered);
-	}, [selectedTag]);
+
+  useEffect(() => {
+    // 태그 filter
+    const filtered = posts.filter((post) => selectedTag.every((tag) => post.tags.includes(tag)));
+    setFilteredPosts(filtered);
+  }, [selectedTag]);
 
 	const handleBookmarkToggle = async (blog_id) => {
     try {

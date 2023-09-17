@@ -21,9 +21,15 @@ export const BasicCustomButton = ({ text, colorName }) => {
 };
 
 export const Button = ({ text, color }) => {
+  const colorName = {
+    blue:'border-blue-300 hover:bg-blue-300 active:bg-blue-500 active:border-blue-500',
+    green:'border-green-300 hover:bg-green-300 active:bg-green-500 active:border-green-500',
+    purple:"border-purple-300 hover:bg-purple-300 active:bg-purple-500 active:border-purple-500",
+    pink:"border-pink-300 hover:bg-pink-300 active:bg-pink-500 active:border-pink-500"
+  }
   return (
     <button
-    className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-${color}-300 bg-white text-black shadow-md font-semibold hover:bg-${color}-300 active:bg-${color}-500 active:border-${color}-500 active:text-white transition duration-300 ease-in-out`}
+    className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold ${colorName[color]} active:text-white transition duration-300 ease-in-out`}
     >
       {text}
     </button>
