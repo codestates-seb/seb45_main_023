@@ -4,6 +4,7 @@ import BlogPagenation from './BlogPagination';
 
 export default function BlogList() {
   const data = useRecoilValue(Blogs)
+  console.log(data);
   return (
     <div className="flex flex-col w-[50rem] h-[25rem] justify-around items-center">
       <div className="flex flex-col w-[42.5rem] h-[17rem]">
@@ -19,7 +20,7 @@ export default function BlogList() {
           })}
         </div>
       </div>
-      <BlogPagenation/>
+      <BlogPagenation itemsCountPerPage={4} totalItemsCount={data.length} renderItemCount={Math.ceil(data.length/4)}/>
     </div>
   );
 }
