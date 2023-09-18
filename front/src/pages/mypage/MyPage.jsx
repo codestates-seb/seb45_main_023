@@ -32,10 +32,10 @@ export default function MyPage() {
         });
 
         // authorization 토큰 갱신
-        if (data.headers.get('Authorization') !== null) {
-          const Authorization = data.headers.get('Authorization');
-          localStorage.setItem('Authorization', Authorization);
-        }
+        if(data.headers.get("Authorization")) {
+					const Authorization = data.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization ?? '');
+				};
 
         setData(data.data);
         const { nickname, nationality, password, birth, id } = data.data;

@@ -26,9 +26,9 @@ export default function MyMission() {
         });
 
         // authorization 토큰 갱신
-        if (response.headers.get('Authorization') !== null) {
+        if (response.headers.get('Authorization')) {
           const Authorization = response.headers.get('Authorization');
-          localStorage.setItem('Authorization', Authorization);
+          localStorage.setItem('Authorization', Authorization ?? '');
         }
 
         console.log(response.data);
@@ -42,23 +42,23 @@ export default function MyMission() {
   }, []);
 
   const handleClear = () => {
-    const postData = async () => {
-      try {
-        const request = await axios.patch(
-          `${process.env.REACT_APP_SERVER_URL}/missions/mission-complete/${mission[0].id}`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'ngrok-skip-browser-warning': '69420',
-            },
-          }
-        );
-
-        // authorization 토큰 갱신
-        if (request.headers.get('Authorization') !== null) {
-          const Authorization = request.headers.get('Authorization');
-          localStorage.setItem('Authorization', Authorization);
-        }
+		const postData = async () => {
+			try {
+				const request = await axios.patch(
+					`${process.env.REACT_APP_SERVER_URL}/missions/mission-complete/${mission[0].id}`,
+					{
+						headers: {
+							"Content-Type": "application/json",
+							"ngrok-skip-browser-warning": "69420",
+						},
+					}
+				);
+				
+				// authorization 토큰 갱신
+				if(request.headers.get("Authorization")) {
+					const Authorization = request.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization ?? '');
+				};
 
         console.log(request.data);
       } catch (err) {

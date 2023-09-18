@@ -14,7 +14,7 @@ export default function MyBlog() {
   const data = useRecoilValue(User);
   const [blogs, setBlogs] = useRecoilState(Blogs);
   const [pageInfo, setPageInfo] = useRecoilState(PageInfo);
-  const [commentInfo, setcommentInfo] = useRecoilState(CommentInfo);
+  const [commentInfo, setCommentInfo] = useRecoilState(CommentInfo);
   const [comments, setComments] = useRecoilState(Comments);
   const [blogPage, setBlogPage] = useState(1);
   const [commentPage, setCommentPage] = useState(1);
@@ -34,7 +34,7 @@ export default function MyBlog() {
       );
 
       // authorization 토큰 갱신
-      if (BlogResponse.headers.get('Authorization') !== null) {
+      if (BlogResponse.headers.get('Authorization')) {
         const Authorization = BlogResponse.headers.get('Authorization');
         localStorage.setItem('Authorization', Authorization);
       }
@@ -52,11 +52,11 @@ export default function MyBlog() {
       );
 
       // authorization 토큰 갱신
-      if (CommentResponse.headers.get('Authorization') !== null) {
+      if (CommentResponse.headers.get('Authorization')) {
         const Authorization = CommentResponse.headers.get('Authorization');
         localStorage.setItem('Authorization', Authorization);
       }
-      setcommentInfo(CommentResponse.data.pageInfo);
+      setCommentInfo(CommentResponse.data.pageInfo);
       setComments(CommentResponse.data.data);
     };
 

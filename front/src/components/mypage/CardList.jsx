@@ -24,9 +24,9 @@ export default function CardList({ start, end }) {
 			);
 
 			// authorization 토큰 갱신
-			if(request.headers.get("Authorization") !== null) {
+			if(request.headers.get("Authorization")) {
 				const Authorization = request.headers.get("Authorization");
-				localStorage.setItem('Authorization', Authorization);
+				localStorage.setItem('Authorization', Authorization ?? '');
 			};
 
 			console.log(request);
