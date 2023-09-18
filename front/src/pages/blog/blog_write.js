@@ -55,7 +55,7 @@ export default function BlogWrite() {
     }
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}//blogs/${userId}/${cityId}?image-names=${imageArr}`, postData, {
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/blogs/${userId}/${cityId}?image-names=${imageArr}`, postData, {
         headers: {
           Authorization: `Bearer ${authorizationToken}`,
           'Content-Type': 'application/json',
