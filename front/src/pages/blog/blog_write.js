@@ -56,18 +56,9 @@ export default function BlogWrite() {
       });
 
       console.log('게시물 글쓰기 성공:', response.data);
-      console.log(cityId);
-      console.log('title : ' + blogTitle);
-      console.log('content : ' + blogContent);
-      console.log(selectedTag);
       navigate(`/blogdetail/${response.data.id}/${cityId}`);
     } catch (error) {
       console.error('게시물 글쓰기 실패:', error);
-      console.log(cityId);
-      console.log('title : ' + blogTitle);
-      console.log('content : ' + blogContent);
-      console.log(selectedTag);
-      console.log(userId);
     }
   }
 

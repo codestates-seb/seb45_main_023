@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { authorizationTokenState } from "../recoil/logInSignUpState";
+import { authorizationTokenState } from "../../recoil/logInSignUpState";
 
 // 임시로 welcome페이지에 넣어봤습니다. 
 // 마이페이지에 해당 컴포넌트 사용해주세용~.~ & 버튼 스타일 맘대로 변경해도 됩니다.

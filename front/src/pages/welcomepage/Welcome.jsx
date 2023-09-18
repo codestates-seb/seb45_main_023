@@ -9,13 +9,11 @@ import { User, userInfo } from "../../recoil/mypage";
 import { currentLocationState, beadIndexState } from "../../recoil/main";
 import { locations } from "../../components/mainpage/locations";
 
-import { LogOutButton } from "../../components/LogOutButton";
-import WithdrawButton from "../../components/WithdrawButton";
+import { LogOutButton } from "../../components/buttons/LogOutButton";
+import WithdrawButton from "../../components/buttons/WithdrawButton";
 
 export default function WelcomePage() {
-	const [authorizationToken, setAuthorizationToken] = useRecoilState(
-		authorizationTokenState
-	);
+	const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
 	const [data, setData] = useRecoilState(User);
 	const [info, setInfo] = useRecoilState(userInfo);
 	const [current, setCurrent] = useRecoilState(currentLocationState);
@@ -34,8 +32,7 @@ export default function WelcomePage() {
 	useEffect(() => {
 		const getData = async () => {
 			try {
-				const data = await axios.get(
-					`${process.env.REACT_APP_TEST_URL}/members/me`,
+				const data = await axios.get(`${process.env.REACT_APP_TEST_URL}/members/me`,
 					{
 						headers: {
 							Authorization: `Bearer ${authorizationToken}`,

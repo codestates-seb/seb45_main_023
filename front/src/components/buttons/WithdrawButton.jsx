@@ -1,27 +1,35 @@
 import React from 'react';
 import axios from 'axios';
-import { authorizationTokenState } from '../recoil/logInSignUpState';
+import { authorizationTokenState } from '../../recoil/logInSignUpState';
 import { useRecoilState } from 'recoil';
 
 // 기능 구현 중...
+// member-id를 가져와야함.
 export default function WithdrawButton() {
-    const [, setAuthorizationToken] = useRecoilState(authorizationTokenState);
+    const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
 
     // 회원 탈퇴 요청 보내기
     const handleWithdraw = async () => {
-        // 기본값을 '취소'로 함
-        const withdrawConfirm = window.confirm('정말로 회원 탈퇴하시겠습니까?')
+        // 서버에 보낼 데이터 모으기
+        const requestData = {
+            // member-id,
+        };
+        
+        const withdrawConfirm = window.confirm('정말로 회원 탈퇴하시겠습니까?');
 
         if(withdrawConfirm) {
             // 확인버튼 누른 경우
             try {
             // 서버에 회원 탈퇴 요청 보내기
-            const response = await axios.delete(`${process.env.REACT_APP_TEST_URL}/withdraw`, {
-                headers: {
-                        "Content-Type": "application/json",
-                        "ngrok-skip-browser-warning": "69420",
-                        Authorization: `Bearer ${localStorage.getItem('Authorization')}`, 
-                    },
+            // 나중에 엔드포인트를 ${member-id}로 바꾸기
+            const response = await axios.delete(`${process.env.REACT_APP_TEST_URL}/member-id`, 
+            requestData, 
+                {
+                    headers: {
+                            "Content-Type": "application/json",
+                            "ngrok-skip-browser-warning": "69420",
+                            Authorization: `Bearer ${authorizationToken}`, 
+                        },
                 });
     
                 if (response.status === 200) {

@@ -71,7 +71,7 @@ const Editor = ({body, setBody, setImageArr}) => {
             onChange={(event, editor) => {
                 const data = editor.getData();
                 setBody(data);
-               // console.log( { event, editor, data } );
+               console.log( { event, editor, data } );
             }}
             onBlur={(event, editor) => {
                 //console.log('Blur.', editor);

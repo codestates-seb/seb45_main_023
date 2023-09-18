@@ -1,28 +1,20 @@
 import { useNavigate } from 'react-router-dom'
-import { useParams } from 'react-router-dom';
-import { BlogList } from "../../recoil/blog";
-import { useRecoilValue } from "recoil";
 
 export default function PostLink({
   title,
   body,
   profile_pic,
   nickname,
-  city_id,
+  cityId,
+  postId,
   createdAt,
   modifiedAt,
   tags,
 }) {
   const navigate = useNavigate();
-  const { cityId, blogId } = useParams();
-  // const bloginfo = useRecoilValue(BlogList);
-  // const blogId = bloginfo.id;
-
 
   const handlePostClick = () => {
-    console.log(blogId)
-    console.log(title)
-    navigate(`/blogdetail/${blogId}/${cityId}`);
+    navigate(`/blogdetail/${postId}/${cityId}`);
   }
 
   return (

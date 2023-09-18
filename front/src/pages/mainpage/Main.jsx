@@ -1,5 +1,5 @@
 import Board from "../../components/mainpage/board";
-import PassportIcon from "../../components/PassportIcon";
+import PassportIcon from "../../components/buttons/PassportIcon";
 
 export default function Main() {
 	return (
