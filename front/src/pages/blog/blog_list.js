@@ -19,6 +19,7 @@ export default function Bloglist() {
 	const [filteredPosts, setFilteredPosts] = useState([]);
 	const [posts, setPosts] = useRecoilState(BlogList);
 	const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
+	const [page, setPage] = useState(1);
 	const navigate = useNavigate();
   const token = useRecoilValue(authorizationTokenState)
 	
@@ -49,6 +50,7 @@ export default function Bloglist() {
 					`${process.env.REACT_APP_TEST_URL}/blogs/cities/${cityId}?page=1&size=10`,
 					{
 						headers: {
+							Authorization: `Bearer ${authorizationToken}`,
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
               "Authorization": `Bearer ${token}`
@@ -110,7 +112,7 @@ export default function Bloglist() {
 	return (
 		<div className="relative">
 			<BlogHeader />
-			<div className="relative h-[1000px] bg-gray-100 opacity-70 rounded-t-lg shadow-lg mt-[-100px] ml-10 mr-10">
+			<div className="relative h-[1200px] bg-gray-100 opacity-70 rounded-t-lg shadow-lg mt-[-100px] ml-10 mr-10">
 				<div className="tag_list m-10">
 					<div className="tag_container pt-10 flex justify-between">
 						<div className="tag_left">
@@ -132,7 +134,7 @@ export default function Bloglist() {
 						</div>
 					</div>
 				</div>
-				{(selectedTag.length === 0 ? posts : filteredPosts).map(
+				{(selectedTag.length === 0 ? posts : filteredPosts).slice((page-1) * 5, page*5).map(
 					(post, index) => (
 						<div
 							key={index}
@@ -161,7 +163,13 @@ export default function Bloglist() {
 						</div>
 					)
 				)}
-				<BlogPagenation />
+				<BlogPagenation 
+					itemPerPage={5} 
+					totalItemsCount={posts.length} 
+					renderItemCount={Math.ceil(posts.length / 5)}
+					page={page}
+					setPage={setPage}
+				/>
 			</div>
 		</div>
 	);
