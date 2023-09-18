@@ -21,7 +21,7 @@ export default function MyTokens () {
     console.log('authorizationToken 상태 값 : ', authorizationToken);
 
     // 로그인 완료 후 웰컴페이지로 이동
-    // window.location.replace(`${process.env.REACT_APP_TEST_URL}/welcome`);
+    // window.location.replace(`${process.env.REACT_APP_SERVER_URL}/welcome`);
     navigate('/welcome');
     console.log('Login Success!');
     return null;

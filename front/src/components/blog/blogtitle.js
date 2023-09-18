@@ -24,7 +24,7 @@ function BlogHeader({ locationName }) {
   const cityImage = cityInfo ? cityInfo.image : '';
 
   useEffect(() => {
-    const apiUrl = `${process.env.REACT_APP_TEST_URL}/weather/${cityName}`;
+    const apiUrl = `${process.env.REACT_APP_SERVER_URL}/weather/${cityName}`;
 
     axios.get(apiUrl)
       .then(response => {

@@ -37,7 +37,7 @@ function Modal({ city }) {
 				};
 
 				const response = await axios.patch(
-					`${process.env.REACT_APP_TEST_URL}/members/${info.id}`,
+					`${process.env.REACT_APP_SERVER_URL}/members/${info.id}`,
 					request,
 					{
 						headers: {
@@ -54,7 +54,7 @@ function Modal({ city }) {
 		const fetchCityInfo = async () => {
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_TEST_URL}/cities/${city.cityId}`,
+					`${process.env.REACT_APP_SERVER_URL}/cities/${city.cityId}`,
 					{
 						headers: {
 							"Content-Type": "application/json",
@@ -71,7 +71,7 @@ function Modal({ city }) {
 		const postMission = async () => {
 			try {
 				await axios.post(
-					`${process.env.REACT_APP_TEST_URL}/missions/${info.id}/${city.cityId}`,
+					`${process.env.REACT_APP_SERVER_URL}/missions/${info.id}/${city.cityId}`,
 					{
 						headers: {
 							"Content-Type": "application/json",
@@ -89,7 +89,7 @@ function Modal({ city }) {
 		const fetchMissions = async () => {
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_TEST_URL}/missions/member-mission/${info.id}`,
+					`${process.env.REACT_APP_SERVER_URL}/missions/member-mission/${info.id}`,
 					{
 						headers: {
 							"Content-Type": "application/json",

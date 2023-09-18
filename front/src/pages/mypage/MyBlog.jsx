@@ -33,7 +33,7 @@ export default function MyBlog() {
 			setBlogs(BlogResponse.data.data);
 
 			const CommentResponse = await axios.get(
-				`${process.env.REACT_APP_TEST_URL}/comments/members/${data.id}?page=4&size=1`,
+				`${process.env.REACT_APP_SERVER_URL}/comments/members/${data.id}?page=4&size=1`,
 				{
 					headers: {
 						"Content-Type": "application/json",
