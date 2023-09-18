@@ -6,6 +6,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { stamps, userInfo } from '../../recoil/mypage';
 import { authorizationTokenState } from '../../recoil/logInSignUpState';
 import { useEffect } from 'react';
+import MypageHeaderBtn from '../../components/buttons/mypage/MypageHeaderBtn';
 //missions/stamps/${memberId}
 export default function MyStamp() {
   const info = useRecoilValue(userInfo);
@@ -35,16 +36,19 @@ export default function MyStamp() {
   }, []);
 
   return (
-    <div className="flex justify-center">
-      <TopSidebar />
-      <BottomSidebar />
-      <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white">
-        <StampTable topData={topData} />
-        <StampTable bottomData={bottomData} />
-        <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
-        <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
-        <div className="bg-white h-[0.5rem] w-[50rem] rounded-b-3xl">&nbsp;</div>
+    <>
+      <MypageHeaderBtn />
+      <div className="flex justify-center">
+        <TopSidebar />
+        <BottomSidebar />
+        <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white">
+          <StampTable topData={topData} />
+          <StampTable bottomData={bottomData} />
+          <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
+          <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
+          <div className="bg-white h-[0.5rem] w-[50rem] rounded-b-3xl">&nbsp;</div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

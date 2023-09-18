@@ -7,10 +7,9 @@ import {
 	passwordState,
 	authorizationTokenState,
 } from "../../recoil/logInSignUpState";
-import {
-	SignUpWithMarbleUsButton,
-	GoogleLogInButton,
-} from "../../components/Buttons";
+
+import { GoogleLogInButton } from "../../components/buttons/loginpage/GoogleLogInButton";
+import { SignUpWithMarbleUsButton } from "../../components/buttons/loginpage/SignUpWithMarbleUs";
 
 export default function LogInPage() {
 	const navigate = useNavigate();
@@ -83,7 +82,7 @@ export default function LogInPage() {
 				}
 			);
 
-			console.log(response)
+			// console.log(response)
 
 			// 로그인 성공 시 AuthorizationToken 을 받아옴
 			const Authorization = response.headers.authorization;

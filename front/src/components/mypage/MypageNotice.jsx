@@ -2,12 +2,10 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { Edit, User, userInfo, validate } from '../../recoil/mypage';
 import { Button } from '../Buttons';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { RouteConst } from '../../interface/RouteConst';
 import { useEffect } from 'react';
 import AdminButton from '../AdminButton';
-import { LogOutButton } from '../LogOutButton';
 import { authorizationTokenState } from '../../recoil/logInSignUpState';
+import WithdrawButton from '../buttons/mypage/WithdrawButton';
 
 export default function MypageNotice({ nickname, nationality, password, birth }) {
   const [isEdit, setIsEdit] = useRecoilState(Edit);
@@ -101,16 +99,7 @@ export default function MypageNotice({ nickname, nationality, password, birth })
         </div>
       </div>
       <div className="flex justify-center bg-white h-[7rem] pb-2">
-        <Link to={RouteConst.main}>
-          <button className="mr-8 w-[10rem]">
-            <Button text={'메인페이지로'} color={'blue'} />
-          </button>
-        </Link>
-        <Link to={RouteConst.login}>
-          <button className="mr-8 w-[10rem]">
-            <LogOutButton />
-          </button>
-        </Link>
+        <WithdrawButton />
         <button className="ml-4 w-[10rem]" onClick={handleEdit}>
           {isEdit ? <Button text={'수정완료'} color={'blue'} /> : <Button text={'개인정보수정'} color={'blue'} />}
         </button>

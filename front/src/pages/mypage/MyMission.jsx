@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { User } from "../../recoil/mypage";
 import { authorizationTokenState } from "../../recoil/logInSignUpState";
+import MypageHeaderBtn from "../../components/buttons/mypage/MypageHeaderBtn";
 
 export default function MyMission() {
 	const info = useRecoilValue(User);
@@ -56,14 +57,17 @@ export default function MyMission() {
 		postData();
 	};
   return (
-    <div className="flex justify-center">
-      <TopSidebar />
-      <BottomSidebar />
-      <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white">
-        <BarList mission={mission}/>
-        <MissionNotice />
-        <button onClick={handleClear}>TEST CLEAR BUTTON</button>
+	<>
+      <MypageHeaderBtn />
+      <div className="flex justify-center">
+        <TopSidebar />
+        <BottomSidebar />
+        <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white">
+          <BarList mission={mission}/>
+          <MissionNotice />
+          <button onClick={handleClear}>TEST CLEAR BUTTON</button>
+        </div>
       </div>
-    </div>
+	</>
   );
 }

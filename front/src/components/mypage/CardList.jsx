@@ -13,7 +13,7 @@ export default function CardList({ start, end }) {
 	const handleRemoveBookmark = async () => {
 		try {
 			const request = await axios.patch(
-				`${process.env.REACT_APP_SERVER_URL}/members/${info.id}/no-bookmark/${data.id}`,
+				`${process.env.REACT_APP_TEST_URL}/members/${info.id}/no-bookmark/${data.id}`,
 				{
 					headers: {
 						"Content-Type": "application/json",

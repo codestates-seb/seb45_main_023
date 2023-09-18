@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
-import { BasicCustomButton, ToSmallButton } from "../../components/Buttons";
+import { Button, ToSmallButton } from "../../components/Buttons";
 import TermsOfUse from "../../components/signuppage/TermsOfUse";
 import {
 	emailState,
@@ -109,7 +109,7 @@ export default function SignUpPage() {
 		try {
 			// 서버 API 호출
 			const response = await axios.post(
-				`${process.env.REACT_APP_SERVER_URL}/members/signup`,
+				`${process.env.REACT_APP_TEST_URL}/members/signup`,
 				requestData,
 				{
 					headers: {
@@ -197,10 +197,10 @@ export default function SignUpPage() {
 							</div>
 							<div>
 								{/* 회원가입 시도 중 버튼이 비활성화 되고, 로딩이 끝나면 다시 활성화 된다.*/}
-								<BasicCustomButton
+								<Button
 									type="submit"
 									text="Sign Up"
-									colorName="gray"
+									color="gray"
 									disabled={isLoading}
 								/>
 							</div>

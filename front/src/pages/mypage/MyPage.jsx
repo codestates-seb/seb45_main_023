@@ -8,6 +8,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { User, userInfo } from "../../recoil/mypage";
 import Follower from "../../components/mypage/Follower";
 import { authorizationTokenState } from "../../recoil/logInSignUpState";
+import MypageHeaderBtn from "../../components/buttons/mypage/MypageHeaderBtn";
 
 export default function MyPage() {
   const [data, setData] = useRecoilState(User);
@@ -42,23 +43,26 @@ export default function MyPage() {
 		getData();
 	}, []);
   return (
-    <div className="flex justify-center">
-      <TopSidebar />
-      <BottomSidebar />
-      <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white ">
-        <MypageNotice nickname={nickname} nationality={nationality} password={password} birth={birth} />
-        <UserInfo
-          setNickname={setNickname}
-          setNationality={setNationality}
-          setPassword={setPassword}
-          setBirth={setBirth}
-        />
-        <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
-        <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
-        <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
-        <div className="bg-white h-[0.5rem] w-[50rem] rounded-b-3xl shadow-xss">&nbsp;</div>
+    <>
+      <MypageHeaderBtn />
+      <div className="flex justify-center">
+        <TopSidebar />
+        <BottomSidebar />
+        <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white ">
+          <MypageNotice nickname={nickname} nationality={nationality} password={password} birth={birth} />
+          <UserInfo
+            setNickname={setNickname}
+            setNationality={setNationality}
+            setPassword={setPassword}
+            setBirth={setBirth}
+          />
+          <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
+          <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
+          <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
+          <div className="bg-white h-[0.5rem] w-[50rem] rounded-b-3xl shadow-xss">&nbsp;</div>
+        </div>
+        <Follower/>
       </div>
-      <Follower/>
-    </div>
+    </>
   );
 }
