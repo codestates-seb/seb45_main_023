@@ -15,17 +15,7 @@ import { userInfo } from "../../recoil/mypage";
 import BlogPagenation from '../mypage/BlogPagination';
 
 
-export default function PostDetail({
-  title,
-  body,
-  profile_pic,
-  // comments,
-  // city_id,
-  tags,
-  createdAt,
-  modifiedAt,
-  comment_id
-}) {
+export default function PostDetail({profile_pic}) {
 
   const [blogData, setBlogData] = useState('');
   const [comments, setComments] = useState([]);
@@ -197,7 +187,7 @@ export default function PostDetail({
     setEditedBody(blogData.body);
     setEditedTags(blogData.tags);
   };
-  
+
   const handleSaveEdit = async () => {
     try {
       const response = await axios.patch(
@@ -217,12 +207,16 @@ export default function PostDetail({
       );
   
       if (response.status === 201) {
-        setBlogData({
-          ...blogData,
-          title: editedTitle,
-          body: editedBody,
-          tags: editedTags,
+        // 업데이트된 게시글을 서버에서 다시 가져오기
+        const updatedResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+          },
         });
+  
+        setBlogData(updatedResponse.data); // 업데이트된 게시글로 상태 업데이트
         setIsEditing(false);
       } else {
         console.error('게시물 수정 실패');
@@ -231,6 +225,7 @@ export default function PostDetail({
       console.error('게시물 수정 실패:', error);
     }
   };
+  
 
   const handleCommentEdit = (comment_id) => {
     setEditingCommentId(comment_id);
