@@ -14,7 +14,7 @@ export const LogOutButton = () => {
         // 로그인 상태일 때
         try {
           // 서버 API 호출
-          const response = await axios.post(`${process.env.REACT_APP_TEST_URL}/logout`,{
+          const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/logout`,{
               headers: {
                 "Content-Type": "application/json",
                 "ngrok-skip-browser-warning": "69420",

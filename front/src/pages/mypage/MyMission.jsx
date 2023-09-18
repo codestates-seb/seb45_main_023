@@ -18,7 +18,7 @@ export default function MyMission() {
 		const getData = async () => {
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_TEST_URL}/missions/member-mission/${info.id}`,
+					`${process.env.REACT_APP_SERVER_URL}/missions/member-mission/${info.id}`,
 					{
 						headers: {
 							"Content-Type": "application/json",
