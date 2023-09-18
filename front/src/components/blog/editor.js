@@ -2,9 +2,14 @@ import React, {useState} from 'react'
 import axios from 'axios';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { useRecoilState } from "recoil";
+import { authorizationTokenState } from "../../recoil/logInSignUpState";
 
 const Editor = ({body, setBody, setImageArr}) => {
     const [flag, setFlag] = useState(false);
+    const [authorizationToken, setAuthorizationToken] = useRecoilState(
+		authorizationTokenState
+	);
     // const [imageArr, setImageArr] = useState([]);
 
     const customUploadAdapter = (loader, setImageArr) => { 
@@ -17,6 +22,7 @@ const Editor = ({body, setBody, setImageArr}) => {
     
                         axios.post(`${process.env.REACT_APP_TEST_URL}/blogs/upload-images`, formData, {
                             headers: {
+                                Authorization: `Bearer ${authorizationToken}`,
                                 'ngrok-skip-browser-warning': '69420'
                             }
                         })
@@ -30,6 +36,7 @@ const Editor = ({body, setBody, setImageArr}) => {
     
                                 const imageResponse = await axios.get(`${process.env.REACT_APP_TEST_URL}/blogs/print-image?name=${res.data.name}`, {
                                     headers: {
+                                        Authorization: `Bearer ${authorizationToken}`,
                                         'ngrok-skip-browser-warning': '69420'
                                     }
                                 });

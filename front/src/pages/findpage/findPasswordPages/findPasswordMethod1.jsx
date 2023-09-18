@@ -1,4 +1,5 @@
-import {FindSubmitButton, ToSmallButton} from "../../../components/Buttons";
+import {ToSmallButton} from "../../../components/Buttons";
+import {FindSubmitButton} from "../../../components/buttons/findpage/FindSumbitButton";
 
 export default function FindPasswordMethod1 () {
     return (

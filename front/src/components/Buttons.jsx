@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 
 export const Button = ({ text, color }) => {
   const colorName = {
-    blue:'border-blue-300 hover:bg-blue-300 active:bg-blue-500 active:border-blue-500',
-    green:'border-green-300 hover:bg-green-300 active:bg-green-500 active:border-green-500',
-    purple:"border-purple-300 hover:bg-purple-300 active:bg-purple-500 active:border-purple-500",
-    pink:"border-pink-300 hover:bg-pink-300 active:bg-pink-500 active:border-pink-500"
+    red: 'border-red-300 hover:bg-red-300 active:bg-red-500 active:border-red-500',
+    gray : 'border-gray-300 hover:bg-gray-300 active:bg-gray-500 active:border-gray-500',
+    blue : 'border-blue-300 hover:bg-blue-300 active:bg-blue-500 active:border-blue-500',
+    green : 'border-green-300 hover:bg-green-300 active:bg-green-500 active:border-green-500',
+    purple : "border-purple-300 hover:bg-purple-300 active:bg-purple-500 active:border-purple-500",
+    pink : "border-pink-300 hover:bg-pink-300 active:bg-pink-500 active:border-pink-500"
   }
   return (
     <button
@@ -55,6 +57,36 @@ export const PurpleButton = ({ text }) => {
   return (
     <button
     className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold border-purple-300 hover:bg-purple-300 active:bg-purple-500 active:border-purple-500 active:text-white transition duration-300 ease-in-out`}
+    >
+      {text}
+    </button>
+  );
+};
+
+export const RedButton = ({ text }) => {
+  return (
+    <button
+    className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold border-red-300 hover:bg-red-300 active:bg-red-500 active:border-red-500 active:text-white transition duration-300 ease-in-out`}
+    >
+      {text}
+    </button>
+  );
+};
+
+export const BlueButton = ({ text }) => {
+  return (
+    <button
+    className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold border-blue-300 hover:bg-blue-300 active:bg-blue-500 active:border-blue-500 active:text-white transition duration-300 ease-in-out`}
+    >
+      {text}
+    </button>
+  );
+};
+
+export const tagSelected = ({ text }) => {
+  return (
+    <button
+    className={`nline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-gray-600 text-white font-semibold`}
     >
       {text}
     </button>
@@ -170,7 +202,7 @@ export const ToSmallButton = ({linkName, Size, iconName, colorName, title}) => {
     md : 'w-[60px] h-[60px] text-[30px]',
     lg : 'w-[80px] h-[80px] text-[40px]',
   }
-  // fa-solid fa-plane rotate-[-45deg]
+  // fa-solid fa-plane rotate-[-45deg] 
   const icon = {
     mainpage : 'fa-solid fa-house',
     loginpage : 'fa-solid fa-right-to-bracket',
@@ -188,8 +220,8 @@ export const ToSmallButton = ({linkName, Size, iconName, colorName, title}) => {
   const color = {
     orange : 'text-white bg-orange-400 hover:bg-[#ff6200] active:bg-gray-200 active:text-[#ff6200]',
     blue : 'text-white bg-sky-400 hover:bg-[#0088F8] active:bg-gray-200 active:text-[#0088F8]',
-    purple : 'text-white bg-purple-400 hover:bg-[#a100fd] active:bg-gray-200 active:text-[#a100fd]',
     green : 'text-white bg-green-400 hover:bg-green-500 active:bg-gray-200 active:text-green-500',
+    purple : 'text-white bg-purple-400 hover:bg-[#a100fd] active:bg-gray-200 active:text-[#a100fd]',
   }
 
   const specification = {
@@ -206,30 +238,5 @@ export const ToSmallButton = ({linkName, Size, iconName, colorName, title}) => {
         </div>
       </div>
     </Link>
-  )
-}
-
-export const FindMethodButton = ({ linkName, text }) => {
-  const link = {
-    emailMethod1 : '/find/email/method1',
-    emailMethod2 : '/find/email/method2',
-    passwordMethod1 : '/find/pw/method1',
-    passwordMethod2 : '/find/pw/method2',
-  }
-
-  return (
-    <Link to={`${link[linkName]}`}>
-      <button type="button" className="w-[400px] h-[80px] rounded-[14px] shadow-xss font-semibold text-[20px] text-[#6C6C6C] hover:text-[#0088F8] bg-white hover:bg-sky-100 active:bg-[#0088F8] active:text-white">
-        {text}
-      </button>
-    </Link>
-  )
-}
-
-export const FindSubmitButton = ({text}) => {
-  return (
-    <button type="submit" className="w-[400px] h-[80px] rounded-[14px] shadow-xss font-semibold text-[20px] text-white bg-[#0088F8]  hover:bg-[#2557e0] active:bg-[#1d43ac]">
-    {text}
-  </button>
   )
 }

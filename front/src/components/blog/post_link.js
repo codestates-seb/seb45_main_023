@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import parse from 'html-react-parser';
 
 export default function PostLink({
   title,
@@ -37,7 +38,7 @@ export default function PostLink({
         </div>
       </div>
       <div className='MiddleSection'>
-        {body.length > 200 ? body.slice(0, 200) + '...' : body}
+        {parse(body.length > 200 ? body.slice(0, 200) + '...' : body)}
       </div>
       <div className='BottomSection flex justify-between items-center'>
         <div className='user_info flex items-center'>
@@ -45,7 +46,7 @@ export default function PostLink({
           {nickname}
         </div>
         <div className='user_createdat'>
-          {createdAt ? `${createdAt}` : `${modifiedAt}에 수정`}
+          {modifiedAt ? `${createdAt}` : `${createdAt}`}
         </div>
       </div>
     </div>

@@ -8,7 +8,8 @@ import {
     nationalityState,
     birthDateState,
 } from '../../../recoil/logInSignUpState';
-import {FindSubmitButton, ToSmallButton} from "../../../components/Buttons";
+import {ToSmallButton} from "../../../components/Buttons";
+import {FindSubmitButton} from "../../../components/buttons/findpage/FindSumbitButton";
 
 export default function FindEmailMethod1 () {
     const navigate = useNavigate();
