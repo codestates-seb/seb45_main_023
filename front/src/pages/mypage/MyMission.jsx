@@ -10,6 +10,7 @@ import { User } from "../../recoil/mypage";
 export default function MyMission() {
 	const info = useRecoilValue(User);
 	const [mission, setMission] = useState("");
+	console.log(mission);
 	useEffect(() => {
 		const getData = async () => {
 			try {
@@ -22,7 +23,7 @@ export default function MyMission() {
 						},
 					}
 				);
-				console.log(response);
+				console.log(response.data);
 				setMission(response.data);
 			} catch (err) {
 				console.log("err", err);
@@ -32,33 +33,11 @@ export default function MyMission() {
 		getData();
 	}, []);
 
-	const handlePostMission = () => {
-		const postData = async () => {
-			try {
-				const request = await axios.post(
-					`${process.env.REACT_APP_TEST_URL}/missions/${info.id}/3`,
-					{
-						headers: {
-							"Content-Type": "application/json",
-							"ngrok-skip-browser-warning": "69420",
-						},
-					}
-				);
-				console.log(request.data);
-				setMission(request.data);
-			} catch (err) {
-				console.log(err);
-			}
-		};
-		postData();
-		console.log(mission);
-	};
-
   const handleClear = () => {
 		const postData = async () => {
 			try {
 				const request = await axios.patch(
-					`${process.env.REACT_APP_TEST_URL}/missions/mission-complete/2`,
+					`${process.env.REACT_APP_TEST_URL}/missions/mission-complete/${mission[0].id}`,
 					{
 						headers: {
 							"Content-Type": "application/json",
@@ -78,9 +57,8 @@ export default function MyMission() {
       <TopSidebar />
       <BottomSidebar />
       <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white">
-        <BarList />
+        <BarList mission={mission}/>
         <MissionNotice />
-        <button onClick={handlePostMission}>TEST POST BUTTON</button> {/*POST 테스트용 버튼 */}
         <button onClick={handleClear}>TEST CLEAR BUTTON</button>
       </div>
     </div>

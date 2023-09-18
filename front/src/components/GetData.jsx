@@ -7,19 +7,21 @@ import { locations } from './mainpage/locations';
 import { currentLocationState, beadIndexState } from '../recoil/main';
 
 export default function GetData () {
-const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState)
+  const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState)
 
   const [data, setData] = useRecoilState(User);
   const [info, setInfo] = useRecoilState(userInfo);
   const [current, setCurrent] = useRecoilState(currentLocationState);
   const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
 
+
+  console.log('data :', data);
   // 모든 페이지에서 새로고침 등으로 창이 초기화 되었을 때와 
   // 토큰상태값(authorizationToken), 유저정보(info), 유저데이터(data) 값이 변경되었을 때 동작한다.
   useEffect(() => {
     // 로컬 스토리지에서 로그인 시 저장했던 토큰 불러오기
     const updateAuthorizationToken = localStorage.getItem('Authorization'); 
-
+  
     function findLocationIndex() {
       const index = locations.findIndex(
         (location) => location.BLOCK === info.currentLocation
@@ -34,7 +36,7 @@ const [authorizationToken, setAuthorizationToken] = useRecoilState(authorization
     if (updateAuthorizationToken) {
       // authorizationTokenState 상태 업데이트(= 로그인 상태 유지)
       setAuthorizationToken(updateAuthorizationToken);
-
+  
       // get 요청으로 서버에서 데이터를 가져옴
       const getData = async () => {
         try {
@@ -43,7 +45,7 @@ const [authorizationToken, setAuthorizationToken] = useRecoilState(authorization
               headers: {
                 "Content-Type": "application/json",
                 "ngrok-skip-browser-warning": "69420",
-                Authorization: `Bearer ${authorizationToken}`,
+                Authorization: `Bearer ${updateAuthorizationToken}`,
               },
             }
           );
@@ -54,9 +56,8 @@ const [authorizationToken, setAuthorizationToken] = useRecoilState(authorization
           console.log(err);
         }
       };
-  
       getData();
       findLocationIndex();
     }
-  }, [authorizationToken, data, info]);
+  }, [setAuthorizationToken, setData, setInfo]);
 }

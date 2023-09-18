@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { User, userInfo } from "../../recoil/mypage";
 import Follower from "../../components/mypage/Follower";
+import MypageHeaderBtn from "../../components/buttons/MypageHeaderBtn";
 
 export default function MyPage() {
   const [data, setData] = useRecoilState(User);
@@ -20,7 +21,7 @@ export default function MyPage() {
 		const getData = async () => {
 			try {
 				const data = await axios.get(
-					`${process.env.REACT_APP_TEST_URL}/members/test@gmail.com`,
+					`${process.env.REACT_APP_TEST_URL}/members/test@google.com`,
 					{
 						headers: {
 							"Content-Type": "application/json",
@@ -39,6 +40,8 @@ export default function MyPage() {
 		getData();
 	}, []);
   return (
+    <>
+    <MypageHeaderBtn />
     <div className="flex justify-center">
       <TopSidebar />
       <BottomSidebar />
@@ -57,5 +60,6 @@ export default function MyPage() {
       </div>
       <Follower/>
     </div>
+    </>
   );
 }

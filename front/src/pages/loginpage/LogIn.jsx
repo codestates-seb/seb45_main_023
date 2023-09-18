@@ -83,7 +83,7 @@ export default function LogInPage() {
 				}
 			);
 
-			console.log(response)
+			// console.log(response)
 
 			// 로그인 성공 시 AuthorizationToken 을 받아옴
 			const Authorization = response.headers.authorization;
