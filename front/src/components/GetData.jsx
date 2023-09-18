@@ -25,7 +25,7 @@ export default function GetData () {
       // get 요청으로 서버에서 데이터를 가져옴
       const getData = async () => {
         try {
-          const data = await axios.get(`${process.env.REACT_APP_TEST_URL}/members/me`,
+          const data = await axios.get(`${process.env.REACT_APP_SERVER_URL}/members/me`,
             {
               headers: {
                 "Content-Type": "application/json",

@@ -34,7 +34,7 @@ export default function WelcomePage() {
 	// useEffect(() => {
 	// 	const getData = async () => {
 	// 		try {
-	// 			const data = await axios.get(`${process.env.REACT_APP_TEST_URL}/members/me`,
+	// 			const data = await axios.get(`${process.env.REACT_APP_SERVER_URL}/members/me`,
 	// 				{
 	// 					headers: {
 	// 						Authorization: `Bearer ${authorizationToken}`,

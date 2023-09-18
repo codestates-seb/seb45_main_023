@@ -31,7 +31,7 @@ export default function WithdrawButton() {
                 // 확인버튼 누른 경우
                 try {
                 // 서버에 회원 탈퇴 요청 보내기
-                const response = await axios.delete(`${process.env.REACT_APP_TEST_URL}/${userId}`, 
+                const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/${userId}`, 
                 requestData, 
                     {
                         headers: {

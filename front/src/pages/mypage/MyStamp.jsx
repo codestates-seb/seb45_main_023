@@ -18,7 +18,7 @@ export default function MyStamp() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_TEST_URL}/missions/stamps/${info.id}`, {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/missions/stamps/${info.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
