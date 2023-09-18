@@ -2,8 +2,7 @@ import { useState } from 'react';
 import Pagination from 'react-js-pagination';
 import './Pagination.css'
 
-export default function BlogPagenation() {
-  const [page, setPage] = useState(1);
+export default function BlogPagenation({itemPerPage, totalItemsCount, renderItemCount, page, setPage}) {
 
   const handlePageChange = (page) => {
     setPage(page);
@@ -13,9 +12,9 @@ export default function BlogPagenation() {
       <div className='flex justify-center'>
         <Pagination
           activePage={page}
-          itemsCountPerPage={4}
-          totalItemsCount={10}
-          pageRangeDisplayed={4}
+          itemsCountPerPage={itemPerPage}
+          totalItemsCount={totalItemsCount}
+          pageRangeDisplayed={renderItemCount}
           prevPageText={'<'}
           nextPageText={'>'}
           onChange={handlePageChange}

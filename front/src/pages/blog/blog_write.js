@@ -9,11 +9,18 @@ import Editor from '../../components/blog/editor';
 import { userInfo } from "../../recoil/mypage";
 import { useRecoilValue } from "recoil";
 
+import { useRecoilState } from "recoil";
+import { authorizationTokenState } from "../../recoil/logInSignUpState";
+
 export default function BlogWrite() {
   const navigate = useNavigate();
   const {cityId} = useParams();
   const userinfo = useRecoilValue(userInfo);
   const userId = userinfo.id;
+
+  const [authorizationToken, setAuthorizationToken] = useRecoilState(
+		authorizationTokenState
+	);
 
   const [selectedTag, setSelectedTag] = useState([]); // 태그
 
@@ -50,6 +57,7 @@ export default function BlogWrite() {
     try {
       const response = await axios.post(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${userId}/${cityId}?image-names=${imageArr}`, postData, {
         headers: {
+          Authorization: `Bearer ${authorizationToken}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420'
         },
@@ -90,8 +98,8 @@ export default function BlogWrite() {
           <h1 className="text-xl font-bold pt-10">
             Tag
           </h1>
-          <div className="tag_list">
-            <div className="tag_container pt-3 flex justify-between">
+          <div>
+            <div className="pt-3 flex justify-between">
               <div className="tag_left">
                 {availableTag.map((tag) => (
                   <Tag 
