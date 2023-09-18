@@ -15,10 +15,31 @@ export default function MyStamp() {
   const topData = stamp.slice(0, 10);
   const bottomData = stamp.slice(10, 20);
   console.log(stamp);
+  const cityName = [
+    '서울특별시',
+    '부산광역시',
+    '인천광역시',
+    '대구광역시',
+    '제주도',
+    '대전광역시',
+    '광주광역시',
+    '울산광역시',
+    '세종특별시',
+    '자유여행',
+    '충청남도',
+    '경상남도',
+    '전라남도',
+    '충청북도',
+    '울릉도',
+    '경상북도',
+    '전라북도',
+    '강원도',
+    '경기도',
+  ];
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_TEST_URL}/missions/stamps/${info.id}`, {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/missions/stamps/${info.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -26,7 +47,7 @@ export default function MyStamp() {
           },
         });
         const stampArray = Object.values(response.data);
-        setStamp(stampArray);
+        setStamp(stampArray.map((item, index) => ({ ...item, city: cityName[index] })));
       } catch (err) {
         console.log(err);
       }
@@ -34,7 +55,6 @@ export default function MyStamp() {
 
     getData();
   }, []);
-
   return (
     <>
       <MypageHeaderBtn />

@@ -21,7 +21,7 @@ export default function MyBlog() {
 	useEffect(() => {
 		const getData = async () => {
 			const BlogResponse = await axios.get(
-				`${process.env.REACT_APP_TEST_URL}/blogs/members/${data.id}?size=4&page=1`,
+				`${process.env.REACT_APP_SERVER_URL}/blogs/members/${data.id}?size=4&page=1`,
 				{
 					headers: {
 						"Content-Type": "application/json",
