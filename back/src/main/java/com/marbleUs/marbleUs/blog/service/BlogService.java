@@ -93,19 +93,19 @@ public class BlogService {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("blogId").descending());
 
-        List<Blog> tagBlogs = blogRepository.findByTagsContaining(tag);
+        List<Blog> tagBlogs = blogRepository.findByTagsContaining(tag, pageRequest);
         return new PageImpl<>(tagBlogs, pageRequest, tagBlogs.size());
     }
 
     public Page<Blog> findBlogsByMemberId(int page, int size, long memberId) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("blogId").descending());
-        List<Blog> memberBlogs = blogRepository.findByMemberId(memberId);
+        List<Blog> memberBlogs = blogRepository.findByMemberId(memberId, pageRequest);
         return new PageImpl<>(memberBlogs, pageRequest, memberBlogs.size());
     }
 
     public Page<Blog> findBlogsByCity(int page, int size, long cityId) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("blogId").descending());
-        List<Blog> cityBlogs = blogRepository.findByCityId(cityId);
+        List<Blog> cityBlogs = blogRepository.findByCityId(cityId, pageRequest);
         return new PageImpl<>(cityBlogs, pageRequest, cityBlogs.size());
     }
 
