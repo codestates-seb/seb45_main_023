@@ -75,6 +75,36 @@ export const PurpleButton = ({ text }) => {
   );
 };
 
+export const RedButton = ({ text }) => {
+  return (
+    <button
+    className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold border-red-300 hover:bg-red-300 active:bg-red-500 active:border-red-500 active:text-white transition duration-300 ease-in-out`}
+    >
+      {text}
+    </button>
+  );
+};
+
+export const BlueButton = ({ text }) => {
+  return (
+    <button
+    className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-white text-black shadow-md font-semibold border-blue-300 hover:bg-blue-300 active:bg-blue-500 active:border-blue-500 active:text-white transition duration-300 ease-in-out`}
+    >
+      {text}
+    </button>
+  );
+};
+
+export const tagSelected = ({ text }) => {
+  return (
+    <button
+    className={`nline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid bg-gray-600 text-white font-semibold`}
+    >
+      {text}
+    </button>
+  );
+};
+
 // NegativeButton, NegativeButtonGreen을 통합 => NegativeCustomButton
 export const NegativeCustomButton = ({ text, colorName}) => {
   const color = {
