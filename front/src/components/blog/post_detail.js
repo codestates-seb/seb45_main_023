@@ -4,17 +4,14 @@ import Tag from "../../components/blog/tag";
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaEdit, FaTrashAlt, FaCheck, FaTimes, FaEye } from "react-icons/fa";
 
-import { useRecoilState } from "recoil";
 import { authorizationTokenState } from "../../recoil/logInSignUpState";
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import parse from 'html-react-parser';
 import { useRecoilValue } from 'recoil';
-import { authorizationTokenState } from '../../recoil/logInSignUpState';
 
 import { userInfo } from "../../recoil/mypage";
-import { useRecoilValue } from "recoil";
 import BlogPagenation from '../mypage/BlogPagination';
 
 
@@ -63,7 +60,7 @@ export default function PostDetail({
   const userinfo = useRecoilValue(userInfo);
   const userId = userinfo.id;
 
-  const [authorizationToken, setAuthorizationToken] = useRecoilState(
+  const token = useRecoilValue(
     authorizationTokenState
   );
 
@@ -83,7 +80,7 @@ export default function PostDetail({
     try {
       const response = await axios.get(`${process.env.REACT_APP_TEST_URL}/comments/blogs/${blogId}?page=1&size=10`, {
         headers: {
-          Authorization: `Bearer ${authorizationToken}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
           "Authorization": `Bearer ${token}`
@@ -104,7 +101,7 @@ export default function PostDetail({
       try {
         const response = await axios.get(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${blogId}`, {
           headers: {
-            Authorization: `Bearer ${authorizationToken}`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -132,7 +129,7 @@ export default function PostDetail({
 
       const response = await axios.delete(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${blogId}?names=${imageNames}`, {
         headers: {
-          Authorization: `Bearer ${authorizationToken}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
@@ -157,7 +154,7 @@ export default function PostDetail({
         body: newComment,
       }, {
         headers: {
-          Authorization: `Bearer ${authorizationToken}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
@@ -182,7 +179,7 @@ export default function PostDetail({
     try {
       const response = await axios.delete(`${process.env.REACT_APP_TEST_URL}/comments/${comment_id}`, {
         headers: {
-          Authorization: `Bearer ${authorizationToken}`,
+          Authorization: `Bearer ${token}`,
         }
       });
         // 댓글이 성공적으로 삭제된 경우
@@ -212,7 +209,7 @@ export default function PostDetail({
         },
         {
           headers: {
-            Authorization: `Bearer ${authorizationToken}`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -251,7 +248,7 @@ export default function PostDetail({
         body: editedComments[comment_id],
       }, {
         headers: {
-          Authorization: `Bearer ${authorizationToken}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
