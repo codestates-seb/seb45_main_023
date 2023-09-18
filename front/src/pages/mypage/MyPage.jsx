@@ -61,7 +61,6 @@ export default function MyPage() {
             setNickname={setNickname}
             setNationality={setNationality}
             setPassword={setPassword}
-            setBirth={setBirth}
           />
           <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
           <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>

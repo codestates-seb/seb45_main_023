@@ -4,7 +4,7 @@ export default function BarList(mission) {
   return (
     <div className="flex flex-col w-[40rem] h-[22rem] mt-[1rem] justify-around bg-white ">
       <div className="flex h-[4rem] rounded-3xl shadow-2xl">
-        <span className="flex w-[6rem] justify-center items-center rounded-l-3xl bg-blue-400 text-white font-bold hover:bg-blue-500">
+        <span className="flex w-[10rem] justify-center items-center rounded-l-3xl bg-blue-400 text-white font-bold hover:bg-blue-500">
           {mission.mission[0]?.cityName}
         </span>
         <span className="flex w-full justify-between items-center bg-white rounded-3xl ml-[-1.2rem]">
@@ -17,7 +17,7 @@ export default function BarList(mission) {
         </span>
       </div>
       <div className="flex h-[4rem] rounded-3xl shadow-2xl">
-        <span className="flex w-[6rem] justify-center items-center rounded-l-3xl bg-green-400 text-white font-bold hover:bg-green-500">
+        <span className="flex w-[10rem] justify-center items-center rounded-l-3xl bg-green-400 text-white font-bold hover:bg-green-500">
           {mission.mission[1]?.cityName}
         </span>
         <div className="flex w-full justify-between items-center bg-white rounded-3xl ml-[-1.2rem]">
@@ -26,7 +26,7 @@ export default function BarList(mission) {
         </div>
       </div>
       <div className="flex h-[4rem] rounded-3xl shadow-2xl">
-        <span className="flex w-[6rem] justify-center items-center rounded-l-3xl bg-pink-300 text-white font-bold hover:bg-pink-400">
+        <span className="flex w-[10rem] justify-center items-center rounded-l-3xl bg-pink-300 text-white font-bold hover:bg-pink-400">
           {mission.mission[2]?.cityName}
         </span>
         <span className="flex w-full justify-between items-center bg-white rounded-3xl ml-[-1.2rem]">
