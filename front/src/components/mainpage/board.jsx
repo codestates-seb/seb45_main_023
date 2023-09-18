@@ -165,7 +165,7 @@ const Board = () => {
 			{/* 도시 라인 */}
 			<div className="m-20 shadow-lg">
 				<section
-					className="absolute bottom-0 right-0 z-10 pl-6 pr-5 bg-orange-50 col-span-4 row-span-1 w-screen flex items-center justify-between"
+					className="absolute bottom-0 right-0 z-10 pl-5 pr-5 bg-orange-50 col-span-4 row-span-1 w-screen flex items-center justify-between"
 					style={{
 						minWidth: "870px",
 					}}

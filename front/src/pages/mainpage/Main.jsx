@@ -78,7 +78,7 @@ export default function Main() {
 	}, [authorizationToken, setData, setInfo]);
 
 	return (
-		<div class="App bg-slate-200 min-w-[1056px] min-h-[904px]">
+		<div class="App bg-blue-200 min-w-[1056px] min-h-[904px]">
 			<Board />
 			<PassportIcon />
 		</div>
