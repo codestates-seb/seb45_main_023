@@ -6,11 +6,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { User } from "../../recoil/mypage";
+import { authorizationTokenState } from "../../recoil/logInSignUpState";
 import MypageHeaderBtn from "../../components/buttons/mypage/MypageHeaderBtn";
 
 export default function MyMission() {
 	const info = useRecoilValue(User);
 	const [mission, setMission] = useState("");
+	const token = useRecoilValue(authorizationTokenState)
 	console.log(mission);
 	useEffect(() => {
 		const getData = async () => {
@@ -21,6 +23,7 @@ export default function MyMission() {
 						headers: {
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
+							"Authorization": `Bearer ${token}`
 						},
 					}
 				);

@@ -7,34 +7,38 @@ import axios from "axios";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { Blogs, Comments, User } from "../../recoil/mypage";
 import Follower from "../../components/mypage/Follower";
+import { authorizationTokenState } from "../../recoil/logInSignUpState";
 import MypageHeaderBtn from "../../components/buttons/mypage/MypageHeaderBtn";
 
 export default function MyBlog() {
 	const data = useRecoilValue(User);
 	const [blogs, setBlogs] = useRecoilState(Blogs);
 	const [comments, setComments] = useRecoilState(Comments);
+	const token = useRecoilValue(authorizationTokenState)
 	console.log("blogs", blogs);
 	console.log("comment : ", comments);
 
 	useEffect(() => {
 		const getData = async () => {
 			const BlogResponse = await axios.get(
-				`${process.env.REACT_APP_TEST_URL}/blogs/members/${data.id}?size=3&page=1`,
+				`${process.env.REACT_APP_TEST_URL}/blogs/members/${data.id}?size=4&page=1`,
 				{
 					headers: {
 						"Content-Type": "application/json",
 						"ngrok-skip-browser-warning": "69420",
+						"Authorization": `Bearer ${token}`
 					},
 				}
 			);
 			setBlogs(BlogResponse.data.data);
 
 			const CommentResponse = await axios.get(
-				`${process.env.REACT_APP_TEST_URL}/comments/members/${data.id}?page=3&size=1`,
+				`${process.env.REACT_APP_TEST_URL}/comments/members/${data.id}?page=4&size=1`,
 				{
 					headers: {
 						"Content-Type": "application/json",
 						"ngrok-skip-browser-warning": "69420",
+						"Authorization": `Bearer ${token}`
 					},
 				}
 			);

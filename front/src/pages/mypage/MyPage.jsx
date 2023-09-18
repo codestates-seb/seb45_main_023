@@ -4,9 +4,10 @@ import MypageNotice from "../../components/mypage/MypageNotice";
 import UserInfo from "../../components/mypage/UserInfo";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { User, userInfo } from "../../recoil/mypage";
 import Follower from "../../components/mypage/Follower";
+import { authorizationTokenState } from "../../recoil/logInSignUpState";
 import MypageHeaderBtn from "../../components/buttons/mypage/MypageHeaderBtn";
 
 export default function MyPage() {
@@ -16,16 +17,18 @@ export default function MyPage() {
   const [nationality, setNationality] = useState(data.nationality);
   const [password, setPassword] = useState('');
   const [birth, setBirth] = useState(data.birth);
+  const token = useRecoilValue(authorizationTokenState)
   console.log(data);
  	useEffect(() => {
 		const getData = async () => {
 			try {
 				const data = await axios.get(
-					`${process.env.REACT_APP_TEST_URL}/members/test@google.com`,
+					`${process.env.REACT_APP_TEST_URL}/members/me`,
 					{
 						headers: {
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
+              "Authorization": `Bearer ${token}`
 						},
 					}
 				);

@@ -6,11 +6,13 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { User, bookmarkInfo } from '../../recoil/mypage';
+import { authorizationTokenState } from '../../recoil/logInSignUpState';
 import MypageHeaderBtn from "../../components/buttons/mypage/MypageHeaderBtn";
 
 export default function MyBookmark() {
   const info = useRecoilValue(User);
   const [bookmark, setBookmark] = useRecoilState(bookmarkInfo);
+  const token = useRecoilValue(authorizationTokenState)
   useEffect(() => {
     const getData = async () => {
       try {
@@ -20,6 +22,7 @@ export default function MyBookmark() {
             headers: {
               'Content-Type': 'application/json',
               'ngrok-skip-browser-warning': '69420',
+              "Authorization": `Bearer ${token}`
             },
           }
         );

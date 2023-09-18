@@ -4,6 +4,7 @@ import { Button } from '../Buttons';
 import axios from 'axios';
 import { useEffect } from 'react';
 import AdminButton from '../AdminButton';
+import { authorizationTokenState } from '../../recoil/logInSignUpState';
 import WithdrawButton from '../buttons/mypage/WithdrawButton';
 
 export default function MypageNotice({ nickname, nationality, password, birth }) {
@@ -11,6 +12,7 @@ export default function MypageNotice({ nickname, nationality, password, birth })
   const info = useRecoilValue(userInfo);
   const [data, setData] = useRecoilState(User);
   const [errors, setErrors] = useRecoilState(validate);
+  const token = useRecoilValue(authorizationTokenState)
   // const [patch, setPatch] = useRecoilState(User) << 응답값으로 리렌더링 가능하게 처리
 
   useEffect(() => {
@@ -74,6 +76,7 @@ export default function MypageNotice({ nickname, nationality, password, birth })
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
+            "Authorization": `Bearer ${token}`
           },
         });
         setData(response.data);
@@ -100,7 +103,6 @@ export default function MypageNotice({ nickname, nationality, password, birth })
         <button className="ml-4 w-[10rem]" onClick={handleEdit}>
           {isEdit ? <Button text={'수정완료'} color={'blue'} /> : <Button text={'개인정보수정'} color={'blue'} />}
         </button>
-        <AdminButton />
       </div>
     </div>
   );
