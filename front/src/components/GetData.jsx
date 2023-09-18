@@ -3,34 +3,19 @@ import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { authorizationTokenState } from '../recoil/logInSignUpState';
 import { User, userInfo } from '../recoil/mypage';
-import { locations } from './mainpage/locations';
-import { currentLocationState, beadIndexState } from '../recoil/main';
 
 export default function GetData () {
   const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState)
-
   const [data, setData] = useRecoilState(User);
   const [info, setInfo] = useRecoilState(userInfo);
-  const [current, setCurrent] = useRecoilState(currentLocationState);
-  const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
-
 
   console.log('data :', data);
+  
   // 모든 페이지에서 새로고침 등으로 창이 초기화 되었을 때와 
   // 토큰상태값(authorizationToken), 유저정보(info), 유저데이터(data) 값이 변경되었을 때 동작한다.
   useEffect(() => {
     // 로컬 스토리지에서 로그인 시 저장했던 토큰 불러오기
     const updateAuthorizationToken = localStorage.getItem('Authorization'); 
-  
-    function findLocationIndex() {
-      const index = locations.findIndex(
-        (location) => location.BLOCK === info.currentLocation
-      );
-      if (index !== -1) {
-        setCurrent(locations[index]);
-        setBeadIndex(current.cityId);
-      }
-    }
     
     // 로컬 토큰이 존재하면(= 로그인을 했었으면)
     if (updateAuthorizationToken) {
@@ -57,7 +42,6 @@ export default function GetData () {
         }
       };
       getData();
-      findLocationIndex();
     }
   }, [setAuthorizationToken, setData, setInfo]);
 }
