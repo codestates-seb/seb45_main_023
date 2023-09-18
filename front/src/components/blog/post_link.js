@@ -42,11 +42,10 @@ export default function PostLink({
       </div>
       <div className='BottomSection flex justify-between items-center'>
         <div className='user_info flex items-center'>
-          <img src={profile_pic} alt='profile_pic' className='mr-2' />
           {nickname}
         </div>
         <div className='user_createdat'>
-          {modifiedAt ? `${createdAt}` : `${createdAt}`}
+          {modifiedAt ? `${modifiedAt}` : `${createdAt}`}
         </div>
       </div>
     </div>
