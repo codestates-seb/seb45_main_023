@@ -78,7 +78,7 @@ export default function PostDetail({
   const fetchComments = async () => {
     // 서버에서 댓글 불러오기
     try {
-      const response = await axios.get(`${process.env.REACT_APP_TEST_URL}/comments/blogs/${blogId}?page=1&size=10`, {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/blogs/${blogId}?page=1&size=10`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ export default function PostDetail({
     // 서버에서 특정 게시물 가져오기
     const fetchBlogPost = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_TEST_URL}/blogs/${blogId}`, {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ export default function PostDetail({
     try {
       const imageNames = blogData.images.map(image => image.name);
 
-      const response = await axios.delete(`${process.env.REACT_APP_TEST_URL}/blogs/${blogId}?names=${imageNames}`, {
+      const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}?names=${imageNames}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -150,7 +150,7 @@ export default function PostDetail({
   const handleCommentSubmit = async () => {
     // 작성한 댓글 서버로 보내기
     try {
-      const response = await axios.post(`${process.env.REACT_APP_TEST_URL}/comments/${blogId}/${userId}`, {
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/comments/${blogId}/${userId}`, {
         body: newComment,
       }, {
         headers: {
@@ -177,7 +177,7 @@ export default function PostDetail({
   const handleCommentDelete = async (comment_id) => {
     // 댓글 삭제
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_TEST_URL}/comments/${comment_id}`, {
+      const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/comments/${comment_id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
@@ -201,7 +201,7 @@ export default function PostDetail({
   const handleSaveEdit = async () => {
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_TEST_URL}/blogs/${blogId}`,
+        `${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`,
         {
           title: editedTitle,
           body: editedBody,
@@ -244,7 +244,7 @@ export default function PostDetail({
   
   const handleCommentEditSave = async (comment_id) => {
     try {
-      await axios.patch(`${process.env.REACT_APP_TEST_URL}/comments/${comment_id}`, {
+      await axios.patch(`${process.env.REACT_APP_SERVER_URL}/comments/${comment_id}`, {
         body: editedComments[comment_id],
       }, {
         headers: {
