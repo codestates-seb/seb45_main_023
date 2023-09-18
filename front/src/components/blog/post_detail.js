@@ -24,6 +24,11 @@ export default function PostDetail({profile_pic}) {
   const [editedTitle, setEditedTitle] = useState(blogData.title);
   const [editedBody, setEditedBody] = useState(blogData.body);
   const [editedTags, setEditedTags] = useState(blogData.tags);
+  const [editedImage, setEditedImage] = useState(blogData.images);
+  const [imageArr, setImageArr] = useState([]);
+
+  console.log(editedImage);
+  console.log("imageArr : ", imageArr);
 
   
   const [isEditingComment, setIsEditingComment] = useState(false);
@@ -119,7 +124,8 @@ export default function PostDetail({profile_pic}) {
     };
 
     fetchBlogPost();
-  }, [page]);
+    console.log('imageArr2', imageArr);
+  }, [page, imageArr]);
 
   if (!blogData) {
     return <div>Loading...</div>;
@@ -220,12 +226,23 @@ export default function PostDetail({profile_pic}) {
     setEditedTitle(blogData.title);
     setEditedBody(blogData.body);
     setEditedTags(blogData.tags);
+    setEditedImage(blogData.images);
   };
 
   const handleSaveEdit = async () => {
+    const array = [];
+    const originImage = (arr) => {
+      arr.map((item) => {
+        return(
+          array.push(item.name)
+        )
+      })
+    }
+    originImage(editedImage);
+    console.log("array 찍을거", array)
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`,
+        `${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}?image-names=${[...array, ...imageArr]}`,
         {
           title: editedTitle,
           body: editedBody,
@@ -269,6 +286,8 @@ export default function PostDetail({profile_pic}) {
       }
     } catch (error) {
       console.error('게시물 수정 실패:', error);
+      console.log('editedimage', editedImage);
+      console.log('imagearr', imageArr);
     }
   };
   
@@ -344,6 +363,8 @@ export default function PostDetail({profile_pic}) {
           <div>
             <Editor 
               body={editedBody}
+              imageArr={editedImage}
+              setImageArr={setImageArr}
               setBody={setEditedBody}
             />
             <h1 className="text-xl font-bold pt-10">
