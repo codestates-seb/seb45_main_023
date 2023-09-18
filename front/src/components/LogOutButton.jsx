@@ -27,7 +27,7 @@ export const LogOutButton = () => {
       <button type="button" onClick={logOutHandler}
       className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-blue-300 bg-white text-black shadow-md font-semibold hover:bg-blue-300 active:bg-blue-500 active:border-blue-500 active:text-white transition duration-300 ease-in-out`}
       >
-        LogOut
+        로그아웃
       </button>
     );
   };

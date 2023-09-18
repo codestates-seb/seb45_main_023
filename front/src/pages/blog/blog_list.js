@@ -21,6 +21,7 @@ export default function Bloglist() {
 	const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
 	const [page, setPage] = useState(1);
 	const navigate = useNavigate();
+  const token = useRecoilValue(authorizationTokenState)
 	
 	const userinfo = useRecoilValue(userInfo);
   const userId = userinfo.id;
@@ -52,6 +53,7 @@ export default function Bloglist() {
 							Authorization: `Bearer ${authorizationToken}`,
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
+              "Authorization": `Bearer ${token}`
 						},
 					}
 				);

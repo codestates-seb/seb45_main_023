@@ -10,6 +10,8 @@ import { authorizationTokenState } from "../../recoil/logInSignUpState";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import parse from 'html-react-parser';
+import { useRecoilValue } from 'recoil';
+import { authorizationTokenState } from '../../recoil/logInSignUpState';
 
 import { userInfo } from "../../recoil/mypage";
 import { useRecoilValue } from "recoil";
@@ -39,6 +41,7 @@ export default function PostDetail({
 
   
   const [isEditingComment, setIsEditingComment] = useState(false);
+
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editedComments, setEditedComments] = useState({});
 
@@ -83,6 +86,7 @@ export default function PostDetail({
           Authorization: `Bearer ${authorizationToken}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
+          "Authorization": `Bearer ${token}`
         },
       }); // axios로 GET 요청
       setComments(response.data.data);
@@ -115,7 +119,7 @@ export default function PostDetail({
     };
 
     fetchBlogPost();
-  }, [blogId]);
+  }, []);
 
   if (!blogData) {
     return <div>Loading...</div>;
