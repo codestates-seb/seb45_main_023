@@ -109,7 +109,7 @@ export default function Bloglist() {
                 {
                     headers: {
                         Authorization: `Bearer ${authorizationToken}`,
-						"Content-Type": "application/json",
+												"Content-Type": "application/json",
                         "ngrok-skip-browser-warning": "69420",
                     },
                 }
