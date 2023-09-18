@@ -20,7 +20,7 @@ const Editor = ({body, setBody, setImageArr}) => {
                     loader.file.then( (image) => {
                         formData.append("image", image);
     
-                        axios.post(`https://b95e-116-126-166-12.ngrok-free.app/blogs/upload-images`, formData, {
+                        axios.post(`${process.env.REACT_APP_SERVER_URL}/blogs/upload-images`, formData, {
                             headers: {
                                 Authorization: `Bearer ${authorizationToken}`,
                                 'ngrok-skip-browser-warning': '69420'
@@ -33,7 +33,7 @@ const Editor = ({body, setBody, setImageArr}) => {
                             }
     
                             try {
-                                const imageResponse = await axios.get(`https://b95e-116-126-166-12.ngrok-free.app/blogs/print-image?name=${res.data.name}`, {
+                                const imageResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/print-image?name=${res.data.name}`, {
                                     headers: {
                                         Authorization: `Bearer ${authorizationToken}`,
                                         'ngrok-skip-browser-warning': '69420'
