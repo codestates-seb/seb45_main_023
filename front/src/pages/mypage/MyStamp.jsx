@@ -14,7 +14,6 @@ export default function MyStamp() {
   const [stamp, setStamp] = useRecoilState(stamps);
   const topData = stamp.slice(0, 10);
   const bottomData = stamp.slice(10, 20);
-  console.log(stamp);
   const cityName = [
     '서울특별시',
     '부산광역시',
