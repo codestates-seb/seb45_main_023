@@ -64,3 +64,8 @@ export const validate = atom({
   key:'validate',
   default:{}
 })
+
+export const stamps = atom({
+	key:'stamps',
+	default:[]
+})
