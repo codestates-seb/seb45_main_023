@@ -16,7 +16,7 @@ export default function MyBookmark() {
     const getData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_TEST_URL}/blogs/my-bookmarks?page=1&size=10&bookmarks=${info.bookmarks[0]}`,
+          `${process.env.REACT_APP_SERVER_URL}/blogs/my-bookmarks?page=1&size=10&bookmarks=${info.bookmarks[0]}`,
           {
             headers: {
               'Content-Type': 'application/json',

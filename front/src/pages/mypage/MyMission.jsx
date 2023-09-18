@@ -40,7 +40,7 @@ export default function MyMission() {
 		const postData = async () => {
 			try {
 				const request = await axios.patch(
-					`${process.env.REACT_APP_TEST_URL}/missions/mission-complete/${mission[0].id}`,
+					`${process.env.REACT_APP_SERVER_URL}/missions/mission-complete/${mission[0].id}`,
 					{
 						headers: {
 							"Content-Type": "application/json",
