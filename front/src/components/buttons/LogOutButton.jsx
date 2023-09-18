@@ -24,9 +24,9 @@ export const LogOutButton = () => {
           )
 
           // authorization 토큰 갱신
-          if(response.headers.get("Authorization") !== null) {
+          if(response.headers.get("Authorization")) {
             const Authorization = response.headers.get("Authorization");
-            localStorage.setItem('Authorization', Authorization);
+            localStorage.setItem('Authorization', Authorization ?? '');
           };
 
           if (response.status === 200) {

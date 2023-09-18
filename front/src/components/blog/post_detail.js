@@ -77,9 +77,9 @@ export default function PostDetail({profile_pic}) {
       }); 
 
       // authorization 토큰 갱신
-      if(response.headers.get("Authorization") !== null) {
+      if(response.headers.get("Authorization")) {
         const Authorization = response.headers.get("Authorization");
-        localStorage.setItem('Authorization', Authorization);
+        localStorage.setItem('Authorization', Authorization ?? '');
       };
       setComments(response.data.data);
       setCommentPage(response.data.pageInfo)
@@ -104,9 +104,9 @@ export default function PostDetail({profile_pic}) {
         });
 
       // authorization 토큰 갱신
-      if(response.headers.get("Authorization") !== null) {
+      if(response.headers.get("Authorization")) {
         const Authorization = response.headers.get("Authorization");
-        localStorage.setItem('Authorization', Authorization);
+        localStorage.setItem('Authorization', Authorization ?? '');
       };
 
         setBlogData(response.data);
@@ -139,9 +139,9 @@ export default function PostDetail({profile_pic}) {
       });
 
       // authorization 토큰 갱신
-      if(response.headers.get("Authorization") !== null) {
+      if(response.headers.get("Authorization")) {
         const Authorization = response.headers.get("Authorization");
-        localStorage.setItem('Authorization', Authorization);
+        localStorage.setItem('Authorization', Authorization ?? '');
       };
 
       if (response.status === 200) {
@@ -170,9 +170,9 @@ export default function PostDetail({profile_pic}) {
       });
 
       // authorization 토큰 갱신
-      if(response.headers.get("Authorization") !== null) {
+      if(response.headers.get("Authorization")) {
         const Authorization = response.headers.get("Authorization");
-        localStorage.setItem('Authorization', Authorization);
+        localStorage.setItem('Authorization', Authorization ?? '');
       };
 
       if (response.status === 201) {
@@ -201,9 +201,9 @@ export default function PostDetail({profile_pic}) {
       });
 
       // authorization 토큰 갱신
-      if(response.headers.get("Authorization") !== null) {
+      if(response.headers.get("Authorization")) {
         const Authorization = response.headers.get("Authorization");
-        localStorage.setItem('Authorization', Authorization);
+        localStorage.setItem('Authorization', Authorization ?? '');
       };
 
         // 댓글이 성공적으로 삭제된 경우
@@ -241,9 +241,9 @@ export default function PostDetail({profile_pic}) {
       );
 
       // authorization 토큰 갱신
-      if(response.headers.get("Authorization") !== null) {
+      if(response.headers.get("Authorization")) {
         const Authorization = response.headers.get("Authorization");
-        localStorage.setItem('Authorization', Authorization);
+        localStorage.setItem('Authorization', Authorization ?? '');
       };
 
       if (response.status === 201) {
@@ -257,10 +257,10 @@ export default function PostDetail({profile_pic}) {
         });
 
         // authorization 토큰 갱신
-        if(updatedResponse.headers.get("Authorization") !== null) {
-          const Authorization = updatedResponse.headers.get("Authorization");
-          localStorage.setItem('Authorization', Authorization);
-        };
+        if(updatedResponse.headers.get("Authorization")) {
+					const Authorization = updatedResponse.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization ?? '');
+				};
 
         setBlogData(updatedResponse.data); // 업데이트된 게시글로 상태 업데이트
         setIsEditing(false);
@@ -296,9 +296,9 @@ export default function PostDetail({profile_pic}) {
       });
 
       // authorization 토큰 갱신
-      if(response.headers.get("Authorization") !== null) {
+      if(response.headers.get("Authorization")) {
         const Authorization = response.headers.get("Authorization");
-        localStorage.setItem('Authorization', Authorization);
+        localStorage.setItem('Authorization', Authorization ?? '');
       };
 
       const updatedComments = comments.map(comment => {

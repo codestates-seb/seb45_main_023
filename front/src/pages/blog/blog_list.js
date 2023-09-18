@@ -57,9 +57,9 @@ export default function Bloglist() {
 				);
 
 				// authorization 토큰 갱신
-				if(response.headers.get("Authorization") !== null) {
+				if(response.headers.get("Authorization")) {
 					const Authorization = response.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization);
+					localStorage.setItem('Authorization', Authorization ?? '');
 				};
 
 				setPosts(response.data.data);
@@ -94,9 +94,9 @@ export default function Bloglist() {
             );
 
 			// authorization 토큰 갱신
-			if(response.headers.get("Authorization") !== null) {
+			if(response.headers.get("Authorization")) {
 				const Authorization = response.headers.get("Authorization");
-				localStorage.setItem('Authorization', Authorization);
+				localStorage.setItem('Authorization', Authorization ?? '');
 			};
 
 
@@ -116,9 +116,9 @@ export default function Bloglist() {
             );
 
 			// authorization 토큰 갱신
-			if(response.headers.get("Authorization") !== null) {
+			if(response.headers.get("Authorization")) {
 				const Authorization = response.headers.get("Authorization");
-				localStorage.setItem('Authorization', Authorization);
+				localStorage.setItem('Authorization', Authorization ?? '');
 			};
 
             setBookmarkedPosts([...bookmarkedPosts, blog_id]);

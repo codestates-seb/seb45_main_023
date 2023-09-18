@@ -34,9 +34,9 @@ export default function MyPage() {
 				);
 
         // authorization 토큰 갱신
-				if(data.headers.get("Authorization") !== null) {
+        if(data.headers.get("Authorization")) {
 					const Authorization = data.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization);
+					localStorage.setItem('Authorization', Authorization ?? '');
 				};
 
 				setData(data.data);

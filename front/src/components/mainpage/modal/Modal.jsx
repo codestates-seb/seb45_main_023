@@ -50,10 +50,10 @@ function Modal({ city }) {
 				);
 	
 				// authorization 토큰 갱신
-				if(response.headers.get("Authorization") !== null) {
+				if(response.headers.get("Authorization")) {
 					const Authorization = response.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization);
-				};
+					localStorage.setItem('Authorization', Authorization ?? '');
+				  }
 
 			} catch (err) {
 				console.log("patchLocation" + err);
@@ -74,9 +74,9 @@ function Modal({ city }) {
 				);
 	
 				// authorization 토큰 갱신
-				if(response.headers.get("Authorization") !== null) {
+				if(response.headers.get("Authorization")) {
 					const Authorization = response.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization);
+					localStorage.setItem('Authorization', Authorization ?? '');
 				};
 
 				setCityInfo(response.data);
@@ -99,9 +99,9 @@ function Modal({ city }) {
 				);
 	
 			  // authorization 토큰 갱신
-			  if(response.headers.get("Authorization") !== null) {
+			  if(response.headers.get("Authorization")) {
 				const Authorization = response.headers.get("Authorization");
-				localStorage.setItem('Authorization', Authorization);
+				localStorage.setItem('Authorization', Authorization ?? '');
 			  };
 
 			} catch (err) {
@@ -124,11 +124,11 @@ function Modal({ city }) {
 					}
 				);
 	
-				// authorization 토큰 갱신
-				if(response.headers.get("Authorization") !== null) {
-					const Authorization = response.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization);
-				};
+			  // authorization 토큰 갱신
+			  if(response.headers.get("Authorization")) {
+				const Authorization = response.headers.get("Authorization");
+				localStorage.setItem('Authorization', Authorization ?? '');
+			  };
 
 				if (Array.isArray(response.data)) {
 					// response.data가 배열인지 확인
