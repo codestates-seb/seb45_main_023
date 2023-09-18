@@ -9,7 +9,7 @@ export default function GetData () {
   const [data, setData] = useRecoilState(User);
   const [info, setInfo] = useRecoilState(userInfo);
 
-  console.log('data :', data);
+  // console.log('data :', data);
   
   // 모든 페이지에서 새로고침 등으로 창이 초기화 되었을 때와 
   // 토큰상태값(authorizationToken), 유저정보(info), 유저데이터(data) 값이 변경되었을 때 동작한다.

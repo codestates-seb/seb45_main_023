@@ -10,7 +10,6 @@
 // import { locations } from "../../components/mainpage/locations";
 
 import { ToSmallButton } from "../../components/Buttons";
-import WithdrawButton from "../../components/buttons/mypage/WithdrawButton";
 
 export default function WelcomePage() {
 
@@ -81,8 +80,6 @@ export default function WelcomePage() {
 						<div className="text-[70px] text-[#0088F8]">MarbleUs</div>
 					</div>
 					<section className="flex gap-[40px]">
-						{/* 회원탈퇴 버튼 나중에 삭제할 것! (test중...) */}
-						<WithdrawButton />
 						<ToSmallButton
 							linkName="mainpage"
 							Size="lg"
