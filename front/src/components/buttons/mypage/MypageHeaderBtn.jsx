@@ -1,5 +1,5 @@
-import { ToSmallButton } from "../Buttons"
-import { LogOutButton } from "./LogOutButton"
+import { ToSmallButton } from "../../Buttons"
+import { LogOutButton } from "../LogOutButton"
 
 export default function MypageHeaderBtn () {
     return (

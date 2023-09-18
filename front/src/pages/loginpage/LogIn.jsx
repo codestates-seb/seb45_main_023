@@ -7,10 +7,9 @@ import {
 	passwordState,
 	authorizationTokenState,
 } from "../../recoil/logInSignUpState";
-import {
-	SignUpWithMarbleUsButton,
-	GoogleLogInButton,
-} from "../../components/Buttons";
+
+import { GoogleLogInButton } from "../../components/buttons/loginpage/GoogleLogInButton";
+import { SignUpWithMarbleUsButton } from "../../components/buttons/loginpage/SignUpWithMarbleUs";
 
 export default function LogInPage() {
 	const navigate = useNavigate();

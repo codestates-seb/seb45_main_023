@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import { authorizationTokenState } from '../../recoil/logInSignUpState';
+import { authorizationTokenState } from '../../../recoil/logInSignUpState';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { userInfo } from '../../recoil/mypage';
+import { userInfo } from '../../../recoil/mypage';
 
 // 기능 구현 중...
 export default function WithdrawButton() {
@@ -78,7 +78,7 @@ export default function WithdrawButton() {
     return (
         <>
             <button type='button' onClick={handleWithdraw}
-            className={`inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-blue-300 bg-white text-black shadow-md font-semibold hover:bg-blue-300 active:bg-blue-500 active:border-blue-500 active:text-white transition duration-300 ease-in-out`}
+            className='inline-flex items-center justify-center gap-2 p-4 pl-6 pr-6 rounded-full border-4 border-solid border-blue-300 bg-white text-black shadow-md font-semibold hover:bg-blue-300 active:bg-blue-500 active:border-blue-500 active:text-white transition duration-300 ease-in-out'
             >
             {isLoading ? '회원 탈퇴 중...' : '회원 탈퇴'}
             </button>

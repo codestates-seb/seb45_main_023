@@ -1,8 +1,8 @@
 import { useRecoilValue } from "recoil";
-import { authorizationTokenState } from "../../recoil/logInSignUpState";
+import { authorizationTokenState } from "../../../recoil/logInSignUpState";
 import { Link } from "react-router-dom";
 
-import PassportImage from "../../assets/passportImage.png";
+import PassportImage from "../../../assets/passportImage.png";
 
 export default function PassportIcon() {
 	const authorizationToken = useRecoilValue(authorizationTokenState);

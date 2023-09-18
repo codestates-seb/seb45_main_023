@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { Blogs, Comments, User } from "../../recoil/mypage";
 import Follower from "../../components/mypage/Follower";
+import MypageHeaderBtn from "../../components/buttons/mypage/MypageHeaderBtn";
 
 export default function MyBlog() {
 	const data = useRecoilValue(User);
@@ -44,18 +45,21 @@ export default function MyBlog() {
 	}, []);
 
   return (
-    <div className="flex justify-center">
-      <TopSidebar />
-      <BottomSidebar />
-      <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white ">
-        <BlogList />
-        <ComentList />
-        <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
-        <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
-        <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
-        <div className="bg-white h-[0.5rem] w-[50rem] rounded-b-[2rem]"></div>
+	<>
+      <MypageHeaderBtn />
+      <div className="flex justify-center">
+        <TopSidebar />
+        <BottomSidebar />
+        <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white ">
+          <BlogList />
+          <ComentList />
+          <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
+          <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
+          <div className="bg-white h-[0.5rem] w-[50rem] border-b-[1px] border-gray-300">&nbsp;</div>
+          <div className="bg-white h-[0.5rem] w-[50rem] rounded-b-[2rem]"></div>
+        </div>
+        <Follower/>
       </div>
-      <Follower/>
-    </div>
+	</>
   );
 }

@@ -4,6 +4,7 @@ import { Button } from '../Buttons';
 import axios from 'axios';
 import { useEffect } from 'react';
 import AdminButton from '../AdminButton';
+import WithdrawButton from '../buttons/mypage/WithdrawButton';
 
 export default function MypageNotice({ nickname, nationality, password, birth }) {
   const [isEdit, setIsEdit] = useRecoilState(Edit);
@@ -95,6 +96,7 @@ export default function MypageNotice({ nickname, nationality, password, birth })
         </div>
       </div>
       <div className="flex justify-center bg-white h-[7rem] pb-2">
+        <WithdrawButton />
         <button className="ml-4 w-[10rem]" onClick={handleEdit}>
           {isEdit ? <Button text={'수정완료'} color={'blue'} /> : <Button text={'개인정보수정'} color={'blue'} />}
         </button>
