@@ -37,10 +37,10 @@ export default function WithdrawButton() {
                             },
                     });
 
-                    if(response.headers.get("Authorization") !== null) {
+                    if(response.headers.get("Authorization")) {
                         const Authorization = response.headers.get("Authorization");
-                        localStorage.setItem('Authorization', Authorization);
-                    }
+                        localStorage.setItem('Authorization', Authorization ?? '');
+                    };
 
                     if (response.status === 204) {
                         // 로컬 스토리지의 토큰 삭제

@@ -28,10 +28,10 @@ export default function MyBookmark() {
         );
         
         // authorization 토큰 갱신
-			  if(response.headers.get("Authorization") !== null) {
-				const Authorization = response.headers.get("Authorization");
-				localStorage.setItem('Authorization', Authorization);
-			}
+        if(response.headers.get("Authorization")) {
+					const Authorization = response.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization ?? '');
+				};
         setBookmark(response.data.data);
       } catch (err) {
         console.log(err);

@@ -31,9 +31,9 @@ const Editor = ({body, setBody, imageArr, setImageArr}) => {
                         })
                         .then(async (res) => {
                             // authorization 토큰 갱신
-                            if(res.headers.get("Authorization") !== null) {
+                            if(res.headers.get("Authorization")) {
                                 const Authorization = res.headers.get("Authorization");
-                                localStorage.setItem('Authorization', Authorization);
+                                localStorage.setItem('Authorization', Authorization ?? '');
                             };
 
                             if(!flag){
@@ -50,12 +50,13 @@ const Editor = ({body, setBody, imageArr, setImageArr}) => {
                             //         }
                             //     });
 
-                            //     // authorization 토큰 갱신
-                            //     if(res.headers.get("Authorization") !== null) {
-                            //         const Authorization = res.headers.get("Authorization");
-                            //         localStorage.setItem('Authorization', Authorization);
-                            //     };
-    
+
+                                // authorization 토큰 갱신
+                                if(imageResponse.headers.get("Authorization")) {
+                                    const Authorization = imageResponse.headers.get("Authorization");
+                                    localStorage.setItem('Authorization', Authorization ?? '');
+                                };
+
                             //     resolve({
                             //         default: imageResponse.path // 이미지 URL을 가져옴
                             //     });

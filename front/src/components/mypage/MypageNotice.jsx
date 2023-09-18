@@ -18,7 +18,6 @@ export default function MypageNotice({ nickname, nationality, password }) {
   useEffect(() => {
     setErrors({});
   }, []);
-  console.log(errors);
   const request = {
     nickname: nickname,
     nationality: nationality,
@@ -69,9 +68,9 @@ export default function MypageNotice({ nickname, nationality, password }) {
         });
 
 				// authorization 토큰 갱신
-				if(response.headers.get("Authorization") !== null) {
+				if(response.headers.get("Authorization")) {
 					const Authorization = response.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization);
+					localStorage.setItem('Authorization', Authorization ?? '');
 				};
 
         setData(response.data);

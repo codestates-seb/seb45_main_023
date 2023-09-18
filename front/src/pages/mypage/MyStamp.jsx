@@ -14,7 +14,6 @@ export default function MyStamp() {
   const [stamp, setStamp] = useRecoilState(stamps);
   const topData = stamp.slice(0, 10);
   const bottomData = stamp.slice(10, 20);
-  console.log(stamp);
   const cityName = [
     '서울특별시',
     '부산광역시',
@@ -48,9 +47,9 @@ export default function MyStamp() {
         });
 
         // authorization 토큰 갱신
-				if(response.headers.get("Authorization") !== null) {
+        if(response.headers.get("Authorization")) {
 					const Authorization = response.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization);
+					localStorage.setItem('Authorization', Authorization ?? '');
 				};
 
         const stampArray = Object.values(response.data);

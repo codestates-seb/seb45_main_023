@@ -82,10 +82,10 @@ export default function LogInPage() {
 				}
 			);
 
-			if(response.headers.get("Authorization") !== null) {
+			if(response.headers.get("Authorization")) {
 				const Authorization = response.headers.get("Authorization");
-				localStorage.setItem('Authorization', Authorization);
-			}
+				localStorage.setItem('Authorization', Authorization ?? '');
+			};
 			
 			// console.log(response)
 
