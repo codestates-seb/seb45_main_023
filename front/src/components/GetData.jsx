@@ -9,8 +9,8 @@ export default function GetData () {
   const [data, setData] = useRecoilState(User);
   const [info, setInfo] = useRecoilState(userInfo);
 
-  console.log('data :', data);
-  
+  // console.log('data :', data);
+
   // 모든 페이지에서 새로고침 등으로 창이 초기화 되었을 때와 
   // 토큰상태값(authorizationToken), 유저정보(info), 유저데이터(data) 값이 변경되었을 때 동작한다.
   useEffect(() => {
@@ -25,15 +25,21 @@ export default function GetData () {
       // get 요청으로 서버에서 데이터를 가져옴
       const getData = async () => {
         try {
-          const data = await axios.get(`${process.env.REACT_APP_TEST_URL}/members/me`,
+          const data = await axios.get(`${process.env.REACT_APP_SERVER_URL}/members/me`,
             {
               headers: {
+                Authorization: `Bearer ${updateAuthorizationToken}`,
                 "Content-Type": "application/json",
                 "ngrok-skip-browser-warning": "69420",
-                Authorization: `Bearer ${updateAuthorizationToken}`,
               },
             }
           );
+          
+          if(data.headers.get("Authorization") !== null) {
+            const Authorization = data.headers.get("Authorization");
+            localStorage.setItem('Authorization', Authorization);
+          }
+
           setData(data.data);
           const { id, nickname, email, level, nationality, password, currentLocation, birth, } = data.data;
           setInfo({ id, nickname, email, level, nationality, password, currentLocation, birth, });

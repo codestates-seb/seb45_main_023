@@ -13,15 +13,22 @@ export default function CardList({ start, end }) {
 	const handleRemoveBookmark = async () => {
 		try {
 			const request = await axios.patch(
-				`${process.env.REACT_APP_TEST_URL}/members/${info.id}/no-bookmark/${data.id}`,
+				`${process.env.REACT_APP_SERVER_URL}/members/${info.id}/no-bookmark/${data.id}`,
 				{
 					headers: {
+						"Authorization": `Bearer ${token}`,
 						"Content-Type": "application/json",
 						"ngrok-skip-browser-warning": "69420",
-						"Authorization": `Bearer ${token}`
 					},
 				}
 			);
+
+			// authorization 토큰 갱신
+			if(request.headers.get("Authorization") !== null) {
+				const Authorization = request.headers.get("Authorization");
+				localStorage.setItem('Authorization', Authorization);
+			};
+
 			console.log(request);
 		} catch (err) {
 			console.log(err);

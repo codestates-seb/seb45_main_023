@@ -109,7 +109,7 @@ export default function SignUpPage() {
 		try {
 			// 서버 API 호출
 			const response = await axios.post(
-				`${process.env.REACT_APP_TEST_URL}/members/signup`,
+				`${process.env.REACT_APP_SERVER_URL}/members/signup`,
 				requestData,
 				{
 					headers: {
@@ -118,6 +118,12 @@ export default function SignUpPage() {
 					},
 				}
 			);
+
+			// authorization 토큰 갱신
+			if(response.headers.get("Authorization") !== null) {
+				const Authorization = response.headers.get("Authorization");
+				localStorage.setItem('Authorization', Authorization);
+			};
 
 			console.log(response.data);
 

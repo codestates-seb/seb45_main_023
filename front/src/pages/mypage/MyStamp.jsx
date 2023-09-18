@@ -46,6 +46,13 @@ export default function MyStamp() {
             'ngrok-skip-browser-warning': '69420',
           },
         });
+
+        // authorization 토큰 갱신
+				if(response.headers.get("Authorization") !== null) {
+					const Authorization = response.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization);
+				};
+
         const stampArray = Object.values(response.data);
         setStamp(stampArray.map((item, index) => ({ ...item, city: cityName[index] })));
       } catch (err) {

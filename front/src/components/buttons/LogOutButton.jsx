@@ -16,12 +16,18 @@ export const LogOutButton = () => {
           // 서버 API 호출
           const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/logout`,{
               headers: {
+                Authorization: `Bearer ${authorizationToken}`,
                 "Content-Type": "application/json",
                 "ngrok-skip-browser-warning": "69420",
-                Authorization: `Bearer ${localStorage.getItem('Authorization')}`,
               },
             }
           )
+
+          // authorization 토큰 갱신
+          if(response.headers.get("Authorization") !== null) {
+            const Authorization = response.headers.get("Authorization");
+            localStorage.setItem('Authorization', Authorization);
+          };
 
           if (response.status === 200) {
             // 로컬 스토리지에서 사용자 정보 삭제 (선택사항)
