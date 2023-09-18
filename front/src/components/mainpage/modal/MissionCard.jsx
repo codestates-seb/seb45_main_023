@@ -10,8 +10,8 @@ function MissionCard({ mission, level }) {
 	const color = ["yellow", "green", "blue", "purple"];
 
 	const [info, setInfo] = useRecoilState(userInfo);
-    const [current, setcurrent] = useRecoilState(currentLocationState);
-    
+	const [current, setcurrent] = useRecoilState(currentLocationState);
+
 	if (mission === undefined) {
 		// 미션이 닫힌 상태인 경우
 		return (
@@ -39,7 +39,7 @@ function MissionCard({ mission, level }) {
 			className={`flex h-[4rem] rounded-full shadow-2xl bg-${color[level]}-300`}
 		>
 			<span
-				className={`flex w-[8rem] pr-4 justify-center items-center rounded-l-3xl bg-${color}-300 text-white font-bold hover:bg-${color}-100`}
+				className={`flex w-[8rem] pr-4 justify-center items-center rounded-l-3xl bg-yellow-300 text-white font-bold hover:bg-${color}-100`}
 			>
 				LEVEL {level}
 			</span>

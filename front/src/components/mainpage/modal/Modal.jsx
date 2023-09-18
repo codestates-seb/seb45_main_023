@@ -46,7 +46,6 @@ function Modal({ city }) {
 						},
 					}
 				);
-				console.log("patchLocation done");
 			} catch (err) {
 				console.log("patchLocation" + err);
 			}
@@ -80,7 +79,6 @@ function Modal({ city }) {
 						},
 					}
 				);
-				console.log("postMission done");
 			} catch (err) {
 				console.error("postMission", err);
 			} finally {
@@ -116,8 +114,6 @@ function Modal({ city }) {
 		postMission();
 	}, [isOpen]);
 
-	console.log(missions);
-
 	return (
 		<>
 			{isOpen && (
@@ -134,7 +130,7 @@ function Modal({ city }) {
 						}
 					}}
 				>
-					<div className="bg-slate-200 relative w-5/6 h-3/4 min-w-[1000px] flex rounded-lg shadow-lg transform scale-100 transition-transform duration-500 overflow-hidden">
+					<div className="bg-slate-200 relative w-5/6 h-3/4 min-w-[1000px] border-1 border-slate-600 flex rounded-lg shadow-lg transform scale-100 transition-transform duration-500 overflow-hidden">
 						<div className="w-full h-1/2 top-0 object-cover">
 							<img src={`/region/${city.ENG}.png`} alt="cityPicture" />
 						</div>
