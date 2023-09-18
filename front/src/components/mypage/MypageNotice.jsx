@@ -18,7 +18,6 @@ export default function MypageNotice({ nickname, nationality, password }) {
   useEffect(() => {
     setErrors({});
   }, []);
-  console.log(errors);
   const request = {
     nickname: nickname,
     nationality: nationality,
