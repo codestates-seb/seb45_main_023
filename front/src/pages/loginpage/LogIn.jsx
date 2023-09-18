@@ -73,7 +73,7 @@ export default function LogInPage() {
 		try {
 			// 서버 API 호출
 			const response = await axios.post(
-				`${process.env.REACT_APP_TEST_URL}/auth/login`,
+				`${process.env.REACT_APP_SERVER_URL}/auth/login`,
 				requestData,
 				{
 					headers: {
@@ -105,6 +105,7 @@ export default function LogInPage() {
 		} catch (error) {
 			// 로딩 상태 해제
 			setIsLoading(false);
+			console.log("에러럴", error)
 
 			// 로그인 실패 처리
 			setErrors({ serverError: "로그인에 실패했습니다." });

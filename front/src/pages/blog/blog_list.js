@@ -47,7 +47,7 @@ export default function Bloglist() {
 		const getData = async () => {
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_TEST_URL}/blogs/cities/${cityId}?page=1&size=10`,
+					`${process.env.REACT_APP_SERVER_URL}/blogs/cities/${cityId}?page=1&size=10`,
 					{
 						headers: {
 							Authorization: `Bearer ${authorizationToken}`,
@@ -78,7 +78,7 @@ export default function Bloglist() {
     try {
         if (bookmarkedPosts.includes(blog_id)) {
             await axios.patch( // 나중에 delete를 바꾸고 숫자를 userId로 바꾸기
-                `${process.env.REACT_APP_TEST_URL}/members/10/no-bookmark/${blog_id}`, 
+                `${process.env.REACT_APP_SERVER_URL}/members/10/no-bookmark/${blog_id}`, 
                 {
                     headers: {
                         Authorization: `Bearer ${authorizationToken}`,
@@ -90,7 +90,7 @@ export default function Bloglist() {
             console.log("북마크 삭제 성공");
         } else {
             await axios.patch(
-                `${process.env.REACT_APP_TEST_URL}/members/10/bookmark/${blog_id}`,
+                `${process.env.REACT_APP_SERVER_URL}/members/10/bookmark/${blog_id}`,
                 null,
                 {
                     headers: {
