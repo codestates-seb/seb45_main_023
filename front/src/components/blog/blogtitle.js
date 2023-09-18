@@ -26,7 +26,11 @@ function BlogHeader({ locationName }) {
   useEffect(() => {
     const apiUrl = `${process.env.REACT_APP_SERVER_URL}/weather/${cityName}`;
 
-    axios.get(apiUrl)
+    axios.get(apiUrl, {
+      headers: {
+        'ngrok-skip-browser-warning': '69420',
+      }
+    })
       .then(response => {
         const data = response.data;
         setWeather(data);
