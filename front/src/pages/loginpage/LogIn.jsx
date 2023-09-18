@@ -82,6 +82,11 @@ export default function LogInPage() {
 				}
 			);
 
+			if(response.headers.get("Authorization") !== null) {
+				const Authorization = response.headers.get("Authorization");
+				localStorage.setItem('Authorization', Authorization);
+			}
+			
 			// console.log(response)
 
 			// 로그인 성공 시 AuthorizationToken 을 받아옴

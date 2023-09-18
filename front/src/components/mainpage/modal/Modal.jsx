@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import MissionCard from "./MissionCard";
+import { authorizationTokenState } from "../../../recoil/logInSignUpState";
 
 function Modal({ city }) {
 	const [info, setInfo] = useRecoilState(userInfo);
@@ -20,7 +21,7 @@ function Modal({ city }) {
 	const [diceControl, setDiceControl] = useRecoilState(diceControlState);
 	const [current, setcurrent] = useRecoilState(currentLocationState);
 	const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
-
+	const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
 	const [cityInfo, setCityInfo] = useState("");
 	const [missions, setMissions] = useState([]);
 
@@ -41,11 +42,19 @@ function Modal({ city }) {
 					request,
 					{
 						headers: {
+							Authorization: `Bearer ${authorizationToken}`,
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
 						},
 					}
 				);
+	
+				// authorization 토큰 갱신
+				if(response.headers.get("Authorization") !== null) {
+					const Authorization = response.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization);
+				};
+
 			} catch (err) {
 				console.log("patchLocation" + err);
 			}
@@ -57,11 +66,19 @@ function Modal({ city }) {
 					`${process.env.REACT_APP_SERVER_URL}/cities/${city.cityId}`,
 					{
 						headers: {
+							Authorization: `Bearer ${authorizationToken}`,
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
 						},
 					}
 				);
+	
+				// authorization 토큰 갱신
+				if(response.headers.get("Authorization") !== null) {
+					const Authorization = response.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization);
+				};
+
 				setCityInfo(response.data);
 			} catch (err) {
 				console.error("fetchCityInfo", err);
@@ -70,15 +87,23 @@ function Modal({ city }) {
 
 		const postMission = async () => {
 			try {
-				await axios.post(
+				const response = await axios.post(
 					`${process.env.REACT_APP_SERVER_URL}/missions/${info.id}/${city.cityId}`,
 					{
 						headers: {
+							Authorization: `Bearer ${authorizationToken}`,
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
 						},
 					}
 				);
+	
+			  // authorization 토큰 갱신
+			  if(response.headers.get("Authorization") !== null) {
+				const Authorization = response.headers.get("Authorization");
+				localStorage.setItem('Authorization', Authorization);
+			  };
+
 			} catch (err) {
 				console.error("postMission", err);
 			} finally {
@@ -92,11 +117,19 @@ function Modal({ city }) {
 					`${process.env.REACT_APP_SERVER_URL}/missions/member-mission/${info.id}`,
 					{
 						headers: {
+							Authorization: `Bearer ${authorizationToken}`,
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
 						},
 					}
 				);
+	
+				// authorization 토큰 갱신
+				if(response.headers.get("Authorization") !== null) {
+					const Authorization = response.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization);
+				};
+
 				if (Array.isArray(response.data)) {
 					// response.data가 배열인지 확인
 					const seoulMissions = response.data.filter(

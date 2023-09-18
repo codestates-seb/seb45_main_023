@@ -30,6 +30,13 @@ export default function MyBlog() {
 					},
 				}
 			);
+
+			// authorization 토큰 갱신
+			if(BlogResponse.headers.get("Authorization") !== null) {
+				const Authorization = BlogResponse.headers.get("Authorization");
+				localStorage.setItem('Authorization', Authorization);
+			}
+
 			setBlogs(BlogResponse.data.data);
 
 			const CommentResponse = await axios.get(
@@ -42,6 +49,13 @@ export default function MyBlog() {
 					},
 				}
 			);
+			
+			// authorization 토큰 갱신
+			if(CommentResponse.headers.get("Authorization") !== null) {
+				const Authorization = CommentResponse.headers.get("Authorization");
+				localStorage.setItem('Authorization', Authorization);
+			}
+
 			setComments(CommentResponse.data.data);
 		};
 
