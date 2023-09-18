@@ -119,6 +119,12 @@ export default function SignUpPage() {
 				}
 			);
 
+			// authorization 토큰 갱신
+			if(response.headers.get("Authorization") !== null) {
+				const Authorization = response.headers.get("Authorization");
+				localStorage.setItem('Authorization', Authorization);
+			};
+
 			console.log(response.data);
 
 			// 지금은 회원가입 성공시 경고창이 나온다.

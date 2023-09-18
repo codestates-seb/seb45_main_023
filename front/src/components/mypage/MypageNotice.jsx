@@ -74,11 +74,18 @@ export default function MypageNotice({ nickname, nationality, password, birth })
       try {
         const response = await axios.patch(`${process.env.REACT_APP_SERVER_URL}/members/${info.id}`, request, {
           headers: {
+            "Authorization": `Bearer ${token}`,
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
-            "Authorization": `Bearer ${token}`
           },
         });
+
+				// authorization 토큰 갱신
+				if(response.headers.get("Authorization") !== null) {
+					const Authorization = response.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization);
+				};
+
         setData(response.data);
         setErrors({});
       } catch (err) {

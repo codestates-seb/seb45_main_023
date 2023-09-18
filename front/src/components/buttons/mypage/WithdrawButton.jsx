@@ -31,12 +31,17 @@ export default function WithdrawButton() {
                 const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/members/withdraw/${userId}`, 
                     {
                         headers: {
+                                Authorization: `Bearer ${authorizationToken}`, 
                                 "Content-Type": "application/json",
                                 "ngrok-skip-browser-warning": "69420",
-                                Authorization: `Bearer ${authorizationToken}`, 
                             },
                     });
-        
+
+                    if(response.headers.get("Authorization") !== null) {
+                        const Authorization = response.headers.get("Authorization");
+                        localStorage.setItem('Authorization', Authorization);
+                    }
+
                     if (response.status === 204) {
                         // 로컬 스토리지의 토큰 삭제
                         localStorage.removeItem('Authorization');

@@ -63,6 +63,12 @@ export default function BlogWrite() {
         },
       });
 
+				// authorization 토큰 갱신
+				if(response.headers.get("Authorization") !== null) {
+					const Authorization = response.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization);
+				};
+
       console.log('게시물 글쓰기 성공:', response.data);
       navigate(`/blogdetail/${response.data.id}/${cityId}`);
     } catch (error) {

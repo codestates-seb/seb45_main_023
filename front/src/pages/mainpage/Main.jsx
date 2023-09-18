@@ -44,10 +44,18 @@ export default function Main() {
 					{
 						headers: {
 							Authorization: `Bearer ${authorizationToken}`,
+							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
 						},
 					}
 				);
+				
+				// authorization 토큰 갱신
+				if(data.headers.get("Authorization") !== null) {
+					const Authorization = data.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization);
+				};
+
 				setData(data.data);
 				const {
 					id,

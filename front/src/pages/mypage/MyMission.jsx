@@ -27,6 +27,13 @@ export default function MyMission() {
 						},
 					}
 				);
+				
+				// authorization 토큰 갱신
+				if(response.headers.get("Authorization") !== null) {
+					const Authorization = response.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization);
+				}
+
 				console.log(response.data);
 				setMission(response.data);
 			} catch (err) {
@@ -49,6 +56,13 @@ export default function MyMission() {
 						},
 					}
 				);
+				
+				// authorization 토큰 갱신
+				if(request.headers.get("Authorization") !== null) {
+					const Authorization = request.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization);
+				}
+
 				console.log(request.data);
 			} catch (err) {
 				console.log(err);
