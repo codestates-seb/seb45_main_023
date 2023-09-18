@@ -5,9 +5,17 @@ package com.marbleUs.marbleUs.common.auth.handler;
 
 import com.marbleUs.marbleUs.common.auth.jwt.JwtTokenizer;
 import com.marbleUs.marbleUs.common.auth.utils.CustomAuthorityUtils;
+import com.marbleUs.marbleUs.common.redis.service.RedisServiceUtil;
+import com.marbleUs.marbleUs.common.redis.tools.ClientIpInterceptor;
+import com.marbleUs.marbleUs.common.tools.generator.NickNameGenerator;
+import com.marbleUs.marbleUs.common.tools.verifier.MemberVerifier;
+import com.marbleUs.marbleUs.image.entity.Image;
+import com.marbleUs.marbleUs.member.entity.Member;
 import com.marbleUs.marbleUs.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.util.LinkedMultiValueMap;
@@ -19,17 +27,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.*;
 
+@Slf4j
 @RequiredArgsConstructor
 public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final MemberService memberService;
+    private final RedisServiceUtil redisServiceUtil;
+    private final ClientIpInterceptor interceptor;
+    private final MemberVerifier memberVerifier;
+    private final NickNameGenerator nickNameGenerator;
+    private final PasswordEncoder passwordEncoder;
 
 
 
@@ -38,14 +51,15 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         var oAuth2User = (OAuth2User) authentication.getPrincipal();
 
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
-        String profilePic = String.valueOf(oAuth2User.getAttributes().get("picture"));
+        String birth = String.valueOf(oAuth2User.getAttributes().get("email"));
+//        String profilePic = String.valueOf(oAuth2User.getAttributes().get("picture"));
         List<String> authorities = authorityUtils.createRoles(email);
-//        saveMember(email, authorities, profilePic);
+        if (!memberVerifier.verifyExistMember(email)) {saveMember(email, authorities);}
 
 
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
-        System.out.println("Member Sign Up Process 1 :: Member is created!:: " + email );
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
+        log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
+        log.info("Member Sign Up Process 1 :: Member is created!:: " + email );
+        log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
 
 
         redirect(request,response,email,authorities);
@@ -54,28 +68,29 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private void redirect(HttpServletRequest request, HttpServletResponse response, String username,List<String> authorities) throws IOException{
 
         String accessToken = delegateAccessToken(username, authorities);
-        String refreshToken = delegateRefreshToken(username);
+        String ip = interceptor.getClientIP(request);
+        delegateRefreshToken(username,ip);
 
-        String uri = createURI(accessToken,refreshToken).toString();
+        String uri = createURI(accessToken).toString();
 
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
-        System.out.println("Login Process 0. AccessToken & RefreshToken is created!::");
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
+        log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
+        log.info("Login Process 0. AccessToken & RefreshToken is created!::");
+        log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
 
         getRedirectStrategy().sendRedirect(request,response,uri);
 
 
     }
 
-    private URI createURI(String accessToken, String refreshToken) {
+    private URI createURI(String accessToken) {
         MultiValueMap<String,String> queryParams = new LinkedMultiValueMap<>();
         queryParams.add("access_token", accessToken);
-        queryParams.add("refresh_token", refreshToken);
+//        queryParams.add("refresh_token", refreshToken);
 
         return UriComponentsBuilder.newInstance()
                 .scheme("http")
-                .host("seb45-pre-015.s3-website.ap-northeast-2.amazonaws.com")
-                .path("/mytokens")//redirect 받기 위한 주소
+                .host("marbleus-s3.s3-website.ap-northeast-2.amazonaws.com")
+                .path("/oauth-token")//redirect 받기 위한 주소
                 .queryParams(queryParams)
                 .build().toUri();
     }
@@ -94,7 +109,7 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         return accessToken;
     }
 
-    private String delegateRefreshToken(String username) {
+    private String delegateRefreshToken(String username, String ip) {
 
         String subject = username;
 
@@ -102,16 +117,28 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String base64EncodedSecretKey = jwtTokenizer.encodedBasedSecretKey(jwtTokenizer.getSecretKey());
         String refreshToken = jwtTokenizer.generateRefreshToken(subject,expiration,base64EncodedSecretKey);
+
+        Instant now = Instant.now();
+        Instant expirationDate = expiration.toInstant();
+        long secondsBetween = redisServiceUtil.expirationSecondGenerator(now,expirationDate);
+        redisServiceUtil.setDateExpire(ip+"_Refresh",refreshToken,secondsBetween);
+
         return refreshToken;
     }
 
-//    private void saveMember(String email, List<String> authorities, String pic) {
-//        if (!memberService.existsEmail(email)) {
-//            Member member = new Member();
-//            member.setEmail(email);
-//            member.setRoles(authorities);
-//            member.setProfilePic(pic);
-//            memberService.createMember(member);
-//        }
-//    }
+    private void saveMember(String email, List<String> authorities) {
+        memberVerifier.verifyExistsEmail(email);
+            Member member = new Member();
+            String nickName = nickNameGenerator.randomNickNameGenerator(NickNameGenerator.adjectives,NickNameGenerator.animals);
+            String password = passwordEncoder.encode((UUID.randomUUID().toString()));
+            member.setPassword(password);
+            member.setNickname(nickName);
+            member.setEmail(email);
+            member.setRoles(authorities);
+            member.setNationality("MarbleUs");
+            member.setBirth(LocalDate.now());
+//            member.addProfilePic(pic);
+            memberService.create(member);
+
+    }
 }

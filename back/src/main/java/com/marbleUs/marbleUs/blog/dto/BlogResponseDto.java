@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 public class BlogResponseDto {
     private Long id;
+    private String cityName;
     private String title;
     private String body;
     private Long view;

@@ -10,12 +10,12 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
-    url: jdbc:mysql://${AWS_RDS_Endpoint}/pre15DB?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://${AWS_RDS_ENDPOINT}/marbleusDb?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
     username: admin
-    password: ${RDS_Mysql_password}
+    password: ${RDS_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   config:
-    domain: ${AWS_S3_Endpoint}
+    domain: ${AWS_S3_ENDPOINT}
   security:
     oauth2:
       client:
@@ -55,3 +55,5 @@ cloud:
       secretKey: ${S3_SECRET_KEY}
     s3:
       bucket: marbleus-s3
+api:
+  key: ${API_SERVICE_KEY}

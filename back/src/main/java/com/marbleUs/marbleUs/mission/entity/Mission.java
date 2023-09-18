@@ -20,13 +20,18 @@ public class Mission extends Auditable {
     @Column(length = 100, nullable = false)
     private String content; //미션 내용
 
+    @Column(nullable = false)
+    private int level;
+
     //공통 시티미션은 여러 회원에 속할 수 있다.
     @OneToMany(mappedBy = "mission")
     private List<MemberMission> memberMissions = new ArrayList<>();
 
+    private String cityName;//스페셜일 경우 식별자
+
     //city_mission 테이블과 연결
-    @OneToMany(mappedBy = "mission")
-    private List<CityMission> cityMissions;
+//    @OneToMany(mappedBy = "mission")
+//    private List<CityMission> cityMissions;
 
     //미션타입 - common, special
     @Enumerated(EnumType.STRING) //이넘타입

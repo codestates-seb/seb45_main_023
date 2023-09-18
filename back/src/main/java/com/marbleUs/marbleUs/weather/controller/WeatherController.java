@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("weather")
+@RequestMapping("/weather")
 @RequiredArgsConstructor
 public class WeatherController {
 

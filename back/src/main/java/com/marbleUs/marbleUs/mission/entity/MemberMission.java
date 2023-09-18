@@ -1,5 +1,6 @@
 package com.marbleUs.marbleUs.mission.entity;
 
+import com.marbleUs.marbleUs.city.entity.City;
 import com.marbleUs.marbleUs.common.tools.audit.Auditable;
 import com.marbleUs.marbleUs.member.entity.Member;
 import lombok.Getter;
@@ -24,9 +25,13 @@ public class MemberMission extends Auditable {
     @JoinColumn(name = "mission_id", nullable = false)
     private Mission mission;
 
+    @ManyToOne
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
+
     //클리어 여부
     @Column(nullable = false)
-    private boolean isComlpete;
+    private boolean isComplete = false;
 
 
 }
