@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import {
 	beadIndexState,
 	currentLocationState,
+	diceControlState,
 	modalState,
 } from "../../recoil/main";
 import { authorizationTokenState } from "../../recoil/logInSignUpState";
@@ -22,6 +23,7 @@ export default function Main() {
 	const [authorizationToken, setAuthorizationToken] = useRecoilState(
 		authorizationTokenState
 	);
+	const [diceControl, setDiceControl] = useRecoilState(diceControlState);
 
 	useEffect(() => {
 		function findLocationIndex() {
@@ -77,8 +79,12 @@ export default function Main() {
 		getData();
 	}, [authorizationToken, setData, setInfo]);
 
+	useEffect(() => {
+		setDiceControl(true);
+	}, []);
+
 	return (
-		<div class="App bg-blue-200 min-w-[1056px] min-h-[904px]">
+		<div className="App bg-blue-200 min-w-[1056px] min-h-[904px]">
 			<Board />
 			<PassportIcon />
 		</div>

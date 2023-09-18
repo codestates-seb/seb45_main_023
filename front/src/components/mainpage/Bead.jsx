@@ -2,7 +2,7 @@ import { useRecoilState } from "recoil";
 import { currentLocationState } from "../../recoil/main";
 
 const Bead = () => {
-	const [current, setCurrent] = useRecoilState(currentLocationState);
+	const current = useRecoilState(currentLocationState);
 
 	if (current.cityId < 11) {
 		return (

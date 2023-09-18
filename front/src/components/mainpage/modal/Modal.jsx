@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import MissionCard from "./MissionCard";
+import { authorizationTokenState } from "../../../recoil/logInSignUpState";
 
 function Modal({ city }) {
 	const [info, setInfo] = useRecoilState(userInfo);
@@ -20,6 +21,7 @@ function Modal({ city }) {
 	const [diceControl, setDiceControl] = useRecoilState(diceControlState);
 	const [current, setcurrent] = useRecoilState(currentLocationState);
 	const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
+	const authorizationToken = useRecoilState(authorizationTokenState);
 
 	const [cityInfo, setCityInfo] = useState("");
 	const [missions, setMissions] = useState([]);
@@ -43,6 +45,7 @@ function Modal({ city }) {
 						headers: {
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
+							Authorization: `Bearer ${authorizationToken}`,
 						},
 					}
 				);
@@ -76,6 +79,7 @@ function Modal({ city }) {
 						headers: {
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
+							Authorization: `Bearer ${authorizationToken}`,
 						},
 					}
 				);
@@ -94,24 +98,49 @@ function Modal({ city }) {
 						headers: {
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
+							Authorization: `Bearer ${authorizationToken}`,
 						},
 					}
 				);
 				if (Array.isArray(response.data)) {
 					// response.data가 배열인지 확인
-					const seoulMissions = response.data.filter(
+					const cityMissions = response.data.filter(
 						(mission) => mission.cityName === `${current.name}`
 					);
-					setMissions(seoulMissions);
+					setMissions(cityMissions);
 				}
 			} catch (err) {
 				console.error("fetchMissions", err);
 			}
 		};
 
-		patchLocation();
-		fetchCityInfo();
-		postMission();
+		const GetGuestRandomMission = async () => {
+			try {
+				const response = await axios.get(
+					`${process.env.REACT_APP_SERVER_URL}/missions/random`,
+					{
+						headers: {
+							"Content-Type": "application/json",
+							"ngrok-skip-browser-warning": "69420",
+						},
+					}
+				);
+				setMissions([response.data]);
+			} catch (error) {
+				// 오류 처리
+				console.error("오류 발생:", error);
+			}
+		};
+
+		if (info.id !== 0) {
+			patchLocation();
+			fetchCityInfo();
+			postMission();
+		} else {
+			fetchCityInfo();
+			GetGuestRandomMission();
+			setDiceControl(false);
+		}
 	}, [isOpen]);
 
 	return (
@@ -158,19 +187,33 @@ function Modal({ city }) {
 							</div>
 							<div className="relative flex-1 flex flex-col m-10 p-10 bg-white bg-opacity-80 rounded-lg shadow-md">
 								<div className="flex flex-col w-full h-3/5 min-w-[380px] justify-around">
-									<MissionCard mission={missions[0]} level={1} />
+									{authorizationToken === "" ? (
+										<MissionCard mission={missions[0]} level={1} />
+									) : (
+										<MissionCard mission={missions[0]} level={1} />
+									)}
 									<MissionCard mission={missions[1]} level={2} />
 									<MissionCard mission={missions[2]} level={3} />
 									<MissionCard mission={missions[3]} level={4} />
 								</div>
 								<section className="absolute right-10 bottom-18 flex flex-col gap-4 justify-end">
-									<Link to="/mymissions">
-										<ToPageCustomButton
-											text={"마이페이지 미션탭으로"}
-											colorName={"purple"}
-											iconColorName={"purple"}
-										/>
-									</Link>
+									{authorizationToken === "" ? (
+										<Link to="/login">
+											<ToPageCustomButton
+												text={"로그인 화면으로"}
+												colorName={"purple"}
+												iconColorName={"purple"}
+											/>
+										</Link>
+									) : (
+										<Link to="/mymissions">
+											<ToPageCustomButton
+												text={"마이페이지 미션탭으로"}
+												colorName={"purple"}
+												iconColorName={"purple"}
+											/>
+										</Link>
+									)}
 									<Link to={`/bloglist/${city.cityId}`}>
 										<ToPageCustomButton
 											text={"여 행 후 기 게시판으로"}
