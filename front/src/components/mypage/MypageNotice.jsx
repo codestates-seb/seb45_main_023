@@ -98,11 +98,11 @@ export default function MypageNotice({ nickname, nationality, password, birth })
           This passport is only valid on this site unless otherwise endorsed.
         </div>
       </div>
-      <div className="flex justify-center bg-white h-[7rem] pb-2">
-        <WithdrawButton />
-        <button className="ml-4 w-[10rem]" onClick={handleEdit}>
+      <div className="flex justify-center bg-white h-[7rem] pb-2 gap-[50px]">
+        <button className="w-[10rem] h-[64px]" onClick={handleEdit}>
           {isEdit ? <Button text={'수정완료'} color={'blue'} /> : <Button text={'개인정보수정'} color={'blue'} />}
         </button>
+        <WithdrawButton />
       </div>
     </div>
   );
