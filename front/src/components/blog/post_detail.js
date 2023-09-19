@@ -465,7 +465,7 @@ export default function PostDetail({profile_pic}) {
                 </div>
               ) : (
                 <div className="flex items-center">
-                  <strong className="flex-shrink-0">{userNickname}:</strong>
+                  <strong className="flex-shrink-0">{comment.nickname}:</strong>
                   <span>{comment.body}</span>
                   {userNickname === comment.nickname && (
                   <div className="ml-auto flex items-center space-x-2">

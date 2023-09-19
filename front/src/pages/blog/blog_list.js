@@ -79,11 +79,13 @@ export default function Bloglist() {
     setFilteredPosts(filtered);
   }, [selectedTag]);
 
+	console.log("Token" , authorizationToken)
+
 	const handleBookmarkToggle = async (blog_id) => {
     try {
         if (bookmarkedPosts.includes(blog_id)) {
-            const response = await axios.patch( // 나중에 delete를 바꾸고 숫자를 userId로 바꾸기
-                `${process.env.REACT_APP_SERVER_URL}/members/${userId}/no-bookmark/${blog_id}`, 
+            const response = await axios.delete(
+                `${process.env.REACT_APP_SERVER_URL}/members/${userId}/no-bookmark/${blog_id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${authorizationToken}`,
@@ -108,7 +110,7 @@ export default function Bloglist() {
                 {
                     headers: {
                         Authorization: `Bearer ${authorizationToken}`,
-						"Content-Type": "application/json",
+												"Content-Type": "application/json",
                         "ngrok-skip-browser-warning": "69420",
                     },
                 }
@@ -122,6 +124,7 @@ export default function Bloglist() {
 
             setBookmarkedPosts([...bookmarkedPosts, blog_id]);
             console.log("북마크 추가 성공");
+						console.log("bookmark", bookmarkedPosts);
         }
     } catch (error) {
         console.error("북마크 토글 에러 : ", authorizationToken, error);
