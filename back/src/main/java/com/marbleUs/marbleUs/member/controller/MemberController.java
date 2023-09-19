@@ -51,9 +51,9 @@ public class MemberController {
     }
 
     @PostMapping("{member-id}/profile/upload")
-    public ResponseEntity uploadProfilePic(@RequestPart("images") List<MultipartFile> images,
+    public ResponseEntity uploadProfilePic(@RequestPart MultipartFile image,
                                            @Positive @PathVariable("member-id") Long id) throws IOException {
-        imgService.uploadMemberImage(images,id);
+        imgService.uploadMemberImage(image,id);
         return new ResponseEntity<>("Profile Pic has been uploaded",HttpStatus.OK);
     }
 
@@ -141,7 +141,7 @@ public class MemberController {
     }
 
 
-    @PatchMapping("{member-id}/no-bookmark/{blog-id}")
+    @DeleteMapping("{member-id}/no-bookmark/{blog-id}")
     public ResponseEntity deleteBookMark(@Positive @PathVariable("member-id") Long memberId,
                                          @LoginMemberId Long loginMember,
                                          @Positive @PathVariable("blog-id") Long blogId){

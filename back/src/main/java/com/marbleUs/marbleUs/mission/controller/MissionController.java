@@ -49,7 +49,7 @@ public class MissionController {
 
         MemberMission memberMission = service.assignMemberMissions(cityId,memberId,loginMember);
 
-//        if (memberMission.getId() == 0L) return new ResponseEntity<>(mapper.missionToResponse(memberMission.getMission()),HttpStatus.CREATED);
+
 
         return new ResponseEntity<>(mapper.memberMissionToResponse(memberMission), HttpStatus.CREATED);
     }
@@ -58,7 +58,7 @@ public class MissionController {
     public ResponseEntity setCompleteMission(@Positive @PathVariable("member-mission-id") Long id) {
         MemberMission memberMission = service.completeMission(id);
 
-        return new ResponseEntity<>(mapper.memberMissionToResponse(memberMission), HttpStatus.CREATED);
+        return new ResponseEntity<>(mapper.memberMissionToResponse(memberMission), HttpStatus.OK);
     }
 
     //마이페이지용
