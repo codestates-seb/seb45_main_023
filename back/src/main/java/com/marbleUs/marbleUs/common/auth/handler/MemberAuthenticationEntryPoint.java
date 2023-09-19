@@ -5,7 +5,7 @@ package com.marbleUs.marbleUs.common.auth.handler;
 import com.marbleUs.marbleUs.common.auth.jwt.JwtTokenizer;
 import com.marbleUs.marbleUs.common.auth.utils.CustomAuthorityUtils;
 import com.marbleUs.marbleUs.common.redis.service.RedisServiceUtil;
-import com.marbleUs.marbleUs.common.redis.tools.ClientIpInterceptor;
+import com.marbleUs.marbleUs.common.redis.tools.ClientIpExtractor;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final RedisServiceUtil redisServiceUtil;
-    private final ClientIpInterceptor interceptor;
+    private final ClientIpExtractor interceptor;
 
 
     @Override
@@ -86,13 +86,10 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(username,null,authorities);
 
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         log.info("Login Success with new AccessToken! +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
 

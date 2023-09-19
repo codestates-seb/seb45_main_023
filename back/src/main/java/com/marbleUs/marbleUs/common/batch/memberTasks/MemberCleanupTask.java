@@ -15,9 +15,9 @@ public class MemberCleanupTask {
     private final MemberRepository memberRepository;
 
 
-    @Scheduled(cron = "0 0 0 1 1 */5") //every 5years
+    @Scheduled(cron = "0 0 * * * *", zone = "Asia/Seoul") //every day
 //    @Scheduled(cron = "0 */2 * * * *")
-    public void deleteInactiveUsers() {
+    private void deleteInactiveUsers() {
         List<Member> membersToDelete = memberRepository.findAllByMemberStatus(Member.Status.MEMBER_INACTIVE);
         memberRepository.deleteAll(membersToDelete);
     }

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Component
 @Slf4j
-public class ClientIpInterceptor {
+public class ClientIpExtractor {
     public String getClientIP(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
         log.info("> X-FORWARDED-FOR : " + ip);

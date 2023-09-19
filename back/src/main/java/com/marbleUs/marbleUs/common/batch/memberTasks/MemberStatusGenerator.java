@@ -20,11 +20,11 @@ public class MemberStatusGenerator {
 
 
 
-    @Scheduled(cron = "0 0 0 1 1 ?")// Run every year
+    @Scheduled(cron = "0 0 * * * *", zone = "Asia/Seoul")// Run every year
 //    @Scheduled(cron ="0 * * * * *")
     private void updateMemberStatus() {
-//        LocalDateTime thresholdDate = LocalDateTime.now().minus(1, ChronoUnit.YEARS); //inactive member if last login date is passed more than 1 year
-       LocalDateTime thresholdDate = LocalDateTime.now().minus(1,ChronoUnit.MINUTES);
+        LocalDateTime thresholdDate = LocalDateTime.now().minus(1, ChronoUnit.YEARS); //inactive member if last login date is passed more than 1 year
+//       LocalDateTime thresholdDate = LocalDateTime.now().minus(1,ChronoUnit.MINUTES);
 //        if (lastLogin.isBefore(thresholdDate)){
 
         List<Member> members = repository.findAllByLastLogin(thresholdDate);

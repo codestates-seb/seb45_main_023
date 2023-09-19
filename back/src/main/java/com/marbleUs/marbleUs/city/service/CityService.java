@@ -31,7 +31,7 @@ public class CityService {
         Optional.ofNullable(city.getDescription())
                 .ifPresent(description -> foundCity.setDescription(description));
         Optional.ofNullable(city.getImg())
-                .ifPresent(img -> foundCity.setDescription(img));
+                .ifPresent(img -> foundCity.setImg(img));
         Optional.ofNullable(city.getNx())
                 .ifPresent(nx -> foundCity.setNx(nx));
         Optional.ofNullable(city.getNy())

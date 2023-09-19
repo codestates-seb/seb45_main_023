@@ -6,6 +6,7 @@ import com.marbleUs.marbleUs.city.entity.City;
 import com.marbleUs.marbleUs.city.service.CityService;
 import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
 import com.marbleUs.marbleUs.common.exception.ExceptionCode;
+import com.marbleUs.marbleUs.common.s3.service.S3Service;
 import com.marbleUs.marbleUs.common.tools.counter.ViewCounter;
 import com.marbleUs.marbleUs.image.entity.Image;
 import com.marbleUs.marbleUs.image.repository.ImageRepository;
@@ -35,6 +36,7 @@ public class BlogService {
     private final MemberService memberService;
     private final CityService cityService;
     private final ImageRepository imageRepository;
+    private final S3Service s3Service;
 
 
     @Transactional
@@ -47,18 +49,43 @@ public class BlogService {
         blog.setCreatedAt(LocalDateTime.now());
         blog.setModifiedAt(LocalDateTime.now());
 
-        for (String image:images){
-
-            Image img = imageRepository.findByName(image).orElseThrow(()->new BusinessLogicException(ExceptionCode.IMAGE_NOT_FOUND));
-
-            blog.addBlogImage(img);
+        if (!images.isEmpty()) {
+            for (String image : images) {
+                Image img = imageRepository.findByName(image).orElseThrow(() -> new BusinessLogicException(ExceptionCode.IMAGE_NOT_FOUND));
+                img.setBlog(blog);
+                blog.addBlogImage(img);
+                imageRepository.save(img);
+            }
         }
 
         return blogRepository.save(blog);
     }
 
-    public Blog updateBlog(Blog blog, long blogId) {
+    public Blog updateBlog(Blog blog, long blogId, List<String> imageNames, Long loginMember) {
+
         Blog findBlog = findVerifiedBlog(blogId);
+
+        //이미지 초기화
+        List<Image> images = findBlog.getImages();
+        for (Image image : images){
+            s3Service.delete(image.getName());
+            imageRepository.delete(image);
+
+        }
+        images.clear();
+
+        if (!imageNames.isEmpty()) {
+            for (String image : imageNames) {
+                Image img = imageRepository.findByName(image).orElseThrow(() -> new BusinessLogicException(ExceptionCode.IMAGE_NOT_FOUND));
+                img.setBlog(findBlog);
+                findBlog.addBlogImage(img);
+                imageRepository.save(img);
+            }
+        }
+
+        //작성자와 수정자가 동일인물인지 검증
+        memberService.verifyIsSameMember(findBlog.getMember(),loginMember);
+
         Optional.ofNullable(blog.getTitle())                    //받은 객체의 title 값이 null이 아니면
                 .ifPresent(title -> findBlog.setTitle(title));  //해당 값으로 업데이트
         Optional.ofNullable(blog.getBody())
@@ -66,6 +93,7 @@ public class BlogService {
         Optional.ofNullable(blog.getTags())
                 .ifPresent(tags -> findBlog.setTags(tags));
         findBlog.setModifiedAt(LocalDateTime.now());
+
         return blogRepository.save(findBlog);
     }
     public Blog findVerifiedBlog(long blogId) {
@@ -80,33 +108,46 @@ public class BlogService {
         return blog;
     }
 
-    public void deleteBlog(long blogId) {
-        blogRepository.delete(findVerifiedBlog(blogId));
+    @Transactional
+    public void deleteBlog(long blogId, List<String> images, Long loginMember) {
+
+        Blog blog = findVerifiedBlog(blogId);
+        memberService.verifyIsSameMember(blog.getMember(),loginMember);
+
+        if (!images.isEmpty()) {
+            for (String image : images) {
+                s3Service.delete(image);
+            }
+        }
+        blogRepository.delete(blog);
+
     }
 
     public Page<Blog> findBlogs(int page, int size) {
-        return blogRepository.findAll(PageRequest.of(page, size, Sort.by("blogId").descending()));
+        return blogRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
     }
 
 
     public Page<Blog> findBlogsByTag(int page, int size, String tag) {
 
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("blogId").descending());
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("id").descending());
 
-        List<Blog> tagBlogs = blogRepository.findByTagsContaining(tag, pageRequest);
-        return new PageImpl<>(tagBlogs, pageRequest, tagBlogs.size());
+        Page<Blog> tagBlogs = blogRepository.findByTagsContaining(tag, pageRequest);
+        return tagBlogs;
     }
 
     public Page<Blog> findBlogsByMemberId(int page, int size, long memberId) {
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("blogId").descending());
-        List<Blog> memberBlogs = blogRepository.findByMemberId(memberId, pageRequest);
-        return new PageImpl<>(memberBlogs, pageRequest, memberBlogs.size());
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("id").descending());
+        Page<Blog> memberBlogs = blogRepository.findByMemberId(memberId, pageRequest);
+
+
+        return memberBlogs;
     }
 
     public Page<Blog> findBlogsByCity(int page, int size, long cityId) {
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("blogId").descending());
-        List<Blog> cityBlogs = blogRepository.findByCityId(cityId, pageRequest);
-        return new PageImpl<>(cityBlogs, pageRequest, cityBlogs.size());
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("id").descending());
+        Page<Blog> cityBlogs = blogRepository.findByCityId(cityId, pageRequest);
+        return cityBlogs;
     }
 
     public Page<Blog> findBookMarkedBlogs(List<Long> bookmarkIds, int page, int size) {

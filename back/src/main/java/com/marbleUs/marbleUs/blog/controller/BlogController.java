@@ -1,22 +1,20 @@
 package com.marbleUs.marbleUs.blog.controller;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.util.IOUtils;
-import com.marbleUs.marbleUs.common.argumentresolver.LoginMemberId;
 import com.marbleUs.marbleUs.blog.dto.BlogPatchDto;
 import com.marbleUs.marbleUs.blog.dto.BlogPostDto;
 import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.blog.mapper.BlogMapper;
 import com.marbleUs.marbleUs.blog.service.BlogService;
+import com.marbleUs.marbleUs.common.argumentresolver.LoginMemberId;
 import com.marbleUs.marbleUs.image.entity.Image;
 import com.marbleUs.marbleUs.image.mapper.ImageMapper;
 import com.marbleUs.marbleUs.image.service.ImageService;
 import com.marbleUs.marbleUs.common.response.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +26,10 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 @RestController
+@Slf4j
 @RequestMapping("/")
 @RequiredArgsConstructor
 public class BlogController {
@@ -54,10 +50,10 @@ public class BlogController {
     @PostMapping("blogs/{member-id}/{city-id}")
     public ResponseEntity postBlog (@PathVariable("member-id") Long memberId,
                                     @PathVariable("city-id") Long cityId,
-                                    @RequestParam List<String> imageNames,
-                                    @Valid @RequestBody BlogPostDto blogPostDto) {
+                                    @RequestParam("image-names") List<String> imageNames,
+                                    @Valid @RequestBody BlogPostDto blogPostDto) throws IOException{
         Blog blog = blogService.createBlog(blogMapper.toBlog(blogPostDto), memberId, cityId,imageNames);
-        return new ResponseEntity(blogMapper.toBlogResponseDto(blog),HttpStatus.CREATED);
+        return new ResponseEntity<>(blogMapper.toBlogResponseDto(blog),HttpStatus.CREATED);
     }
 
     //블로그 이미지 저장
@@ -80,7 +76,8 @@ public class BlogController {
     }
 
     @GetMapping("/blogs/print-image")
-    private ResponseEntity printImage(@RequestParam String name){
+    public ResponseEntity printImage(@RequestParam String name){
+//        log.info(name);
         Image image = imageService.findBlogImage(name);
         return new ResponseEntity<>(imageMapper.imageToResponse(image),HttpStatus.OK);
     }
@@ -89,47 +86,46 @@ public class BlogController {
     // 2. converting 에러를 막기위해 ResponseEntity를 사용해 문자열 리스트형태로 전송
     // 3. header에 컨텐츠타입을 지정해 오류를 방지
     // 의문점: 토스트 UI 에디터 사용시 이미지를 저장후 다시 html문서에 매핑할때 이처럼 바이너리 형태로 줘야 하는가? 아니면 이미지가 S3에 저장되어 있는 path를 주는것이 좋은가.
-    @GetMapping("/blogs/image-print")
-    public ResponseEntity<List<String>> printEditorImageAsBase64(@RequestParam List<String> names) {
-        List<String> imagesAsBase64 = new ArrayList<>();
+//    @GetMapping("/blogs/image-print")
+//    public ResponseEntity<List<String>> printEditorImageAsBase64(@RequestParam List<String> names) {
+//        List<String> imagesAsBase64 = new ArrayList<>();
+//
+//        for (String name : names) {
+//            try {
+//                S3Object s3Object = amazonS3.getObject(bucket, name);
+//                InputStream inputStream = s3Object.getObjectContent();
+//                byte[] imageBytes = IOUtils.toByteArray(inputStream);
+//                String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+//                imagesAsBase64.add(base64Image);
+//
+//            } catch (IOException e) {
+//                // Handle the exception
+//                throw new RuntimeException(e);
+//            }
+//        }
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON); // Set the appropriate content type
+//
+//        return new ResponseEntity<>(imagesAsBase64, headers, HttpStatus.OK);
+//    }
 
-        for (String name : names) {
-            try {
-                S3Object s3Object = amazonS3.getObject(bucket, name);
-                InputStream inputStream = s3Object.getObjectContent();
-                byte[] imageBytes = IOUtils.toByteArray(inputStream);
-                String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-                imagesAsBase64.add(base64Image);
-
-            } catch (IOException e) {
-                // Handle the exception
-                throw new RuntimeException(e);
-            }
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON); // Set the appropriate content type
-
-        return new ResponseEntity<>(imagesAsBase64, headers, HttpStatus.OK);
-    }
-
-    @Transactional
-    @PatchMapping(value = "/blogs/{blog-id}/image-update", consumes = "multipart/form-data")
-    public ResponseEntity patchBlogImagesWithEditor(@RequestPart("images") List<MultipartFile> multipartFileList,
-                                                    @RequestParam List<String> names,
-                                                    @PathVariable("blog-id") Long blogId) throws IOException {
-        if (multipartFileList.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No images to update.");
-        }
-        List<Image> images = imageService.updateBlogImage(multipartFileList,names);
-        return new ResponseEntity<>(imageMapper.imagesToResponses(images), HttpStatus.OK);
-    }
+//    @Transactional
+//    @PatchMapping(value = "/blogs/image-update", consumes = "multipart/form-data")
+//    public ResponseEntity patchBlogImagesWithEditor(@RequestPart("images") List<MultipartFile> multipartFileList,
+//                                                    @RequestParam List<String> names) throws IOException {
+//        if (multipartFileList.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No images to update.");
+//        }
+//        List<Image> images = imageService.uploadBlogImage(multipartFileList,names);
+//        return new ResponseEntity<>(imageMapper.imagesToResponses(images), HttpStatus.OK);
+//    }
 
     @Transactional
     @DeleteMapping("blogs/image-delete")
     public ResponseEntity deleteBlogImageWithEditor(@RequestParam List<String> names){
         imageService.deleteBlogImage(names);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("image is deleted",HttpStatus.NO_CONTENT);
     }
 
 
@@ -138,15 +134,18 @@ public class BlogController {
     //후기글 수정
     @PatchMapping("/blogs/{blog-id}")
     public ResponseEntity patchBlog (@PathVariable("blog-id") Long blogId,
+                                    @LoginMemberId Long loginMember,
+                                     @RequestParam("image-names") List<String> imageNames,
                                     @Valid @RequestBody BlogPatchDto blogPatchDto) {
-        Blog blog = blogService.updateBlog(blogMapper.toBlog(blogPatchDto),blogId);
+        Blog blog = blogService.updateBlog(blogMapper.toBlog(blogPatchDto),blogId,imageNames,loginMember);
         return new ResponseEntity<>(blogMapper.toBlogResponseDto(blog),HttpStatus.CREATED);
     }
-
     //후기글 삭제
     @DeleteMapping("/blogs/{blog-id}")
-    public ResponseEntity deleteBlog (@PathVariable("blog-id") Long blogId) {
-        blogService.deleteBlog(blogId);
+    public ResponseEntity deleteBlog (@PathVariable("blog-id") Long blogId,
+                                      @LoginMemberId Long loginMember,
+                                      @RequestParam List<String> names) {
+        blogService.deleteBlog(blogId,names,loginMember);
         return new ResponseEntity<>("게시글이 삭제되었습니다.", HttpStatus.OK);
     }
 
@@ -162,6 +161,7 @@ public class BlogController {
     }
 
     //모든 후기글 조회
+    //사용안함
     @GetMapping("/blogs")
     public ResponseEntity getBlogs (@Positive @RequestParam int page,
                                     @Positive @RequestParam int size) {

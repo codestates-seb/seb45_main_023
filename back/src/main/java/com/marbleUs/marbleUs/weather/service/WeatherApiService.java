@@ -39,7 +39,7 @@ public class WeatherApiService {
     private static final String API_URL = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
 
     @Getter
-    @Value("${API_SERVICE_KEY}")
+    @Value("${api.key}")
     private String SERVICE_KEY;
     private static final String PAGE_NO = "1";          //페이지 번호
     private static final String NUM_OF_ROWS = "260";    //한 페이지 결과 수
@@ -197,6 +197,7 @@ public class WeatherApiService {
             JSONParser parser = new JSONParser();
             // JSON 데이터를 파싱하여 JSON 객체로 변환
             JSONObject jsonObject = (JSONObject) parser.parse(result);
+
 
             // "response" -> "body" -> "items" -> "item" 배열 추출
             JSONObject items = (JSONObject) jsonObject.get("response");

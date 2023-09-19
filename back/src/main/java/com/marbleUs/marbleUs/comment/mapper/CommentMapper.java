@@ -37,7 +37,7 @@ public interface CommentMapper {
     }
 
     //Comment리스트를 CommentResponseDto리스트로 변환하는 메서드
-    List<CommentResponseDto> toCommentResponseDto(List<Comment> comments);
+    List<CommentResponseDto> toCommentsResponseDto(List<Comment> comments);
 
 
 }

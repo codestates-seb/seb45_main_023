@@ -4,8 +4,8 @@ import com.marbleUs.marbleUs.blog.dto.BlogPatchDto;
 import com.marbleUs.marbleUs.blog.dto.BlogPostDto;
 import com.marbleUs.marbleUs.blog.dto.BlogResponseDto;
 import com.marbleUs.marbleUs.blog.entity.Blog;
-import com.marbleUs.marbleUs.comment.dto.CommentResponseDto;
 import com.marbleUs.marbleUs.image.dto.ImageResponseDto;
+import com.marbleUs.marbleUs.member.dto.MemberSummarizedResponse;
 import org.mapstruct.Mapper;
 
 import java.util.ArrayList;
@@ -23,6 +23,16 @@ public interface BlogMapper {
 
         BlogResponseDto blogResponseDto = new BlogResponseDto();
 
+        MemberSummarizedResponse memberResponse = new MemberSummarizedResponse();
+        memberResponse.setId(blog.getMember().getId());
+
+        if (!blog.getMember().getProfilePics().isEmpty()) {
+            memberResponse.setProfile(blog.getMember().getProfilePics().get(0).getPath());
+        }
+        memberResponse.setNickname(blog.getMember().getNickname());
+
+        blogResponseDto.setMember(memberResponse);
+        blogResponseDto.setCityId(blog.getCity().getId());
 
         blogResponseDto.setId( blog.getId() );
         blogResponseDto.setTitle( blog.getTitle() );

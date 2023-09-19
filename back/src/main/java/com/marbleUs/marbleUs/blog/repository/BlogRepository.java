@@ -14,9 +14,9 @@ public interface BlogRepository extends JpaRepository<Blog,Long> {
 
 
     Optional<Blog> findById(Long id);
-    List<Blog> findByTagsContaining(String tag, Pageable pageable);
-    List<Blog> findByMemberId(Long memberId, Pageable pageable);
-    List<Blog> findByCityId(Long cityId, Pageable pageable);
+    Page<Blog> findByTagsContaining(String tag, Pageable pageable);
+    Page<Blog> findByMemberId(Long memberId, Pageable pageable);
+    Page<Blog> findByCityId(Long cityId, Pageable pageable);
 
 
     @Query("SELECT b FROM Blog b where b.title LIKE %:word% OR b.body LIKE %:word%")

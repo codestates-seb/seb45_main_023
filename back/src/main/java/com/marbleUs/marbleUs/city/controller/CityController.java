@@ -26,6 +26,14 @@ public class CityController {
     private final CityService service;
 
 
+
+    @GetMapping("/{city-id}")
+    public ResponseEntity getCity(@PathVariable("city-id") Long cityId){
+        City city = service.find(cityId);
+
+        return new ResponseEntity<>(mapper.cityToResponse(city),HttpStatus.OK);
+    }
+
     //관리자페이지용
     @PostMapping
     public ResponseEntity postCity(@RequestBody CityDto.Post post){
@@ -35,20 +43,12 @@ public class CityController {
     }
     @PatchMapping("/{city-id}")
     public ResponseEntity patchCity(@RequestBody CityDto.Patch patch,
-                                   @Positive @PathVariable("city-id") Long cityId){
+                                    @Positive @PathVariable("city-id") Long cityId){
 
         City city = service.update(mapper.patchToCity(patch),cityId);
 
         return new ResponseEntity<>("The city is updated!",HttpStatus.OK);
     }
-    @GetMapping("/{city-id}")
-    public ResponseEntity getCity(@PathVariable("city-id") Long cityId){
-        City city = service.find(cityId);
-
-        return new ResponseEntity<>(mapper.cityToResponse(city),HttpStatus.OK);
-    }
-
-    //관리자페이지용
     @GetMapping
     public ResponseEntity getCities(@Positive @RequestParam int page,
                                     @Positive @RequestParam int size){

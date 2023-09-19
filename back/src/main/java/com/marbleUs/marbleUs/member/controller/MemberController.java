@@ -1,6 +1,5 @@
 package com.marbleUs.marbleUs.member.controller;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.blog.mapper.BlogMapper;
 import com.marbleUs.marbleUs.common.argumentresolver.LoginMemberId;
@@ -24,8 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -41,7 +38,7 @@ public class MemberController {
     private final BlogMapper blogMapper;
     private final MemberService service;
     private final ImageService imgService;
-    private final BlogService blogService;
+
 
 
     @PostMapping("/signup")
@@ -69,15 +66,16 @@ public class MemberController {
 
     @GetMapping("/pics/{member-id}")
     public ResponseEntity getMemberProfilePics(@Positive @PathVariable("member-id") Long memberId){
-       List<Image> profilePics = imgService.findMemberImages(memberId);
+        List<Image> profilePics = imgService.findMemberImages(memberId);
         return new ResponseEntity<>(imgMapper.imagesToResponses(profilePics),HttpStatus.OK);
     }
 
 
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@RequestBody MemberDto.Patch patch,
-                                     @Positive @PathVariable("member-id") Long id){
-        Member memberChanged = service.update(mapper.patchToMember(patch),id);
+                                      @Positive @PathVariable("member-id") Long id,
+                                      @LoginMemberId Long loginMember){
+        Member memberChanged = service.update(mapper.patchToMember(patch),id,loginMember);
 
         return new ResponseEntity<>(mapper.memberToResponse(memberChanged),HttpStatus.OK);
     }
@@ -107,7 +105,7 @@ public class MemberController {
     //admin 기능
     @GetMapping
     public ResponseEntity getMembers(@Positive @RequestParam int page,
-                                    @Positive @RequestParam int size){
+                                     @Positive @RequestParam int size){
         Page<Member> pages = service.findMembers(page,size);
         List<MemberDto.Response> responses = mapper.membersToResponses(pages.getContent());
         return new ResponseEntity<>(responses,HttpStatus.OK);
@@ -115,39 +113,40 @@ public class MemberController {
 
 
     //Delete
-    @DeleteMapping("/{member-id}")
-    public ResponseEntity deleteMember(@Positive @PathVariable("member-id") Long memberId){
-        service.deleteMember(memberId);
-        return new ResponseEntity<>( HttpStatus.NO_CONTENT);
+    @DeleteMapping("withdraw/{member-id}")
+    public ResponseEntity deleteMember(@Positive @PathVariable("member-id") Long memberId,
+                                       @LoginMemberId Long loginMember){
+        service.deleteMember(memberId,loginMember);
+        return new ResponseEntity<>("Member is deleted", HttpStatus.NO_CONTENT);
     }
 
 
     //북마크 생성 삭제
     @PatchMapping("{member-id}/bookmark/{blog-id}")
     public ResponseEntity addBookMark(@Positive @PathVariable("member-id") Long memberId,
+                                      @LoginMemberId Long loginMember,
                                       @Positive @PathVariable("blog-id") Long blogId){
-        Member findMember = service.findMember(memberId);
-        findMember.addBookMarks(blogService.findVerifiedBlog(blogId));
-        service.saveMember(findMember);
+        service.addBookMark(memberId,loginMember,blogId);
         return new ResponseEntity<>("bookmark is created",HttpStatus.OK);
     }
 
     @GetMapping("bookmarks/{member-id}")
     public ResponseEntity getBookmark(@Positive @PathVariable("member-id") Long memberId,
+                                      @LoginMemberId Long loginMember,
                                       @Positive @RequestParam int page,
                                       @Positive @RequestParam int size){
         Member findMember = service.findMember(memberId);
-        Page<Blog> myBookmarks = service.findBookMarks(findMember,page,size);
+        Page<Blog> myBookmarks = service.findBookMarks(findMember,loginMember,page,size);
         return new ResponseEntity<>(blogMapper.toBlogResponseDtos(myBookmarks.getContent()),HttpStatus.OK);
     }
 
 
     @PatchMapping("{member-id}/no-bookmark/{blog-id}")
     public ResponseEntity deleteBookMark(@Positive @PathVariable("member-id") Long memberId,
+                                         @LoginMemberId Long loginMember,
                                          @Positive @PathVariable("blog-id") Long blogId){
-        Member findMember = service.findMember(memberId);
-        findMember.deleteBookmark(blogId);
-        service.saveMember(findMember);
+
+        service.deleteBookMark(memberId,loginMember,blogId);
         return new ResponseEntity<>("bookmark is deleted",HttpStatus.OK);
     }
 
@@ -156,40 +155,44 @@ public class MemberController {
 
     @PatchMapping("{member-id}/follow/{following-member-id}")
     public ResponseEntity followMember(@Positive @PathVariable("member-id") Long memberId,
+                                       @LoginMemberId Long loginMember,
                                        @Positive @PathVariable("following-member-id") Long followedMemberId){
         Member findMember = service.findMember(memberId);
         Member followedMember = service.findMember(followedMemberId);
-        service.saveFollowing(findMember,followedMember);
+        service.saveFollowing(findMember,followedMember,loginMember);
         return new ResponseEntity<>("the member is followed",HttpStatus.OK);
     }
 
     @PatchMapping("{member-id}/unfollow/{unfollowing-member-id}")
     public ResponseEntity unfollowMember(@Positive @PathVariable("member-id") Long memberId,
-                                       @Positive @PathVariable("unfollowing-member-id") Long unfollowedMemberId){
+                                         @LoginMemberId Long loginMember,
+                                         @Positive @PathVariable("unfollowing-member-id") Long unfollowedMemberId){
         Member findMember = service.findMember(memberId);
         Member followedMember = service.findMember(unfollowedMemberId);
-        service.unfollowMember(findMember,followedMember);
+        service.unfollowMember(findMember,followedMember, loginMember);
         return new ResponseEntity<>("the member is unfollowed",HttpStatus.OK);
     }
 
     @GetMapping("{member-id}/follows")
     public ResponseEntity getFollowMember(@Positive @PathVariable("member-id") Long memberId,
+                                          @LoginMemberId Long loginMember,
                                           @Positive @RequestParam int page,
                                           @Positive @RequestParam int size
-                                          ){
+    ){
         Member findMember = service.findMember(memberId);
-        Page<Member> follows = service.findFollows(findMember,page,size);
+        Page<Member> follows = service.findFollows(findMember,loginMember,page,size);
         List<Member> followList = follows.getContent();
         return new ResponseEntity<>(mapper.membersToSummarizedResponses(followList),HttpStatus.OK);
     }
 
     @GetMapping("{member-id}/followers")
     public ResponseEntity getFollowers(@Positive @PathVariable("member-id") Long memberId,
-                                          @Positive @RequestParam int page,
-                                          @Positive @RequestParam int size
+                                       @LoginMemberId Long loginMember,
+                                       @Positive @RequestParam int page,
+                                       @Positive @RequestParam int size
     ){
         Member findMember = service.findMember(memberId);
-        Page<Member> followers = service.findFollowers(findMember,page,size);
+        Page<Member> followers = service.findFollowers(findMember,loginMember,page,size);
         List<Member> followerList = followers.getContent();
         return new ResponseEntity<>(mapper.membersToSummarizedResponses(followerList),HttpStatus.OK);
     }

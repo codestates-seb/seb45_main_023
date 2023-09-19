@@ -30,9 +30,6 @@ public class MemberVerifier {
 
     public boolean verifyExistMember(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
-        if (member.isPresent()){
-            return true;
-        }
-        return false;
+        return member.isPresent();
     }
 }

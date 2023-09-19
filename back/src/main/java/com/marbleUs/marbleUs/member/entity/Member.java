@@ -10,12 +10,10 @@ import com.marbleUs.marbleUs.common.tools.enums.Stamps;
 import com.marbleUs.marbleUs.common.tools.enums.UserLocations;
 import com.marbleUs.marbleUs.mission.entity.MemberMission;
 import lombok.*;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +73,7 @@ public class Member extends Auditable {
     @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Follower> followers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<MemberMission> myMissions = new ArrayList<>();
 
 

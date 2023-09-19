@@ -2,7 +2,6 @@ package com.marbleUs.marbleUs.image.entity;
 
 
 import com.marbleUs.marbleUs.common.tools.audit.Auditable;
-import com.marbleUs.marbleUs.common.tools.entity.BaseEntity;
 import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.member.entity.Member;
 import lombok.Getter;

@@ -9,8 +9,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class Calculators {
     public void memberLocationCalculator(Member findMember, UserLocations location) {
-        if (findMember.getCurrentLocation() != location && findMember.getCurrentLocation().getNum()>= location.getNum()){
-            memberLevelUp(findMember);
+        if (findMember.getCurrentLocation() != location ){
+            if (findMember.getCurrentLocation().getNum()>= location.getNum()) {
+                memberLevelUp(findMember);
+            }
             findMember.setCurrentLocation(location);
             findMember.addLocation(location);
         }

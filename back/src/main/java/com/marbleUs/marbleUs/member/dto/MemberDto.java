@@ -63,6 +63,7 @@ public class MemberDto {
         private String nickname;
         private String email;
         private int level;
+        private List<String> roles;
         private List<ImageResponseDto> profilePics;
         private String nationality;
         private LocalDate birth;
