@@ -58,12 +58,6 @@ const Editor = ({body, setBody, imageArr, setImageArr}) => {
                             //     localStorage.setItem('Authorization', authorizationToken ?? '');
                             // }
 
-                            //     resolve({
-                            //         default: imageResponse.path // 이미지 URL을 가져옴
-                            //     });
-                            // } catch (error) {
-                            //     console.log(setImageArr);
-                            // }
                             console.log(res.data.name);
                         })
                         .catch((err) => reject(err));
