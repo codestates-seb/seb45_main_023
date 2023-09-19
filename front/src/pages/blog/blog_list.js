@@ -21,10 +21,9 @@ export default function Bloglist() {
 	const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
 	const [page, setPage] = useState(1);
 	const navigate = useNavigate();
-  const token = useRecoilValue(authorizationTokenState)
 	
 	const userinfo = useRecoilValue(userInfo);
-  const userId = userinfo.id;
+	const userId = userinfo.id;
 	const {cityId} = useParams();
 
 	const [authorizationToken, setAuthorizationToken] = useRecoilState(
@@ -53,10 +52,16 @@ export default function Bloglist() {
 							Authorization: `Bearer ${authorizationToken}`,
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
-              "Authorization": `Bearer ${token}`
 						},
 					}
 				);
+
+				// authorization 토큰 갱신
+				if(response.headers.get("Authorization")) {
+					const Authorization = response.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization ?? '');
+				};
+
 				setPosts(response.data.data);
 				console.log(posts)
 			} catch (error) {
@@ -77,28 +82,45 @@ export default function Bloglist() {
 	const handleBookmarkToggle = async (blog_id) => {
     try {
         if (bookmarkedPosts.includes(blog_id)) {
-            await axios.patch( // 나중에 delete를 바꾸고 숫자를 userId로 바꾸기
+            const response = await axios.patch( // 나중에 delete를 바꾸고 숫자를 userId로 바꾸기
                 `${process.env.REACT_APP_SERVER_URL}/members/10/no-bookmark/${blog_id}`, 
                 {
                     headers: {
                         Authorization: `Bearer ${authorizationToken}`,
+						"Content-Type": "application/json",
                         "ngrok-skip-browser-warning": "69420",
                     },
                 }
             );
+
+			// authorization 토큰 갱신
+			if(response.headers.get("Authorization")) {
+				const Authorization = response.headers.get("Authorization");
+				localStorage.setItem('Authorization', Authorization ?? '');
+			};
+
+
             setBookmarkedPosts(bookmarkedPosts.filter((id) => id !== blog_id));
             console.log("북마크 삭제 성공");
         } else {
-            await axios.patch(
+            const response = await axios.patch(
                 `${process.env.REACT_APP_SERVER_URL}/members/10/bookmark/${blog_id}`,
                 null,
                 {
                     headers: {
                         Authorization: `Bearer ${authorizationToken}`,
+												"Content-Type": "application/json",
                         "ngrok-skip-browser-warning": "69420",
                     },
                 }
             );
+
+			// authorization 토큰 갱신
+			if(response.headers.get("Authorization")) {
+				const Authorization = response.headers.get("Authorization");
+				localStorage.setItem('Authorization', Authorization ?? '');
+			};
+
             setBookmarkedPosts([...bookmarkedPosts, blog_id]);
             console.log("북마크 추가 성공");
         }

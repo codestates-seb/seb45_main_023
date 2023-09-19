@@ -1,10 +1,10 @@
 import { useRecoilValue } from 'recoil';
 import { Edit, User, validate } from '../../recoil/mypage';
 
-export default function UserInfo({ setNickname, setNationality, setPassword, setBirth }) {
+export default function UserInfo({ setNickname, setNationality, setPassword}) {
   const isEdit = useRecoilValue(Edit);
   const userData = useRecoilValue(User);
-  const validataErrors = useRecoilValue(validate)
+  const validataErrors = useRecoilValue(validate);
   const footer = `M A R B L E U S < < ${userData.nickname} < < < < < < < < < < < < < < < < < < < < < < < < S E B 4 5 < < < < < < < < < < < < < < < < A L L R I G H T S R E S E R V E D`;
 
   const handleValue = (e) => {
@@ -17,9 +17,6 @@ export default function UserInfo({ setNickname, setNationality, setPassword, set
         break;
       case 'nation':
         setNationality(value);
-        break;
-      case 'birth':
-        setBirth(value);
         break;
       case 'pw':
         setPassword(value);
@@ -64,12 +61,7 @@ export default function UserInfo({ setNickname, setNationality, setPassword, set
               <label className="bg-white" htmlFor="birth">
                 생년월일/Date of birth
               </label>
-              {isEdit ? (<div>
-                <input type="date" className="bg-white w-[12rem]" id="birth" onChange={handleValue}></input>
-                {validataErrors.birth && <p className=' text-red-500 text-sm'>{validataErrors.birth}</p>}
-                </div>) : (
-                <div className="font-bold bg-white">{userData.birth}</div>
-              )}
+              <div className="font-bold bg-white">{userData.birth}</div>
             </div>
             <div className="flex flex-col">
               <label className="bg-white" htmlFor="nation">
@@ -103,7 +95,7 @@ export default function UserInfo({ setNickname, setNationality, setPassword, set
                   placeholder="변경할 비밀번호"
                   onChange={handleValue}
                 ></input>
-                {validataErrors.password && <p className=' text-red-500 text-sm'>{validataErrors.password}</p>}
+                {validataErrors.password && <p className=" text-red-500 text-sm">{validataErrors.password}</p>}
               </div>
             ) : (
               <div>

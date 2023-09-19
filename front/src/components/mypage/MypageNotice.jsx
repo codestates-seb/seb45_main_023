@@ -7,23 +7,21 @@ import AdminButton from '../AdminButton';
 import { authorizationTokenState } from '../../recoil/logInSignUpState';
 import WithdrawButton from '../buttons/mypage/WithdrawButton';
 
-export default function MypageNotice({ nickname, nationality, password, birth }) {
+export default function MypageNotice({ nickname, nationality, password }) {
   const [isEdit, setIsEdit] = useRecoilState(Edit);
   const info = useRecoilValue(userInfo);
   const [data, setData] = useRecoilState(User);
   const [errors, setErrors] = useRecoilState(validate);
-  const token = useRecoilValue(authorizationTokenState)
+  const token = useRecoilValue(authorizationTokenState);
   // const [patch, setPatch] = useRecoilState(User) << 응답값으로 리렌더링 가능하게 처리
 
   useEffect(() => {
     setErrors({});
   }, []);
-  console.log(errors);
   const request = {
     nickname: nickname,
     nationality: nationality,
     password: password,
-    birth: birth,
   };
 
   const validatePassword = (password) => {
@@ -36,17 +34,6 @@ export default function MypageNotice({ nickname, nationality, password, birth })
 
     if (!validatePassword(password)) {
       errors.password = '비밀번호는 영어, 숫자, 특수문자를 모두 포함하고 최소 8자 이상이어야 합니다.';
-    }
-
-    if (!birth) {
-      errors.birth = '생년월일을 선택해야 합니다.';
-    } else {
-      // 입력된 날짜가 현재 날짜보다 큰 경우 에러 표시
-      const currentDate = new Date();
-      const selectedDate = new Date(birth);
-      if (selectedDate >= currentDate) {
-        errors.birth = '올바른 생년월일을 입력해야 합니다.';
-      }
     }
     console.log(errors);
     setErrors(errors);
@@ -76,9 +63,16 @@ export default function MypageNotice({ nickname, nationality, password, birth })
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
         });
+
+				// authorization 토큰 갱신
+				if(response.headers.get("Authorization")) {
+					const Authorization = response.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization ?? '');
+				};
+
         setData(response.data);
         setErrors({});
       } catch (err) {

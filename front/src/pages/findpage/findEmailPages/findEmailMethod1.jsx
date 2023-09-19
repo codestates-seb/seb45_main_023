@@ -7,6 +7,7 @@ import {
     passwordState,
     nationalityState,
     birthDateState,
+    authorizationTokenState,
 } from '../../../recoil/logInSignUpState';
 import {ToSmallButton} from "../../../components/Buttons";
 import {FindSubmitButton} from "../../../components/buttons/findpage/FindSumbitButton";
@@ -20,6 +21,7 @@ export default function FindEmailMethod1 () {
     const [message, setMessage] = useState('');
     const [nationality, setNationality] = useRecoilState(nationalityState);
 	const [birthDate, setBirthDate] = useRecoilState(birthDateState);
+    const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
 
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
@@ -84,16 +86,22 @@ export default function FindEmailMethod1 () {
 
         try {
             // 서버 API 호출
-            const response = await axios.post(
-							`${process.env.REACT_APP_SERVER_URL}/엔드포인트/???`,
-							requestData,
-							{
-								headers: {
-									"Content-Type": "application/json",
-									"ngrok-skip-browser-warning": "69420",
-								},
-							}
-						);
+            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/엔드포인트/???`,
+			requestData,
+			    {
+				    headers: {
+                            Authorization: `Bearer ${authorizationToken}`,
+					        "Content-Type": "application/json",
+							"ngrok-skip-browser-warning": "69420",
+						},
+			    }
+			);
+
+            // authorization 토큰 갱신
+            if(response.headers.get("Authorization")) {
+                const Authorization = response.headers.get("Authorization");
+                localStorage.setItem('Authorization', Authorization ?? '');
+            };
 
             console.log(response)
             console.log(response.data)

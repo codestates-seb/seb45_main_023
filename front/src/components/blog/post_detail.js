@@ -6,13 +6,12 @@ import { FaEdit, FaTrashAlt, FaCheck, FaTimes, FaEye } from "react-icons/fa";
 
 import { authorizationTokenState } from "../../recoil/logInSignUpState";
 
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import parse from 'html-react-parser';
 import { useRecoilValue } from 'recoil';
 
 import { userInfo } from "../../recoil/mypage";
 import BlogPagenation from '../mypage/BlogPagination';
+import Editor from './editor';
 
 
 export default function PostDetail({profile_pic}) {
@@ -25,6 +24,11 @@ export default function PostDetail({profile_pic}) {
   const [editedTitle, setEditedTitle] = useState(blogData.title);
   const [editedBody, setEditedBody] = useState(blogData.body);
   const [editedTags, setEditedTags] = useState(blogData.tags);
+  const [editedImage, setEditedImage] = useState(blogData.images);
+  const [imageArr, setImageArr] = useState([]);
+
+  console.log(editedImage);
+  console.log("imageArr : ", imageArr);
 
   
   const [isEditingComment, setIsEditingComment] = useState(false);
@@ -33,6 +37,7 @@ export default function PostDetail({profile_pic}) {
   const [editedComments, setEditedComments] = useState({});
 
   const [page, setPage] = useState(1);
+  const [commentpage, setCommentPage] = useState('');
 
   const availableTag = [
     "인기글",
@@ -68,15 +73,21 @@ export default function PostDetail({profile_pic}) {
   const fetchComments = async () => {
     // 서버에서 댓글 불러오기
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/blogs/${blogId}?page=1&size=10`, {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/blogs/${blogId}?page=${page}&size=5`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
-          "Authorization": `Bearer ${token}`
         },
-      }); // axios로 GET 요청
+      }); 
+
+      // authorization 토큰 갱신
+      if(response.headers.get("Authorization")) {
+        const Authorization = response.headers.get("Authorization");
+        localStorage.setItem('Authorization', Authorization ?? '');
+      };
       setComments(response.data.data);
+      setCommentPage(response.data.pageInfo)
       console.log('댓글 불러오기 성공: ', response.data);
     } catch (error) {
       console.error('댓글 불러오기 실패:', error);
@@ -96,6 +107,13 @@ export default function PostDetail({profile_pic}) {
             'ngrok-skip-browser-warning': '69420',
           },
         });
+
+      // authorization 토큰 갱신
+      if(response.headers.get("Authorization")) {
+        const Authorization = response.headers.get("Authorization");
+        localStorage.setItem('Authorization', Authorization ?? '');
+      };
+
         setBlogData(response.data);
         console.log("게시물 가져오기 성공 : ", response.data);
         console.log("게시물 가져오기 성공2 : ", response.data.images);
@@ -106,7 +124,8 @@ export default function PostDetail({profile_pic}) {
     };
 
     fetchBlogPost();
-  }, []);
+    console.log('imageArr2', imageArr);
+  }, [page, imageArr]);
 
   if (!blogData) {
     return <div>Loading...</div>;
@@ -124,6 +143,12 @@ export default function PostDetail({profile_pic}) {
           'ngrok-skip-browser-warning': '69420',
         },
       });
+
+      // authorization 토큰 갱신
+      if(response.headers.get("Authorization")) {
+        const Authorization = response.headers.get("Authorization");
+        localStorage.setItem('Authorization', Authorization ?? '');
+      };
 
       if (response.status === 200) {
         alert('게시물이 성공적으로 삭제되었습니다.');
@@ -150,6 +175,12 @@ export default function PostDetail({profile_pic}) {
         },
       });
 
+      // authorization 토큰 갱신
+      if(response.headers.get("Authorization")) {
+        const Authorization = response.headers.get("Authorization");
+        localStorage.setItem('Authorization', Authorization ?? '');
+      };
+
       if (response.status === 201) {
         // 댓글이 성공적으로 작성된 경우
         setNewComment(''); // 입력 필드 초기화
@@ -170,8 +201,17 @@ export default function PostDetail({profile_pic}) {
       const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/comments/${comment_id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "69420",
         }
       });
+
+      // authorization 토큰 갱신
+      if(response.headers.get("Authorization")) {
+        const Authorization = response.headers.get("Authorization");
+        localStorage.setItem('Authorization', Authorization ?? '');
+      };
+
         // 댓글이 성공적으로 삭제된 경우
         const updatedComments = comments.filter(comment => comment.id !== comment_id);
         setComments(updatedComments); // 업데이트된 댓글 목록으로 상태 업데이트
@@ -186,12 +226,23 @@ export default function PostDetail({profile_pic}) {
     setEditedTitle(blogData.title);
     setEditedBody(blogData.body);
     setEditedTags(blogData.tags);
+    setEditedImage(blogData.images);
   };
 
   const handleSaveEdit = async () => {
+    const array = [];
+    const originImage = (arr) => {
+      arr.map((item) => {
+        return(
+          array.push(item.name)
+        )
+      })
+    }
+    originImage(editedImage);
+    console.log("array 찍을거", array)
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`,
+        `${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}?image-names=${[...array, ...imageArr]}`,
         {
           title: editedTitle,
           body: editedBody,
@@ -205,7 +256,13 @@ export default function PostDetail({profile_pic}) {
           },
         }
       );
-  
+
+      // authorization 토큰 갱신
+      if(response.headers.get("Authorization")) {
+        const Authorization = response.headers.get("Authorization");
+        localStorage.setItem('Authorization', Authorization ?? '');
+      };
+
       if (response.status === 201) {
         // 업데이트된 게시글을 서버에서 다시 가져오기
         const updatedResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`, {
@@ -215,7 +272,13 @@ export default function PostDetail({profile_pic}) {
             'ngrok-skip-browser-warning': '69420',
           },
         });
-  
+
+        // authorization 토큰 갱신
+        if(updatedResponse.headers.get("Authorization")) {
+					const Authorization = updatedResponse.headers.get("Authorization");
+					localStorage.setItem('Authorization', Authorization ?? '');
+				};
+
         setBlogData(updatedResponse.data); // 업데이트된 게시글로 상태 업데이트
         setIsEditing(false);
       } else {
@@ -223,6 +286,8 @@ export default function PostDetail({profile_pic}) {
       }
     } catch (error) {
       console.error('게시물 수정 실패:', error);
+      console.log('editedimage', editedImage);
+      console.log('imagearr', imageArr);
     }
   };
   
@@ -239,7 +304,7 @@ export default function PostDetail({profile_pic}) {
   
   const handleCommentEditSave = async (comment_id) => {
     try {
-      await axios.patch(`${process.env.REACT_APP_SERVER_URL}/comments/${comment_id}`, {
+      const response = await axios.patch(`${process.env.REACT_APP_SERVER_URL}/comments/${comment_id}`, {
         body: editedComments[comment_id],
       }, {
         headers: {
@@ -248,7 +313,13 @@ export default function PostDetail({profile_pic}) {
           'ngrok-skip-browser-warning': '69420',
         },
       });
-  
+
+      // authorization 토큰 갱신
+      if(response.headers.get("Authorization")) {
+        const Authorization = response.headers.get("Authorization");
+        localStorage.setItem('Authorization', Authorization ?? '');
+      };
+
       const updatedComments = comments.map(comment => {
         if (comment.id === comment_id) {
           return { ...comment, body: editedComments[comment_id] };
@@ -290,16 +361,11 @@ export default function PostDetail({profile_pic}) {
               Content
           </h1>
           <div>
-            <CKEditor
-              editor={ClassicEditor}
-              data={editedBody}
-              onReady={(editor) => {
-                
-              }}
-              onChange={(event, editor) => {
-                const data = editor.getData();
-                setEditedBody(data);
-              }}
+            <Editor 
+              body={editedBody}
+              imageArr={editedImage}
+              setImageArr={setImageArr}
+              setBody={setEditedBody}
             />
             <h1 className="text-xl font-bold pt-10">
               Tag
@@ -349,7 +415,7 @@ export default function PostDetail({profile_pic}) {
         </div>
       </div>
 
-      <div className='ContentSection border border-[#0387FA] rounded-lg h-[500px]'>
+      <div className='ContentSection'>
         {parse(blogData.body)}
         {blogData.images.map((image, index) => (
           <img key={index} src={image.path} alt={`Blog Image ${index}`} />
@@ -394,7 +460,7 @@ export default function PostDetail({profile_pic}) {
       {comments.length > 0 && (
         <div className='mt-4'>
           <ul>
-          {comments.slice((page-1) * 5, page*5).map((comment, index) => (
+          {comments.slice(0, 5).map((comment, index) => (
             <li key={index} className='mb-2'>
               {isEditingComment && editingCommentId === comment.id ? (
                 <div className="flex items-center">
@@ -426,9 +492,9 @@ export default function PostDetail({profile_pic}) {
         </div>
       )}
       <BlogPagenation 
-      	itemPerPage={5} 
-        totalItemsCount={comments.length} 
-        renderItemCount={Math.ceil(comments.length / 5)}
+        itemPerPage={5} 
+        totalItemsCount={commentpage.totalElements} 
+        renderItemCount={Math.ceil(commentpage.totalElements / 5)}
         page={page}
         setPage={setPage}
       />
@@ -437,3 +503,4 @@ export default function PostDetail({profile_pic}) {
     </div>
   )
 }
+

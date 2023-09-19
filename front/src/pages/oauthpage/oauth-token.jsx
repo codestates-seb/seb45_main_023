@@ -13,7 +13,7 @@ export default function MyTokens () {
     console.log('Authorization 잘 응답 받아왔는지 : ', Authorization);
 
     // local에 authorizationToken 저장, 확인하기
-    localStorage.setItem('Authorization', Authorization);
+    localStorage.setItem('Authorization', Authorization ?? '');
     console.log(localStorage.getItem('Authorization'));
 
     // authorizationToken을 상태값에 저장, 확인하기
