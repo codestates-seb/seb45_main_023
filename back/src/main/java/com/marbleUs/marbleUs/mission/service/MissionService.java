@@ -12,10 +12,6 @@ import com.marbleUs.marbleUs.mission.entity.Mission;
 import com.marbleUs.marbleUs.mission.repository.MemberMissionRepository;
 import com.marbleUs.marbleUs.mission.repository.MissionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -82,10 +78,32 @@ public class MissionService {
         return findMission;
     }
 
-    public MemberMission assignMemberMissions(Long cityId, Long memberId) {
-
+    public Mission findRandomMission() {
         Random random = new Random();
+        List<Mission> level1CommonMissions = repository.findAllByLevelAndType(1, Mission.MissionType.COMMON);
+        Mission mission = level1CommonMissions.get(random.nextInt(level1CommonMissions.size()));
+        return mission;
+    }
+
+    public MemberMission assignMemberMissions(Long cityId, Long memberId, Long loginMember) {
+
+
+//        //비로그인시 가짜 미션 발급
+//
+        Random random = new Random();
+//        if (memberId == 0L){
+//            List<Mission> level1CommonMissions = repository.findAllByLevelAndType(1, Mission.MissionType.COMMON);
+//            Mission mission = level1CommonMissions.get(random.nextInt(level1CommonMissions.size()));
+//            MemberMission fakeMemberMission = new MemberMission();
+//            fakeMemberMission.setId(0L);
+//            fakeMemberMission.setMission(mission);
+//            return fakeMemberMission;
+//        }
+
         Member member = memberService.findVerifiedMember(memberId);
+
+        memberService.verifyIsSameMember(member,loginMember);
+
         City city = cityRepository.findById(cityId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.CITY_NOT_FOUND));
 
 
@@ -148,6 +166,8 @@ public class MissionService {
         throw new BusinessLogicException(ExceptionCode.MISSION_ALREADY_ASSIGNED);
     }
 
+    //admin만 가능
+
     public MemberMission completeMission(Long id) {
         MemberMission mission = memberMissionRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MISSION_NOT_FOUND));
         mission.setComplete(true);
@@ -155,22 +175,24 @@ public class MissionService {
         return mission;
     }
 
-    public Page<MemberMission> findMemberMissions(Long memberId) {
+    public List<MemberMission> findMemberMissions(Long memberId, Long loginMember) {
 
         Member member = memberService.findVerifiedMember(memberId);
-//        City city = cityRepository.findById(cityId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.CITY_NOT_FOUND));
 
-        List<MemberMission> memberMissions = member.getMyMissions().stream().sorted(Comparator.comparing(MemberMission::getCreatedAt).reversed())
+        memberService.verifyIsSameMember(member,loginMember);
+
+        List<MemberMission> memberMissions = member.getMyMissions().stream().sorted(Comparator.comparing(MemberMission::getCreatedAt).reversed()).limit(3)
                 .collect(Collectors.toList());
 
-        PageRequest pageRequest = PageRequest.of(1, 3, Sort.by("createdAt").descending());
-
-        return new PageImpl<>(memberMissions, pageRequest, memberMissions.size());
+        return memberMissions;
     }
 
-    public List<MemberMission> findMemberMissionsInCity(Long cityId, Long memberId) {
+    public List<MemberMission> findMemberMissionsInCity(Long cityId, Long memberId, Long loginMember) {
 
         Member member = memberService.findVerifiedMember(memberId);
+
+        memberService.verifyIsSameMember(member,loginMember);
+
         City city = cityRepository.findById(cityId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.CITY_NOT_FOUND));
 
         List<MemberMission> memberMissions = member.getMyMissions().stream().filter(memberMission -> memberMission.getCity().equals(city)).sorted(Comparator.comparing(MemberMission::getCreatedAt))
@@ -179,13 +201,15 @@ public class MissionService {
     }
 
 
-    public List<Stamps> findStampIfMissionComplete(Long memberId) {
+    public List<Stamps> findStampIfMissionComplete(Long memberId, Long loginMember) {
 
 //        City currentCity = cityRepository.findById(cityId).orElseThrow(()->new BusinessLogicException(ExceptionCode.CITY_NOT_FOUND));
         Member member = memberService.findVerifiedMember(memberId);
+
+        memberService.verifyIsSameMember(member,loginMember);
+
         List<MemberMission> myMissions = member.getMyMissions().stream().filter(
                 MemberMission::isComplete
-
         ).collect(Collectors.toList());
 
         List<Stamps> myStamps = new ArrayList<>();
@@ -281,6 +305,8 @@ public class MissionService {
 
         memberService.saveMember(member);
     }
+
+
 }
 
 

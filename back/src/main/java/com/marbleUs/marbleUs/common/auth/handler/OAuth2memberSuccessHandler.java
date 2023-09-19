@@ -6,10 +6,9 @@ package com.marbleUs.marbleUs.common.auth.handler;
 import com.marbleUs.marbleUs.common.auth.jwt.JwtTokenizer;
 import com.marbleUs.marbleUs.common.auth.utils.CustomAuthorityUtils;
 import com.marbleUs.marbleUs.common.redis.service.RedisServiceUtil;
-import com.marbleUs.marbleUs.common.redis.tools.ClientIpInterceptor;
+import com.marbleUs.marbleUs.common.redis.tools.ClientIpExtractor;
 import com.marbleUs.marbleUs.common.tools.generator.NickNameGenerator;
 import com.marbleUs.marbleUs.common.tools.verifier.MemberVerifier;
-import com.marbleUs.marbleUs.image.entity.Image;
 import com.marbleUs.marbleUs.member.entity.Member;
 import com.marbleUs.marbleUs.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +38,7 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private final CustomAuthorityUtils authorityUtils;
     private final MemberService memberService;
     private final RedisServiceUtil redisServiceUtil;
-    private final ClientIpInterceptor interceptor;
+    private final ClientIpExtractor extractor;
     private final MemberVerifier memberVerifier;
     private final NickNameGenerator nickNameGenerator;
     private final PasswordEncoder passwordEncoder;
@@ -68,7 +67,7 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     private void redirect(HttpServletRequest request, HttpServletResponse response, String username,List<String> authorities) throws IOException{
 
         String accessToken = delegateAccessToken(username, authorities);
-        String ip = interceptor.getClientIP(request);
+        String ip = extractor.getClientIP(request);
         delegateRefreshToken(username,ip);
 
         String uri = createURI(accessToken).toString();

@@ -5,13 +5,17 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.S3Object;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Date;
@@ -34,6 +38,13 @@ public class S3Service {
         amazonS3.putObject(bucket, s3FileName, multipartFile.getInputStream(), objMeta);
         // 등록된 객체의 url 반환 (decoder: url 안의 한글or특수문자 깨짐 방지)
         return URLDecoder.decode(amazonS3.getUrl(bucket, s3FileName).toString(), "utf-8");
+    }
+
+    public String uploadS3Object(S3Object object,String name) throws IOException{
+        ObjectMetadata objMeta = new ObjectMetadata();
+        objMeta.setContentLength(object.getObjectContent().available());
+        amazonS3.putObject(bucket,name,object.getObjectContent(), objMeta);
+        return URLDecoder.decode(amazonS3.getUrl(bucket, name).toString(), "utf-8");
     }
 
 
@@ -69,4 +80,6 @@ public class S3Service {
 
         return preSignedURL;
     }
+
+
 }

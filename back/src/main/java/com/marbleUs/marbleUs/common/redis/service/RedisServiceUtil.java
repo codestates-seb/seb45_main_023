@@ -30,4 +30,8 @@ public class RedisServiceUtil {
         long secondsBetween = ChronoUnit.SECONDS.between(now,dueDate);
         return secondsBetween;
     }
+
+    public void deleteData(String key){
+        if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(key))) stringRedisTemplate.delete(key);
+    }
 }

@@ -2,8 +2,11 @@ package com.marbleUs.marbleUs.mission.controller;
 
 import com.marbleUs.marbleUs.city.entity.City;
 import com.marbleUs.marbleUs.city.service.CityService;
+import com.marbleUs.marbleUs.common.argumentresolver.LoginMemberId;
 import com.marbleUs.marbleUs.common.tools.enums.Stamps;
 import com.marbleUs.marbleUs.mission.dto.MissionDto;
+import com.marbleUs.marbleUs.mission.dto.StampMultiContainer;
+import com.marbleUs.marbleUs.mission.dto.StampResponse;
 import com.marbleUs.marbleUs.mission.entity.MemberMission;
 import com.marbleUs.marbleUs.mission.entity.Mission;
 import com.marbleUs.marbleUs.mission.mapper.MissionMapper;
@@ -41,8 +44,13 @@ public class MissionController {
     //MemberMission Controller
     @PostMapping("/{member-id}/{city-id}")
     public ResponseEntity assignMemberMission(@Positive @PathVariable("city-id") Long cityId,
-                                               @Positive @PathVariable("member-id") Long memberId) {
-        MemberMission memberMission = service.assignMemberMissions(cityId,memberId);
+                                              @LoginMemberId Long loginMember,
+                                              @PathVariable("member-id") Long memberId) {
+
+        MemberMission memberMission = service.assignMemberMissions(cityId,memberId,loginMember);
+
+//        if (memberMission.getId() == 0L) return new ResponseEntity<>(mapper.missionToResponse(memberMission.getMission()),HttpStatus.CREATED);
+
         return new ResponseEntity<>(mapper.memberMissionToResponse(memberMission), HttpStatus.CREATED);
     }
 
@@ -53,26 +61,35 @@ public class MissionController {
         return new ResponseEntity<>(mapper.memberMissionToResponse(memberMission), HttpStatus.CREATED);
     }
 
+    //마이페이지용
     @GetMapping("/member-mission/{member-id}")
-    public ResponseEntity getMemberMissions(@Positive @PathVariable("member-id") Long memberId){
-        Page<MemberMission> memberMission = service.findMemberMissions(memberId);
-        return new ResponseEntity<>(mapper.memberMissionsToResponses(memberMission.getContent()), HttpStatus.OK);
+    public ResponseEntity getMemberMissions(@PathVariable("member-id") Long memberId,
+                                            @LoginMemberId Long loginMember){
+        List<MemberMission> memberMission = service.findMemberMissions(memberId,loginMember);
+
+        return new ResponseEntity<>(mapper.memberMissionsToResponses(memberMission), HttpStatus.OK);
 
     }
 
+    //게임판용
     @GetMapping("/{member-id}/{city-id}")
     public ResponseEntity getMemberMissionsForCity(@Positive @PathVariable("city-id") Long cityId,
-                                              @Positive @PathVariable("member-id") Long memberId) {
-        List<MemberMission> memberMissions = service.findMemberMissionsInCity(cityId,memberId);
+                                                   @LoginMemberId Long loginMember,
+                                                   @Positive @PathVariable("member-id") Long memberId) {
+
+        List<MemberMission> memberMissions = service.findMemberMissionsInCity(cityId,memberId,loginMember);
         return new ResponseEntity<>(mapper.memberMissionsToResponses(memberMissions), HttpStatus.OK);
     }
 
-    @GetMapping("/{member-id}/{city-id}/stamps")
-    public ResponseEntity getStamps(@Positive @PathVariable("city-id") Long cityId,
+    @GetMapping("/stamps/{member-id}")
+    public ResponseEntity getStamps(@LoginMemberId Long loginMember,
                                     @Positive @PathVariable("member-id") Long memberId){
 
-        List<Stamps> stamps = service.findStampIfMissionComplete(memberId);
-        return new ResponseEntity<>(mapper.stampsToResponses(stamps),HttpStatus.OK);
+        List<Stamps> stamps = service.findStampIfMissionComplete(memberId,loginMember);
+
+        StampMultiContainer container = mapper.stampsToMultiContainer(stamps);
+
+        return new ResponseEntity<>(mapper.stampMultiContainerToMultiResponse(container),HttpStatus.OK);
     }
 
 
@@ -91,6 +108,13 @@ public class MissionController {
     public ResponseEntity getMission(@PathVariable("mission-id")Long missionId){
         Mission mission = service.find(missionId);
 
+        return new ResponseEntity<>(mapper.missionToResponse(mission), HttpStatus.OK);
+    }
+
+    //래덤 미션 정보 조회
+    @GetMapping("/random")
+    public ResponseEntity getRandomMission(){
+        Mission mission = service.findRandomMission();
         return new ResponseEntity<>(mapper.missionToResponse(mission), HttpStatus.OK);
     }
 

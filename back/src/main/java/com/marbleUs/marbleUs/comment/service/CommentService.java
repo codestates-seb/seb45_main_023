@@ -46,9 +46,14 @@ public class CommentService {
 
 
     //댓글 업데이트 메서드 //업데이트는 일부만 수정되서 오기도 하므로 주의
-    public Comment updateComment(Comment comment, Long commentId) {
+    public Comment updateComment(Comment comment, Long commentId, Long loginMember) {
+
+
         //댓글 아이디로 댓글 찾기
         Comment findComment = findVerifiedComment(commentId);
+
+        //작성자와 수정자가 동일인물인지 비교
+        memberService.verifyIsSameMember(findComment.getMember(),loginMember);
 
         //업데이트할 댓글 객체에서 본문 가져오기
         Optional.ofNullable(comment.getBody())
@@ -62,9 +67,12 @@ public class CommentService {
     }
 
     //댓글 삭제 메서드
-    public void deleteComment(long commentId) {
+    public void deleteComment(long commentId, Long loginMember) {
 
-        commentRepository.delete(findVerifiedComment(commentId));
+        Comment findComment = findVerifiedComment(commentId);
+        memberService.verifyIsSameMember(findComment.getMember(),loginMember);
+
+        commentRepository.delete(findComment);
     }
 
     //검증된 댓글 조회 메서드

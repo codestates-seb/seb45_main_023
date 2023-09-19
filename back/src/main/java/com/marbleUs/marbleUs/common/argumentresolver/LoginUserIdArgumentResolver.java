@@ -36,7 +36,7 @@ public class LoginUserIdArgumentResolver implements HandlerMethodArgumentResolve
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); // 사용자 인증 정보
         // 익명이면 -1L 리턴
         if(principal.equals("anonymousUser")){
-            return -1L;
+            return 0L;
         }
         Member member = service.findMemberByEmail(principal.toString());
         return member.getId();

@@ -69,11 +69,13 @@ public class MemberService {
     }
 
     // 추후 로그인 사용자 자동 아이디 검색으로 수정 @LoginMemberId 사용
-    public Member update(Member member, Long id){
+    public Member update(Member member, Long id, Long loginMember){
 
-        //수정하려는 사용자와 수정자가 같은 계정인지 확인
 
         Member findMember = findVerifiedMember(id);
+        //수정하려는 사용자와 수정자가 같은 계정인지 확인
+        verifyIsSameMember(findMember,loginMember);
+
         Optional.ofNullable(member.getPassword())
                 .ifPresent( password ->
                         findMember.setPassword(passwordEncoder.encode(password)));
@@ -112,21 +114,33 @@ public class MemberService {
 
 
 
-    public void deleteMember(Long memberId) {
-        Member findMember = findVerifiedMember(memberId);
-        findMember.setMemberStatus(Member.Status.MEMBER_INACTIVE);
-        memberRepository.save(findMember);
+    public void deleteMember(Long memberId, Long loginMember) {
+        Member memberToDelete = findVerifiedMember(memberId);
+
+        //verify if the member who wants to quit is the same user as the one saved in DB
+
+        verifyIsSameMember(memberToDelete,loginMember);
+        memberToDelete.setMemberStatus(Member.Status.MEMBER_INACTIVE);
+        memberRepository.save(memberToDelete);
+
+    }
+
+    public void verifyIsSameMember(Member member, Long loginMember){
+        if (!member.getId().equals(loginMember)) throw new BusinessLogicException(ExceptionCode.ID_DOESNT_MATCH);
     }
 
 
     @Transactional(readOnly = true)
     public Member findVerifiedMember(Long id) {
-        Optional<Member> optionalMember =
-                memberRepository.findById(id);
-        Member findMember =
-                optionalMember.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        return findMember;
+
+        Optional<Member> optionalMember = memberRepository.findById(id);
+
+        Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+
+        if (findMember.getMemberStatus() != Member.Status.MEMBER_INACTIVE) return findMember;
+
+
+        throw new BusinessLogicException(ExceptionCode.MEMBER_INACTIVE);
     }
 
     public Member findMemberByEmail(String email) {
@@ -134,27 +148,32 @@ public class MemberService {
         return member;
     }
 
-    public void saveFollowing(Member findMember, Member followedMember) {
+    public void saveFollowing(Member findMember, Member followedMember, Long loginMember) {
+
+        verifyIsSameMember(findMember,loginMember);
 
         if(memberVerifier.verifyIsMemberActive(followedMember)){
 
-        Follow follow = new Follow();
-        follow.setMember(findMember);
-        follow.setFollowedMember(followedMember);
-        followRepository.save(follow);
-        findMember.addFollow(follow);
-        saveMember(findMember);
+            Follow follow = new Follow();
+            follow.setMember(findMember);
+            follow.setFollowedMember(followedMember);
+            followRepository.save(follow);
+            findMember.addFollow(follow);
+            saveMember(findMember);
 
-        Follower follower = new Follower();
-        follower.setMember(followedMember);
-        follower.setFollower(findMember);
-        followerRepository.save(follower);
-        followedMember.addFollower(follower);
-        saveMember(followedMember);}
+            Follower follower = new Follower();
+            follower.setMember(followedMember);
+            follower.setFollower(findMember);
+            followerRepository.save(follower);
+            followedMember.addFollower(follower);
+            saveMember(followedMember);}
         else throw new BusinessLogicException(ExceptionCode.MEMBER_INACTIVE);
     }
 
-    public void unfollowMember(Member findMember, Member followedMember) {
+    public void unfollowMember(Member findMember, Member followedMember, Long loginMember) {
+
+        verifyIsSameMember(findMember,loginMember);
+
         Follow follow = followRepository.findByMemberAndFollowedMember(findMember,followedMember).get();
         findMember.unFollow(follow);
         followRepository.delete(follow);
@@ -167,9 +186,9 @@ public class MemberService {
 
     }
 
-    public Page<Member> findFollows(Member findMember,int page,int size) {
+    public Page<Member> findFollows(Member findMember,Long loginMember,int page,int size) {
 
-
+        verifyIsSameMember(findMember,loginMember);
 
         List<Member> follows = findMember.getFollows().stream().map(
                 follow-> {
@@ -182,7 +201,10 @@ public class MemberService {
         return new PageImpl<>(follows,pageRequest,follows.size());
     }
 
-    public Page<Member> findFollowers(Member findMember,int page,int size) {
+    public Page<Member> findFollowers(Member findMember,Long loginMember, int page,int size) {
+
+        verifyIsSameMember(findMember,loginMember);
+
         List<Member> followers = findMember.getFollowers().stream().map(
                 follower-> {
                     Member findFollower = follower.getFollower();
@@ -194,7 +216,10 @@ public class MemberService {
         return new PageImpl<>(followers,pageRequest,followers.size());
     }
 
-    public Page<Blog> findBookMarks(Member findMember,int page,int size) {
+    public Page<Blog> findBookMarks(Member findMember,Long loginMember,int page,int size) {
+
+        verifyIsSameMember(findMember,loginMember);
+
         PageRequest pageRequest = PageRequest.of(page-1, size, Sort.by("createdAt").descending());
 
         List<Blog> bookMarks = findMember.getBookmarks().stream().map(id->{
@@ -203,6 +228,21 @@ public class MemberService {
         }).collect(Collectors.toList());
 
         return new PageImpl<>(bookMarks,pageRequest,bookMarks.size());
+    }
+
+    public void addBookMark(Long memberId, Long loginMember ,Long blogId) {
+
+        Member findMember = findVerifiedMember(memberId);
+        verifyIsSameMember(findMember,loginMember);
+        findMember.addBookMarks(blogRepository.findById(blogId).orElseThrow(()-> new BusinessLogicException(ExceptionCode.BLOG_NOT_FOUND)));
+        saveMember(findMember);
+    }
+
+    public void deleteBookMark(Long memberId,Long loginMember, Long blogId) {
+        Member findMember = findVerifiedMember(memberId);
+        verifyIsSameMember(findMember,loginMember);
+        findMember.deleteBookmark(blogId);
+        saveMember(findMember);
     }
 }
 

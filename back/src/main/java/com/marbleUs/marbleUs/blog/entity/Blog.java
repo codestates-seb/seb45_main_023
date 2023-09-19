@@ -24,7 +24,7 @@ public class Blog extends Auditable {
     @Column(nullable = false, name = "title")
     private String title;
 
-    @Column(nullable = false, name = "body")
+    @Column(length = 2000, nullable = false, name = "body")
     private String body;
 
     private Long views = 0L;

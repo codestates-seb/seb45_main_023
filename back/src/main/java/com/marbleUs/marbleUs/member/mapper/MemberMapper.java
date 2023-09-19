@@ -65,6 +65,7 @@ public interface MemberMapper {
 
         MemberDto.Response response = new MemberDto.Response();
 
+        response.setRoles(member.getRoles());
         response.setId( member.getId() );
         response.setNickname( member.getNickname() );
         response.setEmail( member.getEmail() );

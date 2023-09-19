@@ -2,8 +2,7 @@ package com.marbleUs.marbleUs.common.tools.counter;
 
 import com.marbleUs.marbleUs.blog.entity.Blog;
 import com.marbleUs.marbleUs.common.redis.service.RedisServiceUtil;
-import com.marbleUs.marbleUs.common.redis.tools.ClientIpInterceptor;
-import com.marbleUs.marbleUs.member.entity.Member;
+import com.marbleUs.marbleUs.common.redis.tools.ClientIpExtractor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,12 +19,12 @@ import java.util.List;
 @Slf4j
 public class ViewCounter {
     private final RedisServiceUtil redisServiceUtil;
-    private final ClientIpInterceptor interceptor;
+    private final ClientIpExtractor extractor;
 
 
     public void verifyIsViewed(HttpServletRequest request, Blog blog) {
 
-        String ip = interceptor.getClientIP(request);
+        String ip = extractor.getClientIP(request);
 
         String viewCount = redisServiceUtil.getData(ip);
         if (viewCount == null) {

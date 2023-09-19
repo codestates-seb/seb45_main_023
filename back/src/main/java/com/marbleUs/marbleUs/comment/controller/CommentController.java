@@ -5,6 +5,7 @@ import com.marbleUs.marbleUs.comment.dto.CommentPostDto;
 import com.marbleUs.marbleUs.comment.entity.Comment;
 import com.marbleUs.marbleUs.comment.mapper.CommentMapper;
 import com.marbleUs.marbleUs.comment.service.CommentService;
+import com.marbleUs.marbleUs.common.argumentresolver.LoginMemberId;
 import com.marbleUs.marbleUs.common.response.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,16 +37,18 @@ public class CommentController {
     //댓글 수정
     @PatchMapping("/{comment-id}")
     public ResponseEntity patchComment(@PathVariable("comment-id") Long commentId,
+                                       @LoginMemberId Long loginMember,
                                        @Valid @RequestBody CommentPatchDto commentPatchDto) {
-        Comment comment = commentService.updateComment(commentMapper.toCommentFromPatchDto(commentPatchDto), commentId);
+        Comment comment = commentService.updateComment(commentMapper.toCommentFromPatchDto(commentPatchDto), commentId,loginMember);
         return new ResponseEntity<>(commentMapper.toCommentResponseDto(comment), HttpStatus.OK);
 
     }
 
     //댓글 삭제
     @DeleteMapping("/{comment-id}")
-    public ResponseEntity deleteComment(@PathVariable("comment-id") Long commentId) {
-        commentService.deleteComment(commentId);
+    public ResponseEntity deleteComment(@PathVariable("comment-id") Long commentId,
+                                        @LoginMemberId Long loginMember) {
+        commentService.deleteComment(commentId,loginMember);
         return new ResponseEntity<>("댓글이 삭제되었습니다.", HttpStatus.OK);
     }
 
@@ -63,7 +66,7 @@ public class CommentController {
                                               @Positive @RequestParam int size) {
         Page<Comment> pageComments = commentService.findCommentByMemberId(page-1, size, memberId);
         List<Comment> comments = pageComments.getContent();
-        return new ResponseEntity<>(new MultiResponseDto<>(commentMapper.toCommentResponseDto(comments), pageComments), HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(commentMapper.toCommentsResponseDto(comments), pageComments), HttpStatus.OK);
     }
 
     //블로그글(후기)별 댓글 조회
@@ -73,7 +76,7 @@ public class CommentController {
                                             @Positive @RequestParam int size) {
         Page<Comment> pageComments = commentService.findCommentsByBlogId(blogId, page-1, size);
         List<Comment> comments = pageComments.getContent();
-        return new ResponseEntity<>(new MultiResponseDto<>(commentMapper.toCommentResponseDto(comments), pageComments), HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(commentMapper.toCommentsResponseDto(comments), pageComments), HttpStatus.OK);
     }
 
 }

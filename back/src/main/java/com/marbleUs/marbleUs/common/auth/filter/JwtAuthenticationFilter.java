@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marbleUs.marbleUs.common.auth.dto.LoginDto;
 import com.marbleUs.marbleUs.common.auth.jwt.JwtTokenizer;
 import com.marbleUs.marbleUs.common.redis.service.RedisServiceUtil;
-import com.marbleUs.marbleUs.common.redis.tools.ClientIpInterceptor;
+import com.marbleUs.marbleUs.common.redis.tools.ClientIpExtractor;
 import com.marbleUs.marbleUs.member.entity.Member;
-import com.marbleUs.marbleUs.member.repository.MemberRepository;
 import com.marbleUs.marbleUs.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -25,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +36,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final JwtTokenizer jwtTokenizer;
     private final MemberService memberService;
     private final RedisServiceUtil redisServiceUtil;
-    private final ClientIpInterceptor interceptor;
+    private final ClientIpExtractor extractor;
 
 
     @SneakyThrows
@@ -61,7 +59,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Member member = (Member) authResult.getPrincipal();  //
 
         String accessToken = delegateAccessToken(member);   //
-        String ip = interceptor.getClientIP(request);
+        String ip = extractor.getClientIP(request);
         delegateRefreshToken(member,ip); //
         log.info("accessToken is generated");
 

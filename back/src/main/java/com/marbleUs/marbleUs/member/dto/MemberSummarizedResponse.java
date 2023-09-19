@@ -8,5 +8,6 @@ import lombok.Setter;
 public class MemberSummarizedResponse {
     private Long id;
     private String nickname;
+    private String profile;
 
 }
