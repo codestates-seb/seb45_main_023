@@ -30,7 +30,7 @@ export default function PostDetail({ profile_pic }) {
 
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editedComments, setEditedComments] = useState({});
-  const [authorizationToken,setAuthorizationToken] = useRecoilState(authorizationTokenState)
+  const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
 
   const [page, setPage] = useState(1);
 
@@ -43,8 +43,6 @@ export default function PostDetail({ profile_pic }) {
   const { blogId, cityId } = useParams();
   const userinfo = useRecoilValue(userInfo);
   const userId = userinfo.id;
-
-  const token = useRecoilValue(authorizationTokenState);
 
   const toggleTag = (tag) => {
     setEditedTags((prevTags) => {
@@ -61,15 +59,15 @@ export default function PostDetail({ profile_pic }) {
     try {
       const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/blogs/${blogId}?page=1&size=10`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authorizationToken}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
       });
 
       // authorization 토큰 갱신
-      if(response.headers.get("newaccesstoken")) {
-        setAuthorizationToken(response.headers.get("newaccesstoken"));
+      if (response.headers.get('newaccesstoken')) {
+        setAuthorizationToken(response.headers.get('newaccesstoken'));
         localStorage.setItem('Authorization', authorizationToken ?? '');
       }
 
@@ -88,17 +86,17 @@ export default function PostDetail({ profile_pic }) {
       try {
         const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authorizationToken}`,
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
         });
 
         // authorization 토큰 갱신
-        if(response.headers.get("newaccesstoken")) {
-					setAuthorizationToken(response.headers.get("newaccesstoken"));
-					localStorage.setItem('Authorization', authorizationToken ?? '');
-				}
+        if (response.headers.get('newaccesstoken')) {
+          setAuthorizationToken(response.headers.get('newaccesstoken'));
+          localStorage.setItem('Authorization', authorizationToken ?? '');
+        }
 
         setBlogData(response.data);
         console.log('게시물 가져오기 성공 : ', response.data);
@@ -113,21 +111,21 @@ export default function PostDetail({ profile_pic }) {
     //해당 유저의 미션 데이터 불러오기
     const getData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/missions/member-mission/${userId}`, {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/missions/${blogData.member.id}/${cityId}`, {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authorizationToken}`,
           },
         });
 
         // authorization 토큰 갱신
-        if(response.headers.get("newaccesstoken")) {
-					setAuthorizationToken(response.headers.get("newaccesstoken"));
-					localStorage.setItem('Authorization', authorizationToken ?? '');
-				}
+        if (response.headers.get('newaccesstoken')) {
+          setAuthorizationToken(response.headers.get('newaccesstoken'));
+          localStorage.setItem('Authorization', authorizationToken ?? '');
+        }
 
-        console.log(response.data);
+        console.log('qwewqe', response.data);
         setMission(response.data);
       } catch (err) {
         console.log('err', err);
@@ -148,15 +146,15 @@ export default function PostDetail({ profile_pic }) {
 
       const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}?names=${imageNames}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authorizationToken}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
       });
 
       // authorization 토큰 갱신
-      if(response.headers.get("newaccesstoken")) {
-        setAuthorizationToken(response.headers.get("newaccesstoken"));
+      if (response.headers.get('newaccesstoken')) {
+        setAuthorizationToken(response.headers.get('newaccesstoken'));
         localStorage.setItem('Authorization', authorizationToken ?? '');
       }
 
@@ -182,7 +180,7 @@ export default function PostDetail({ profile_pic }) {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authorizationToken}`,
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -190,8 +188,8 @@ export default function PostDetail({ profile_pic }) {
       );
 
       // authorization 토큰 갱신
-      if(response.headers.get("newaccesstoken")) {
-        setAuthorizationToken(response.headers.get("newaccesstoken"));
+      if (response.headers.get('newaccesstoken')) {
+        setAuthorizationToken(response.headers.get('newaccesstoken'));
         localStorage.setItem('Authorization', authorizationToken ?? '');
       }
 
@@ -214,15 +212,15 @@ export default function PostDetail({ profile_pic }) {
     try {
       const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/comments/${comment_id}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authorizationToken}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
       });
 
       // authorization 토큰 갱신
-      if(response.headers.get("newaccesstoken")) {
-        setAuthorizationToken(response.headers.get("newaccesstoken"));
+      if (response.headers.get('newaccesstoken')) {
+        setAuthorizationToken(response.headers.get('newaccesstoken'));
         localStorage.setItem('Authorization', authorizationToken ?? '');
       }
 
@@ -253,7 +251,7 @@ export default function PostDetail({ profile_pic }) {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authorizationToken}`,
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -261,8 +259,8 @@ export default function PostDetail({ profile_pic }) {
       );
 
       // authorization 토큰 갱신
-      if(response.headers.get("newaccesstoken")) {
-        setAuthorizationToken(response.headers.get("newaccesstoken"));
+      if (response.headers.get('newaccesstoken')) {
+        setAuthorizationToken(response.headers.get('newaccesstoken'));
         localStorage.setItem('Authorization', authorizationToken ?? '');
       }
 
@@ -270,15 +268,15 @@ export default function PostDetail({ profile_pic }) {
         // 업데이트된 게시글을 서버에서 다시 가져오기
         const updatedResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authorizationToken}`,
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
         });
 
         // authorization 토큰 갱신
-        if(updatedResponse.headers.get("newaccesstoken")) {
-          setAuthorizationToken(updatedResponse.headers.get("newaccesstoken"));
+        if (updatedResponse.headers.get('newaccesstoken')) {
+          setAuthorizationToken(updatedResponse.headers.get('newaccesstoken'));
           localStorage.setItem('Authorization', authorizationToken ?? '');
         }
 
@@ -311,7 +309,7 @@ export default function PostDetail({ profile_pic }) {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authorizationToken}`,
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -319,8 +317,8 @@ export default function PostDetail({ profile_pic }) {
       );
 
       // authorization 토큰 갱신
-      if(response.headers.get("newaccesstoken")) {
-        setAuthorizationToken(response.headers.get("newaccesstoken"));
+      if (response.headers.get('newaccesstoken')) {
+        setAuthorizationToken(response.headers.get('newaccesstoken'));
         localStorage.setItem('Authorization', authorizationToken ?? '');
       }
 
@@ -351,13 +349,14 @@ export default function PostDetail({ profile_pic }) {
             headers: {
               'Content-Type': 'application/json',
               'ngrok-skip-browser-warning': '69420',
+              Authorization: `${authorizationToken}`,
             },
           }
         );
 
         // authorization 토큰 갱신
-        if(request.headers.get("newaccesstoken")) {
-          setAuthorizationToken(request.headers.get("newaccesstoken"));
+        if (request.headers.get('newaccesstoken')) {
+          setAuthorizationToken(request.headers.get('newaccesstoken'));
           localStorage.setItem('Authorization', authorizationToken ?? '');
         }
 
@@ -450,14 +449,6 @@ export default function PostDetail({ profile_pic }) {
             ))}
           </div>
 
-          {userinfomation.roles[0] === 'ADMIN' ? (
-            <button
-              onClick={handlePostDelete}
-              className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 float-right mt-2"
-            >
-              미션 승인
-            </button>
-          ) : null}
           <button
             onClick={handlePostDelete}
             className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 float-right mt-2"
@@ -471,6 +462,15 @@ export default function PostDetail({ profile_pic }) {
           >
             수정하기
           </button>
+
+          {userinfomation.roles[0] === 'ADMIN' ? (
+            <button
+              onClick={handleClear}
+              className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 float-right mt-2 mr-2"
+            >
+              미션 승인
+            </button>
+          ) : null}
 
           <div className="comment_form mt-6">
             <h4 className="comment_form_heading text-lg font-semibold mb-2">댓글</h4>
