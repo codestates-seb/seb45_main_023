@@ -16,7 +16,7 @@ export const LogOutButton = () => {
           // 서버 API 호출
           const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/logout`,{
               headers: {
-                Authorization: `Bearer ${authorizationToken}`,
+                Authorization : "Bearer " + localStorage.getItem("Authorization"),
                 "Content-Type": "application/json",
                 "ngrok-skip-browser-warning": "69420",
               },

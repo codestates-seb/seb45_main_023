@@ -62,7 +62,7 @@ export default function PostDetail({ profile_pic }) {
         `${process.env.REACT_APP_SERVER_URL}/comments/blogs/${blogId}?page=${page}&size=5`,
         {
           headers: {
-            Authorization: `Bearer ${authorizationToken}`,
+            Authorization : "Bearer " + localStorage.getItem("Authorization"),
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -89,7 +89,7 @@ export default function PostDetail({ profile_pic }) {
       try {
         const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`, {
           headers: {
-            Authorization: `Bearer ${authorizationToken}`,
+            Authorization : "Bearer " + localStorage.getItem("Authorization"),
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -121,7 +121,7 @@ export default function PostDetail({ profile_pic }) {
             headers: {
               'Content-Type': 'application/json',
               'ngrok-skip-browser-warning': '69420',
-              Authorization: `Bearer ${authorizationToken}`,
+              Authorization : "Bearer " + localStorage.getItem("Authorization"),
             },
           }
         );
@@ -153,7 +153,7 @@ export default function PostDetail({ profile_pic }) {
 
       const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}?names=${imageNames}`, {
         headers: {
-          Authorization: `Bearer ${authorizationToken}`,
+          Authorization : "Bearer " + localStorage.getItem("Authorization"),
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
@@ -188,7 +188,7 @@ export default function PostDetail({ profile_pic }) {
         },
         {
           headers: {
-            Authorization: `Bearer ${authorizationToken}`,
+            Authorization : "Bearer " + localStorage.getItem("Authorization"),
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -220,7 +220,7 @@ export default function PostDetail({ profile_pic }) {
     try {
       const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/comments/${comment_id}`, {
         headers: {
-          Authorization: `Bearer ${authorizationToken}`,
+          Authorization : "Bearer " + localStorage.getItem("Authorization"),
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
@@ -260,7 +260,7 @@ export default function PostDetail({ profile_pic }) {
         },
         {
           headers: {
-            Authorization: `Bearer ${authorizationToken}`,
+            Authorization : "Bearer " + localStorage.getItem("Authorization"),
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -277,7 +277,7 @@ export default function PostDetail({ profile_pic }) {
         // 업데이트된 게시글을 서버에서 다시 가져오기
         const updatedResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`, {
           headers: {
-            Authorization: `Bearer ${authorizationToken}`,
+            Authorization : "Bearer " + localStorage.getItem("Authorization"),
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -318,7 +318,7 @@ export default function PostDetail({ profile_pic }) {
         },
         {
           headers: {
-            Authorization: `Bearer ${authorizationToken}`,
+            Authorization : "Bearer " + localStorage.getItem("Authorization"),
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -358,7 +358,7 @@ export default function PostDetail({ profile_pic }) {
             headers: {
               'Content-Type': 'application/json',
               'ngrok-skip-browser-warning': '69420',
-              Authorization: `${authorizationToken}`,
+              Authorization : "Bearer " + localStorage.getItem("Authorization"),
             },
           }
         );

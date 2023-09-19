@@ -49,7 +49,7 @@ export default function Bloglist() {
 					`${process.env.REACT_APP_SERVER_URL}/blogs/cities/${cityId}?page=1&size=10`,
 					{
 						headers: {
-							Authorization: `Bearer ${authorizationToken}`,
+							Authorization : "Bearer " + localStorage.getItem("Authorization"),
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
 						},
@@ -88,8 +88,8 @@ export default function Bloglist() {
                 `${process.env.REACT_APP_SERVER_URL}/members/${userId}/no-bookmark/${blog_id}`,
                 {
                     headers: {
-                        Authorization: `Bearer ${authorizationToken}`,
-												"Content-Type": "application/json",
+                        Authorization : "Bearer " + localStorage.getItem("Authorization"),
+						"Content-Type": "application/json",
                         "ngrok-skip-browser-warning": "69420",
                     },
                 }
@@ -109,8 +109,8 @@ export default function Bloglist() {
                 null,
                 {
                     headers: {
-                        Authorization: `Bearer ${authorizationToken}`,
-												"Content-Type": "application/json",
+                        Authorization : "Bearer " + localStorage.getItem("Authorization"),
+						"Content-Type": "application/json",
                         "ngrok-skip-browser-warning": "69420",
                     },
                 }
@@ -124,7 +124,7 @@ export default function Bloglist() {
 
             setBookmarkedPosts([...bookmarkedPosts, blog_id]);
             console.log("북마크 추가 성공");
-						console.log("bookmark", bookmarkedPosts);
+			console.log("bookmark", bookmarkedPosts);
         }
     } catch (error) {
         console.error("북마크 토글 에러 : ", authorizationToken, error);

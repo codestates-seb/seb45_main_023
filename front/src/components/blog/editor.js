@@ -26,7 +26,7 @@ const Editor = ({body, setBody, imageArr, setImageArr}) => {
     
                         axios.post(`${process.env.REACT_APP_SERVER_URL}/blogs/upload-images`, formData, {
                             headers: {
-                                Authorization: `Bearer ${token}`,
+                                Authorization : "Bearer " + localStorage.getItem("Authorization"),
                                 'ngrok-skip-browser-warning': '69420'
                             }
                         })
@@ -46,7 +46,7 @@ const Editor = ({body, setBody, imageArr, setImageArr}) => {
     
                             //     const imageResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/print-image?name=${res.data.name}`, {
                             //         headers: {
-                            //             Authorization: `Bearer ${token}`,
+                            //             Authorization : "Bearer " + localStorage.getItem("Authorization"),
                             //             'ngrok-skip-browser-warning': '69420'
                             //         }
                             //     });
