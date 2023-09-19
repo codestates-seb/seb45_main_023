@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import Board from "../../components/mainpage/board";
 import PassportIcon from "../../components/buttons/mainpage/PassportIcon";
 import { User, userInfo } from "../../recoil/mypage";
@@ -12,18 +12,17 @@ import {
 	modalState,
 } from "../../recoil/main";
 import { authorizationTokenState } from "../../recoil/logInSignUpState";
-import axios from "axios";
+import GetData from "../../components/GetData";
 
 export default function Main() {
-	const [isOpen, setIsOpen] = useRecoilState(modalState);
-	const [data, setData] = useRecoilState(User);
-	const [info, setInfo] = useRecoilState(userInfo);
+	GetData();
+
+	const isOpen = useRecoilValue(modalState);
+	const info = useRecoilValue(userInfo);
 	const [current, setCurrent] = useRecoilState(currentLocationState);
-	const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
-	const [authorizationToken, setAuthorizationToken] = useRecoilState(
-		authorizationTokenState
-	);
 	const [diceControl, setDiceControl] = useRecoilState(diceControlState);
+	const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
+	const token = useRecoilValue(authorizationTokenState);
 
 	useEffect(() => {
 		function findLocationIndex() {
@@ -36,52 +35,11 @@ export default function Main() {
 			}
 		}
 		findLocationIndex();
-	}, [authorizationToken, setData, isOpen]);
+	}, [token, isOpen]);
 
 	useEffect(() => {
-		const getData = async () => {
-			try {
-				const data = await axios.get(
-					`${process.env.REACT_APP_SERVER_URL}/members/me`,
-					{
-						headers: {
-							Authorization: `Bearer ${authorizationToken}`,
-							"ngrok-skip-browser-warning": "69420",
-						},
-					}
-				);
-				setData(data.data);
-				const {
-					id,
-					nickname,
-					email,
-					level,
-					nationality,
-					password,
-					currentLocation,
-					birth,
-				} = data.data;
-				setInfo({
-					id,
-					nickname,
-					email,
-					level,
-					nationality,
-					password,
-					currentLocation,
-					birth,
-				});
-			} catch (err) {
-				console.log(err);
-			}
-		};
-
-		getData();
-	}, [authorizationToken, setData, setInfo]);
-
-	useEffect(() => {
-		setDiceControl(true);
-	}, []);
+		if (info.id === 0) setDiceControl(true);
+	});
 
 	return (
 		<div className="App bg-blue-200 min-w-[1056px] min-h-[904px]">
