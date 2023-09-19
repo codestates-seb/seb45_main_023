@@ -82,6 +82,7 @@ export default function Bloglist() {
 	const handleBookmarkToggle = async (blog_id) => {
     try {
         if (bookmarkedPosts.includes(blog_id)) {
+			console.log(authorizationToken)
             const response = await axios.patch( // 나중에 delete를 바꾸고 숫자를 userId로 바꾸기
                 `${process.env.REACT_APP_SERVER_URL}/members/10/no-bookmark/${blog_id}`, 
                 {
@@ -92,6 +93,8 @@ export default function Bloglist() {
                     },
                 }
             );
+
+			console.log('북마크선택',response)
 
 			// authorization 토큰 갱신
 			if(response.headers.get("newaccesstoken")) {
@@ -113,6 +116,8 @@ export default function Bloglist() {
                     },
                 }
             );
+			
+				console.log('북마크삭제',response)
 
 			// authorization 토큰 갱신
 			if(response.headers.get("newaccesstoken")) {
