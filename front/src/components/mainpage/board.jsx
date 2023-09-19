@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useCallback, useEffect, useState, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import City from "./city/City";
 import { locations, moveOrder } from "./locations";
 import Bead from "./Bead";
@@ -26,7 +26,7 @@ const Board = () => {
 	const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
 	const [diceControl, setDiceControl] = useRecoilState(diceControlState);
 	const [current, setCurrent] = useRecoilState(currentLocationState);
-	const authorizationToken = useRecoilState(authorizationTokenState);
+	const token = useRecoilValue(authorizationTokenState);
 
 	// 도시 컴포넌트 렌더링
 	const renderLocations = (locations) => {
@@ -140,7 +140,7 @@ const Board = () => {
 						headers: {
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
-							Authorization: `Bearer ${authorizationToken}`,
+							Authorization: `Bearer ${token}`,
 						},
 					}
 				);
