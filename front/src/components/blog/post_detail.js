@@ -9,7 +9,7 @@ import { authorizationTokenState } from '../../recoil/logInSignUpState';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import parse from 'html-react-parser';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { User, userInfo } from '../../recoil/mypage';
 import BlogPagenation from '../mypage/BlogPagination';
@@ -30,6 +30,7 @@ export default function PostDetail({ profile_pic }) {
 
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editedComments, setEditedComments] = useState({});
+  const [authorizationToken,setAuthorizationToken] = useRecoilState(authorizationTokenState)
 
   const [page, setPage] = useState(1);
 
@@ -67,9 +68,9 @@ export default function PostDetail({ profile_pic }) {
       });
 
       // authorization 토큰 갱신
-      if (response.headers.get('Authorization') !== null) {
-        const Authorization = response.headers.get('Authorization');
-        localStorage.setItem('Authorization', Authorization);
+      if(response.headers.get("newaccesstoken")) {
+        setAuthorizationToken(response.headers.get("newaccesstoken"));
+        localStorage.setItem('Authorization', authorizationToken ?? '');
       }
 
       // axios로 GET 요청
@@ -94,10 +95,10 @@ export default function PostDetail({ profile_pic }) {
         });
 
         // authorization 토큰 갱신
-        if (response.headers.get('Authorization') !== null) {
-          const Authorization = response.headers.get('Authorization');
-          localStorage.setItem('Authorization', Authorization);
-        }
+        if(response.headers.get("newaccesstoken")) {
+					setAuthorizationToken(response.headers.get("newaccesstoken"));
+					localStorage.setItem('Authorization', authorizationToken ?? '');
+				}
 
         setBlogData(response.data);
         console.log('게시물 가져오기 성공 : ', response.data);
@@ -121,10 +122,10 @@ export default function PostDetail({ profile_pic }) {
         });
 
         // authorization 토큰 갱신
-        if (response.headers.get('Authorization')) {
-          const Authorization = response.headers.get('Authorization');
-          localStorage.setItem('Authorization', Authorization ?? '');
-        }
+        if(response.headers.get("newaccesstoken")) {
+					setAuthorizationToken(response.headers.get("newaccesstoken"));
+					localStorage.setItem('Authorization', authorizationToken ?? '');
+				}
 
         console.log(response.data);
         setMission(response.data);
@@ -154,9 +155,9 @@ export default function PostDetail({ profile_pic }) {
       });
 
       // authorization 토큰 갱신
-      if (response.headers.get('Authorization') !== null) {
-        const Authorization = response.headers.get('Authorization');
-        localStorage.setItem('Authorization', Authorization);
+      if(response.headers.get("newaccesstoken")) {
+        setAuthorizationToken(response.headers.get("newaccesstoken"));
+        localStorage.setItem('Authorization', authorizationToken ?? '');
       }
 
       if (response.status === 200) {
@@ -189,9 +190,9 @@ export default function PostDetail({ profile_pic }) {
       );
 
       // authorization 토큰 갱신
-      if (response.headers.get('Authorization') !== null) {
-        const Authorization = response.headers.get('Authorization');
-        localStorage.setItem('Authorization', Authorization);
+      if(response.headers.get("newaccesstoken")) {
+        setAuthorizationToken(response.headers.get("newaccesstoken"));
+        localStorage.setItem('Authorization', authorizationToken ?? '');
       }
 
       if (response.status === 201) {
@@ -220,9 +221,9 @@ export default function PostDetail({ profile_pic }) {
       });
 
       // authorization 토큰 갱신
-      if (response.headers.get('Authorization') !== null) {
-        const Authorization = response.headers.get('Authorization');
-        localStorage.setItem('Authorization', Authorization);
+      if(response.headers.get("newaccesstoken")) {
+        setAuthorizationToken(response.headers.get("newaccesstoken"));
+        localStorage.setItem('Authorization', authorizationToken ?? '');
       }
 
       // 댓글이 성공적으로 삭제된 경우
@@ -260,9 +261,9 @@ export default function PostDetail({ profile_pic }) {
       );
 
       // authorization 토큰 갱신
-      if (response.headers.get('Authorization') !== null) {
-        const Authorization = response.headers.get('Authorization');
-        localStorage.setItem('Authorization', Authorization);
+      if(response.headers.get("newaccesstoken")) {
+        setAuthorizationToken(response.headers.get("newaccesstoken"));
+        localStorage.setItem('Authorization', authorizationToken ?? '');
       }
 
       if (response.status === 201) {
@@ -276,9 +277,9 @@ export default function PostDetail({ profile_pic }) {
         });
 
         // authorization 토큰 갱신
-        if (updatedResponse.headers.get('Authorization') !== null) {
-          const Authorization = updatedResponse.headers.get('Authorization');
-          localStorage.setItem('Authorization', Authorization);
+        if(updatedResponse.headers.get("newaccesstoken")) {
+          setAuthorizationToken(updatedResponse.headers.get("newaccesstoken"));
+          localStorage.setItem('Authorization', authorizationToken ?? '');
         }
 
         setBlogData(updatedResponse.data); // 업데이트된 게시글로 상태 업데이트
@@ -318,9 +319,9 @@ export default function PostDetail({ profile_pic }) {
       );
 
       // authorization 토큰 갱신
-      if (response.headers.get('Authorization') !== null) {
-        const Authorization = response.headers.get('Authorization');
-        localStorage.setItem('Authorization', Authorization);
+      if(response.headers.get("newaccesstoken")) {
+        setAuthorizationToken(response.headers.get("newaccesstoken"));
+        localStorage.setItem('Authorization', authorizationToken ?? '');
       }
 
       const updatedComments = comments.map((comment) => {
@@ -355,9 +356,9 @@ export default function PostDetail({ profile_pic }) {
         );
 
         // authorization 토큰 갱신
-        if (request.headers.get('Authorization')) {
-          const Authorization = request.headers.get('Authorization');
-          localStorage.setItem('Authorization', Authorization ?? '');
+        if(request.headers.get("newaccesstoken")) {
+          setAuthorizationToken(request.headers.get("newaccesstoken"));
+          localStorage.setItem('Authorization', authorizationToken ?? '');
         }
 
         console.log(request.data);
