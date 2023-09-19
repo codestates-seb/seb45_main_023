@@ -21,6 +21,9 @@ function Modal({ city }) {
 	const [diceControl, setDiceControl] = useRecoilState(diceControlState);
 	const [current, setcurrent] = useRecoilState(currentLocationState);
 	const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
+	const [authorizationToken, setAuthorizationToken] = useRecoilState(
+		authorizationTokenState
+	);
 
 	const [cityInfo, setCityInfo] = useState("");
 	const [missions, setMissions] = useState([]);
@@ -48,13 +51,12 @@ function Modal({ city }) {
 						},
 					}
 				);
-	
-				// authorization 토큰 갱신
-				if(response.headers.get("newaccesstoken")) {
-					setAuthorizationToken(response.headers.get("newaccesstoken"));
-					localStorage.setItem('Authorization', authorizationToken ?? '');
-				}
 
+				// authorization 토큰 갱신
+				if (response.headers.get("newaccesstoken")) {
+					setAuthorizationToken(response.headers.get("newaccesstoken"));
+					localStorage.setItem("Authorization", authorizationToken ?? "");
+				}
 			} catch (err) {
 				console.log("patchLocation" + err);
 			}
@@ -73,11 +75,11 @@ function Modal({ city }) {
 					}
 				);
 
-			// authorization 토큰 갱신
-			if(response.headers.get("newaccesstoken")) {
-				setAuthorizationToken(response.headers.get("newaccesstoken"));
-				localStorage.setItem('Authorization', authorizationToken ?? '');
-			}
+				// authorization 토큰 갱신
+				if (response.headers.get("newaccesstoken")) {
+					setAuthorizationToken(response.headers.get("newaccesstoken"));
+					localStorage.setItem("Authorization", authorizationToken ?? "");
+				}
 
 				setCityInfo(response.data);
 			} catch (err) {
@@ -99,11 +101,10 @@ function Modal({ city }) {
 				);
 
 				// authorization 토큰 갱신
-				if(response.headers.get("newaccesstoken")) {
+				if (response.headers.get("newaccesstoken")) {
 					setAuthorizationToken(response.headers.get("newaccesstoken"));
-					localStorage.setItem('Authorization', authorizationToken ?? '');
+					localStorage.setItem("Authorization", authorizationToken ?? "");
 				}
-
 			} catch (err) {
 				console.error("postMission", err);
 			} finally {
@@ -125,9 +126,9 @@ function Modal({ city }) {
 				);
 
 				// authorization 토큰 갱신
-				if(response.headers.get("newaccesstoken")) {
+				if (response.headers.get("newaccesstoken")) {
 					setAuthorizationToken(response.headers.get("newaccesstoken"));
-					localStorage.setItem('Authorization', authorizationToken ?? '');
+					localStorage.setItem("Authorization", authorizationToken ?? "");
 				}
 
 				if (Array.isArray(response.data)) {
@@ -215,7 +216,7 @@ function Modal({ city }) {
 							</div>
 							<div className="relative flex-1 flex flex-col m-10 p-10 bg-white bg-opacity-80 rounded-lg shadow-md">
 								<div className="flex flex-col w-full h-3/5 min-w-[380px] justify-around">
-									{token === "" ? (
+									{authorizationToken === "" ? (
 										<MissionCard mission={missions[0]} level={1} />
 									) : (
 										<MissionCard mission={missions[0]} level={1} />
@@ -225,7 +226,7 @@ function Modal({ city }) {
 									<MissionCard mission={missions[3]} level={4} />
 								</div>
 								<section className="absolute right-10 bottom-18 flex flex-col gap-4 justify-end">
-									{token === "" ? (
+									{authorizationToken === "" ? (
 										<Link to="/login">
 											<ToPageCustomButton
 												text={"로그인 화면으로"}
