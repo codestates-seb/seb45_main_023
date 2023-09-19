@@ -46,7 +46,7 @@ export default function Main() {
 					`${process.env.REACT_APP_SERVER_URL}/members/me`,
 					{
 						headers: {
-							Authorization: `Bearer ${authorizationToken}`,
+							Authorization : "Bearer " + localStorage.getItem("Authorization"),
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
 						},

@@ -11,24 +11,25 @@ import { authorizationTokenState } from '../../recoil/logInSignUpState';
 import MypageHeaderBtn from '../../components/buttons/mypage/MypageHeaderBtn';
 
 export default function MyPage() {
-  const [data, setData] = useRecoilState(User);
+  const [userdata, setData] = useRecoilState(User);
   const [info, setInfo] = useRecoilState(userInfo);
-  const [nickname, setNickname] = useState(data.nickname);
-  const [nationality, setNationality] = useState(data.nationality);
+  const [nickname, setNickname] = useState(userdata.nickname);
+  const [nationality, setNationality] = useState(userdata.nationality);
   const [password, setPassword] = useState('');
-  const [birth, setBirth] = useState(data.birth);
+  const [birth, setBirth] = useState(userdata.birth);
   const token = useRecoilValue(authorizationTokenState);
   const [_, setVisibleLinks] = useRecoilState(sidebar);
   const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
   console.log(token);
+  console.log(userdata);
   useEffect(() => {
     const getData = async () => {
       try {
-        const data = await axios.get(`${process.env.REACT_APP_SERVER_URL}/members/${data.email}`, {
+        const data = await axios.get(`${process.env.REACT_APP_SERVER_URL}/members/${userdata.email}`, {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
-            Authorization: `Bearer ${token}`,
+            Authorization : "Bearer " + localStorage.getItem("Authorization"),
           },
         });
 
