@@ -52,8 +52,8 @@ const Editor = ({body, setBody, imageArr, setImageArr}) => {
 
 
                                 // authorization 토큰 갱신
-                                if(imageResponse.headers.get("Authorization")) {
-                                    const Authorization = imageResponse.headers.get("Authorization");
+                                if(res.headers.get("Authorization")) {
+                                    const Authorization = res.headers.get("Authorization");
                                     localStorage.setItem('Authorization', Authorization ?? '');
                                 };
 

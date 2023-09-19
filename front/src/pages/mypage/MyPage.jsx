@@ -19,11 +19,10 @@ export default function MyPage() {
   const [birth, setBirth] = useState(data.birth);
   const token = useRecoilValue(authorizationTokenState);
   const [_, setVisibleLinks] = useRecoilState(sidebar);
-  console.log(token);
   useEffect(() => {
     const getData = async () => {
       try {
-        const data = await axios.get(`${process.env.REACT_APP_SERVER_URL}/members/me`, {
+        const data = await axios.get(`${process.env.REACT_APP_SERVER_URL}/members/${data.email}`, {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
