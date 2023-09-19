@@ -8,7 +8,7 @@ export default function AdminButton() {
 
   const handleMissionClear = async () => {
     try {
-        const response = await axios.patch(`${process.env.REACT_APP_TEST_URL}/missions/mission-complete/{member-mission-id}`)
+        const response = await axios.patch(`${process.env.REACT_APP_SERVER_URL}/missions/mission-complete/{member-mission-id}`)
     } catch (err) {
       console.log(err);
     }
