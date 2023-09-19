@@ -1,4 +1,3 @@
-
 import PostLink from "../../components/blog/post_link";
 import React, { useState, useEffect } from "react";
 import Tag from "../../components/blog/tag";
@@ -40,6 +39,23 @@ export default function Bloglist() {
     }
   };
 
+  useEffect(() => {
+    // 게시물 목록 get
+    const getData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/cities/${cityId}?page=1&size=10`, {
+          headers: {
+            Authorization: `Bearer ${authorizationToken}`,
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+          },
+        });
+
+        // authorization 토큰 갱신
+        if (response.headers.get('Authorization')) {
+          const Authorization = response.headers.get('Authorization');
+          localStorage.setItem('Authorization', Authorization ?? '');
+        }
 
 	useEffect(() => {
 		// 게시물 목록 get
@@ -72,6 +88,8 @@ export default function Bloglist() {
 		getData();
 	}, [cityId, setPosts]);
 
+    getData();
+  }, [cityId, setPosts]);
 
   useEffect(() => {
     // 태그 filter
@@ -79,7 +97,7 @@ export default function Bloglist() {
     setFilteredPosts(filtered);
   }, [selectedTag]);
 
-	const handleBookmarkToggle = async (blog_id) => {
+  const handleBookmarkToggle = async (blog_id) => {
     try {
         if (bookmarkedPosts.includes(blog_id)) {
             const response = await axios.patch( // 나중에 delete를 바꾸고 숫자를 userId로 바꾸기
@@ -123,8 +141,12 @@ export default function Bloglist() {
             setBookmarkedPosts([...bookmarkedPosts, blog_id]);
             console.log("북마크 추가 성공");
         }
+
+        setBookmarkedPosts([...bookmarkedPosts, blog_id]);
+        console.log('북마크 추가 성공');
+      }
     } catch (error) {
-        console.error("북마크 토글 에러 : ", authorizationToken, error);
+      console.error('북마크 토글 에러 : ', authorizationToken, error);
     }
 };
 
@@ -181,17 +203,16 @@ export default function Bloglist() {
                 )}
               </button>
             </div>
-						</div>
-					)
-				)}
-				<BlogPagenation 
-					itemPerPage={5} 
-					totalItemsCount={posts.length} 
-					renderItemCount={Math.ceil(posts.length / 5)}
-					page={page}
-					setPage={setPage}
-				/>
-			</div>
-		</div>
-	);
+          </div>
+        ))}
+        <BlogPagenation
+          itemPerPage={5}
+          totalItemsCount={posts.length}
+          renderItemCount={Math.ceil(posts.length / 5)}
+          page={page}
+          setPage={setPage}
+        />
+      </div>
+    </div>
+  );
 }

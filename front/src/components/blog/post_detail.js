@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Tag from "../../components/blog/tag";
+import Tag from '../../components/blog/tag';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaEdit, FaTrashAlt, FaCheck, FaTimes, FaEye } from "react-icons/fa";
+import { FaEdit, FaTrashAlt, FaCheck, FaTimes, FaEye } from 'react-icons/fa';
 
-import { authorizationTokenState } from "../../recoil/logInSignUpState";
+import { authorizationTokenState } from '../../recoil/logInSignUpState';
 
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import parse from 'html-react-parser';
 import { useRecoilValue, useRecoilState } from 'recoil';
 
-import { userInfo } from "../../recoil/mypage";
+import { User, userInfo } from '../../recoil/mypage';
 import BlogPagenation from '../mypage/BlogPagination';
-import Editor from './editor';
 
-
-export default function PostDetail({profile_pic}) {
-
+export default function PostDetail({ profile_pic }) {
+  const userinfomation = useRecoilValue(User);
+  console.log(userinfomation.roles[0]);
   const [blogData, setBlogData] = useState('');
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
@@ -24,6 +25,7 @@ export default function PostDetail({profile_pic}) {
   const [editedTitle, setEditedTitle] = useState(blogData.title);
   const [editedBody, setEditedBody] = useState(blogData.body);
   const [editedTags, setEditedTags] = useState(blogData.tags);
+
   const [editedImage, setEditedImage] = useState(blogData.images);
   const [imageArr, setImageArr] = useState([]);
   
@@ -33,18 +35,11 @@ export default function PostDetail({profile_pic}) {
   const [editedComments, setEditedComments] = useState({});
 
   const [page, setPage] = useState(1);
-  const [commentpage, setCommentPage] = useState('');
 
-  const availableTag = [
-    "인기글",
-    "음식",
-    "숙소",
-    "교통",
-    "쇼핑",
-    "관광지",
-    "액티비티",
-  ];
-  
+  const [mission, setMission] = useState('');
+
+  const availableTag = ['인기글', '음식', '숙소', '교통', '쇼핑', '관광지', '액티비티'];
+
   const navigate = useNavigate();
   
   const {blogId, cityId} = useParams();
@@ -53,28 +48,28 @@ export default function PostDetail({profile_pic}) {
   const userNickname = userinfo.nickname;
   
   const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
-    
+
   const toggleTag = (tag) => {
-    setEditedTags(prevTags => {
+    setEditedTags((prevTags) => {
       if (prevTags.includes(tag)) {
-        return prevTags.filter(t => t !== tag);
+        return prevTags.filter((t) => t !== tag);
       } else {
         return [...prevTags, tag];
       }
     });
   };
-  
 
   const fetchComments = async () => {
     // 서버에서 댓글 불러오기
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/blogs/${blogId}?page=${page}&size=5`, {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/blogs/${blogId}?page=1&size=10`, {
         headers: {
           Authorization: `Bearer ${authorizationToken}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
-      }); 
+      });
+
 
 
 			// authorization 토큰 갱신
@@ -83,12 +78,11 @@ export default function PostDetail({profile_pic}) {
 				localStorage.setItem('Authorization', authorizationToken ?? '');
 			}
       setComments(response.data.data);
-      setCommentPage(response.data.pageInfo)
       console.log('댓글 불러오기 성공: ', response.data);
     } catch (error) {
       console.error('댓글 불러오기 실패:', error);
     } finally {
-    } 
+    }
   };
 
   useEffect(() => {
@@ -110,8 +104,8 @@ export default function PostDetail({profile_pic}) {
 			}
 
         setBlogData(response.data);
-        console.log("게시물 가져오기 성공 : ", response.data);
-        console.log("게시물 가져오기 성공2 : ", response.data.images);
+        console.log('게시물 가져오기 성공 : ', response.data);
+        console.log('게시물 가져오기 성공2 : ', response.data.images);
         fetchComments();
       } catch (error) {
         console.error('게시물 가져오기 실패 : ', error);
@@ -119,8 +113,35 @@ export default function PostDetail({profile_pic}) {
     };
 
     fetchBlogPost();
-    console.log('imageArr2', imageArr);
-  }, [page]);
+    //해당 유저의 미션 데이터 불러오기
+    const getData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/missions/${userId}/${cityId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // authorization 토큰 갱신
+        if (response.headers.get('Authorization')) {
+          const Authorization = response.headers.get('Authorization');
+          localStorage.setItem('Authorization', Authorization ?? '');
+        }
+
+        console.log('wqewq',response.data);
+        setMission(response.data);
+      } catch (err) {
+        console.log('err', err);
+      }
+    };
+
+    getData();
+
+
+  }, []);
+
 
   if (!blogData) {
     return <div>Loading...</div>;
@@ -129,7 +150,7 @@ export default function PostDetail({profile_pic}) {
   const handlePostDelete = async () => {
     // 게시글 삭제하기
     try {
-      const imageNames = blogData.images.map(image => image.name);
+      const imageNames = blogData.images.map((image) => image.name);
 
       const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}?names=${imageNames}`, {
         headers: {
@@ -168,7 +189,14 @@ export default function PostDetail({profile_pic}) {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+          },
+        }
+      );
 
       // authorization 토큰 갱신
       if(response.headers.get("newaccesstoken")) {
@@ -273,18 +301,17 @@ export default function PostDetail({profile_pic}) {
       console.error('게시물 수정 실패:', error);
     }
   };
-  
 
   const handleCommentEdit = (comment_id) => {
     setEditingCommentId(comment_id);
-    const commentToEdit = comments.find(comment => comment.id === comment_id);
+    const commentToEdit = comments.find((comment) => comment.id === comment_id);
     setEditedComments({
       ...editedComments,
       [comment_id]: commentToEdit.body,
     });
-    setIsEditingComment(true);  
+    setIsEditingComment(true);
   };
-  
+
   const handleCommentEditSave = async (comment_id) => {
     try {
       const response = await axios.patch(`${process.env.REACT_APP_SERVER_URL}/comments/${comment_id}`, {
@@ -295,7 +322,14 @@ export default function PostDetail({profile_pic}) {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+          },
+        }
+      );
 
       // authorization 토큰 갱신
 			if(response.headers.get("newaccesstoken")) {
@@ -303,7 +337,7 @@ export default function PostDetail({profile_pic}) {
 				localStorage.setItem('Authorization', authorizationToken ?? '');
 			}
 
-      const updatedComments = comments.map(comment => {
+      const updatedComments = comments.map((comment) => {
         if (comment.id === comment_id) {
           return { ...comment, body: editedComments[comment_id] };
         }
@@ -315,67 +349,159 @@ export default function PostDetail({profile_pic}) {
       console.error('댓글 수정 실패:', error);
     }
   };
-  
-  
-  
+
   const handleCommentEditCancel = () => {
     setEditingCommentId(null);
     setIsEditingComment(false);
   };
-  
-  
-  
+  //미션 클리어 하는 로직
+  const handleClear = () => {
+    const postData = async () => {
+      try {
+        const request = await axios.patch(
+          `${process.env.REACT_APP_SERVER_URL}/missions/mission-complete/${mission[0].id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': '69420',
+            },
+          }
+        );
 
+        // authorization 토큰 갱신
+        if (request.headers.get('Authorization')) {
+          const Authorization = request.headers.get('Authorization');
+          localStorage.setItem('Authorization', Authorization ?? '');
+        }
+
+        console.log(request.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    postData();
+  };
 
   return (
-    <div className='PostContainer'>
+    <div className="PostContainer">
       {isEditing ? (
         <div>
-          <h1 className="text-xl font-bold pt-10">
-              Title
-          </h1>
+          <h1 className="text-xl font-bold pt-10">Title</h1>
           <input
             type="text"
             value={editedTitle}
             className="border border-gray-300 px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
             onChange={(e) => setEditedTitle(e.target.value)}
           />
-          <h1 className="text-xl font-bold pt-10">
-              Content
-          </h1>
+          <h1 className="text-xl font-bold pt-10">Content</h1>
           <div>
-            <Editor 
-              body={editedBody}
-              imageArr={editedImage}
-              setImageArr={setImageArr}
-              setBody={setEditedBody}
+            <CKEditor
+              editor={ClassicEditor}
+              data={editedBody}
+              onReady={(editor) => {}}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setEditedBody(data);
+              }}
             />
-            <h1 className="text-xl font-bold pt-10">
-              Tag
-            </h1>
+            <h1 className="text-xl font-bold pt-10">Tag</h1>
+          </div>
+          <div className="pt-3">
+            {availableTag.map((tag) => (
+              <Tag key={tag} tagName={tag} isSelected={editedTags.includes(tag)} onClick={() => toggleTag(tag)} />
+            ))}
+          </div>
+          <div className="text-right">
+            <button
+              onClick={handleSaveEdit}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mr-2 mt-4"
+            >
+              저장
+            </button>
+            <button
+              onClick={() => setIsEditing(false)}
+              className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 mt-4"
+            >
+              취소
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="TitleSection flex justify-between items-center pb-3">
+            <h2 className="post_title text-2xl font-bold">{blogData.title}</h2>
+            <div className="flex items-center">
+              <FaEye className="mr-2" />
+              {blogData.view}
             </div>
-            <div className="pt-3">
-              {availableTag.map((tag) => (
-                <Tag 
-                  key={tag}
-                  tagName={tag}
-                  isSelected={editedTags.includes(tag)}
-                  onClick={() => toggleTag(tag)}
-                />
-              ))}
+          </div>
+          <div className="UserSection flex justify-between items-center pb-3">
+            <div className="user_createdat">
+              {blogData.modifiedAt ? `${blogData.modifiedAt}` : `${blogData.createdAt}`}
             </div>
-            <div className='text-right'>
-              <button 
-                onClick={handleSaveEdit} 
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mr-2 mt-4"
+            <div className="user_info flex items-center">
+              <img src={profile_pic} alt="profile_pic" className="mr-2" />
+              {blogData.member.nickname}
+            </div>
+          </div>
+
+          <div className="ContentSection border border-[#0387FA] rounded-lg h-[500px]">
+            {parse(blogData.body)}
+            {blogData.images.map((image, index) => (
+              <img key={index} src={image.path} alt={`Blog Image ${index}`} />
+            ))}
+          </div>
+
+          <div className="inline-block mt-4">
+            {blogData.tags.map((tag, index) => (
+              <span
+                key={index}
+                className="bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-blue-700 mr-2 mb-2"
               >
-                저장
-              </button>
-              <button 
-                onClick={() => setIsEditing(false)} 
-                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 mt-4"
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {userinfomation.roles[0] === 'ADMIN' ? (
+            <button
+              onClick={handleClear}
+              className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 float-right mt-2"
+            >
+              미션 승인
+            </button>
+          ) : null}
+          <button
+            onClick={handlePostDelete}
+            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 float-right mt-2"
+          >
+            삭제하기
+          </button>
+
+          <button
+            onClick={handleEditClick}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 float-right mt-2 mr-2"
+          >
+            수정하기
+          </button>
+
+          <div className="comment_form mt-6">
+            <h4 className="comment_form_heading text-lg font-semibold mb-2">댓글</h4>
+            <div className="comment_write flex items-center space-x-2">
+              <textarea
+                rows="3"
+                placeholder="댓글 내용을 입력하세요."
+                maxLength="100"
+                name="comment"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                className="w-full border rounded-md p-2 focus:outline-none focus:ring focus:border-blue-300"
+              ></textarea>
+              <button
+                onClick={handleCommentSubmit}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
               >
-                취소
+                작성
               </button>
             </div>
       </div>
@@ -480,15 +606,6 @@ export default function PostDetail({profile_pic}) {
           </ul>
         </div>
       )}
-      <BlogPagenation 
-        itemPerPage={5} 
-        totalItemsCount={commentpage.totalElements} 
-        renderItemCount={Math.ceil(commentpage.totalElements / 5)}
-        page={page}
-        setPage={setPage}
-      />
-      </>
-    )}
     </div>
   )
 }
