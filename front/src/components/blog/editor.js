@@ -3,11 +3,12 @@ import axios from 'axios';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { authorizationTokenState } from "../../recoil/logInSignUpState";
 
 const Editor = ({body, setBody, imageArr, setImageArr}) => {
     const [flag, setFlag] = useState(false);
+    const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
     // const [imageArr, setImageArr] = useState([]);
     const token = useRecoilValue(
         authorizationTokenState
@@ -31,20 +32,31 @@ const Editor = ({body, setBody, imageArr, setImageArr}) => {
                         })
                         .then(async (res) => {
                             // authorization 토큰 갱신
-                            if(res.headers.get("Authorization")) {
-                                const Authorization = res.headers.get("Authorization");
-                                localStorage.setItem('Authorization', Authorization ?? '');
-                            };
+                            if(res.headers.get("newaccesstoken")) {
+                                setAuthorizationToken(res.headers.get("newaccesstoken"));
+                                localStorage.setItem('Authorization', authorizationToken ?? '');
+                            }
 
                             if(!flag){
                                 setFlag(true);
                                 setImageArr(prevImageArr => [...prevImageArr, res.data.name]); 
                             }
-                                // authorization 토큰 갱신
-                                if(res.headers.get("Authorization")) {
-                                    const Authorization = res.headers.get("Authorization");
-                                    localStorage.setItem('Authorization', Authorization ?? '');
-                                };
+    
+                            // try {
+    
+                            //     const imageResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/print-image?name=${res.data.name}`, {
+                            //         headers: {
+                            //             Authorization: `Bearer ${token}`,
+                            //             'ngrok-skip-browser-warning': '69420'
+                            //         }
+                            //     });
+
+
+                            // authorization 토큰 갱신
+                            // if(imageResponse.headers.get("newaccesstoken")) {
+                            //     setAuthorizationToken(imageResponse.headers.get("newaccesstoken"));
+                            //     localStorage.setItem('Authorization', authorizationToken ?? '');
+                            // }
 
                             console.log(res.data.name);
                         })

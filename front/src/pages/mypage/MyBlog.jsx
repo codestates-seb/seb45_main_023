@@ -18,7 +18,7 @@ export default function MyBlog() {
   const [comments, setComments] = useRecoilState(Comments);
   const [blogPage, setBlogPage] = useState(1);
   const [commentPage, setCommentPage] = useState(1);
-  const token = useRecoilValue(authorizationTokenState);
+  const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
 
   useEffect(() => {
     const getData = async () => {
@@ -28,16 +28,16 @@ export default function MyBlog() {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authorizationToken}`,
           },
         }
       );
 
-      // authorization 토큰 갱신
-      if (BlogResponse.headers.get('Authorization')) {
-        const Authorization = BlogResponse.headers.get('Authorization');
-        localStorage.setItem('Authorization', Authorization);
-      }
+        // authorization 토큰 갱신
+				if(BlogResponse.headers.get("newaccesstoken")) {
+					setAuthorizationToken(BlogResponse.headers.get("newaccesstoken"));
+					localStorage.setItem('Authorization', authorizationToken ?? '');
+				}
       setBlogs(BlogResponse.data.data);
       setPageInfo(BlogResponse.data.pageInfo);
       const CommentResponse = await axios.get(
@@ -46,16 +46,16 @@ export default function MyBlog() {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authorizationToken}`,
           },
         }
       );
 
       // authorization 토큰 갱신
-      if (CommentResponse.headers.get('Authorization')) {
-        const Authorization = CommentResponse.headers.get('Authorization');
-        localStorage.setItem('Authorization', Authorization);
-      }
+				if(CommentResponse.headers.get("newaccesstoken")) {
+					setAuthorizationToken(CommentResponse.headers.get("newaccesstoken"));
+					localStorage.setItem('Authorization', authorizationToken ?? '');
+				}
       setCommentInfo(CommentResponse.data.pageInfo);
       setComments(CommentResponse.data.data);
     };

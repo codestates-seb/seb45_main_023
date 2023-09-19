@@ -10,10 +10,10 @@ import MypageHeaderBtn from '../../components/buttons/mypage/MypageHeaderBtn';
 //missions/stamps/${memberId}
 export default function MyStamp() {
   const info = useRecoilValue(userInfo);
-  const token = useRecoilValue(authorizationTokenState);
   const [stamp, setStamp] = useRecoilState(stamps);
   const topData = stamp.slice(0, 10);
   const bottomData = stamp.slice(10, 20);
+  const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
   const cityName = [
     '서울특별시',
     '부산광역시',
@@ -40,17 +40,17 @@ export default function MyStamp() {
       try {
         const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/missions/stamps/${info.id}`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authorizationToken}`,
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
         });
 
         // authorization 토큰 갱신
-        if(response.headers.get("Authorization")) {
-					const Authorization = response.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization ?? '');
-				};
+				if(response.headers.get("newaccesstoken")) {
+					setAuthorizationToken(response.headers.get("newaccesstoken"));
+					localStorage.setItem('Authorization', authorizationToken ?? '');
+				}
 
         const stampArray = Object.values(response.data);
         setStamp(stampArray.map((item, index) => ({ ...item, city: cityName[index] })));

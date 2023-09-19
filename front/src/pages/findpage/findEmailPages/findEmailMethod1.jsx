@@ -98,13 +98,10 @@ export default function FindEmailMethod1 () {
 			);
 
             // authorization 토큰 갱신
-            if(response.headers.get("Authorization")) {
-                const Authorization = response.headers.get("Authorization");
-                localStorage.setItem('Authorization', Authorization ?? '');
-            };
-
-            console.log(response)
-            console.log(response.data)
+            if(response.headers.get("newaccesstoken")) {
+                setAuthorizationToken(response.headers.get("newaccesstoken"));
+                localStorage.setItem('Authorization', authorizationToken ?? '');
+            }
 
             // 로그인 성공 시 기존의 이메일을 받아옴
             const getEmail = response.data.email;

@@ -7,7 +7,7 @@ import { FaEdit, FaTrashAlt, FaCheck, FaTimes, FaEye } from "react-icons/fa";
 import { authorizationTokenState } from "../../recoil/logInSignUpState";
 
 import parse from 'html-react-parser';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 
 import { userInfo } from "../../recoil/mypage";
 import BlogPagenation from '../mypage/BlogPagination';
@@ -46,16 +46,14 @@ export default function PostDetail({profile_pic}) {
   ];
   
   const navigate = useNavigate();
-
+  
   const {blogId, cityId} = useParams();
   const userinfo = useRecoilValue(userInfo);
   const userId = userinfo.id;
   const userNickname = userinfo.nickname;
-
-  const token = useRecoilValue(
-    authorizationTokenState
-  );
-
+  
+  const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
+    
   const toggleTag = (tag) => {
     setEditedTags(prevTags => {
       if (prevTags.includes(tag)) {
@@ -72,17 +70,18 @@ export default function PostDetail({profile_pic}) {
     try {
       const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/blogs/${blogId}?page=${page}&size=5`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authorizationToken}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
       }); 
 
-      // authorization 토큰 갱신
-      if(response.headers.get("Authorization")) {
-        const Authorization = response.headers.get("Authorization");
-        localStorage.setItem('Authorization', Authorization ?? '');
-      };
+
+			// authorization 토큰 갱신
+			if(response.headers.get("newaccesstoken")) {
+				setAuthorizationToken(response.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
       setComments(response.data.data);
       setCommentPage(response.data.pageInfo)
       console.log('댓글 불러오기 성공: ', response.data);
@@ -92,24 +91,23 @@ export default function PostDetail({profile_pic}) {
     } 
   };
 
-
   useEffect(() => {
     // 서버에서 특정 게시물 가져오기
     const fetchBlogPost = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authorizationToken}`,
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
         });
 
       // authorization 토큰 갱신
-      if(response.headers.get("Authorization")) {
-        const Authorization = response.headers.get("Authorization");
-        localStorage.setItem('Authorization', Authorization ?? '');
-      };
+			if(response.headers.get("newaccesstoken")) {
+				setAuthorizationToken(response.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
 
         setBlogData(response.data);
         console.log("게시물 가져오기 성공 : ", response.data);
@@ -135,17 +133,17 @@ export default function PostDetail({profile_pic}) {
 
       const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}?names=${imageNames}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authorizationToken}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
       });
 
       // authorization 토큰 갱신
-      if(response.headers.get("Authorization")) {
-        const Authorization = response.headers.get("Authorization");
-        localStorage.setItem('Authorization', Authorization ?? '');
-      };
+			if(response.headers.get("newaccesstoken")) {
+				setAuthorizationToken(response.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
 
       if (response.status === 200) {
         alert('게시물이 성공적으로 삭제되었습니다.');
@@ -166,17 +164,17 @@ export default function PostDetail({profile_pic}) {
         body: newComment,
       }, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authorizationToken}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
       });
 
       // authorization 토큰 갱신
-      if(response.headers.get("Authorization")) {
-        const Authorization = response.headers.get("Authorization");
-        localStorage.setItem('Authorization', Authorization ?? '');
-      };
+      if(response.headers.get("newaccesstoken")) {
+        setAuthorizationToken(response.headers.get("newaccesstoken"));
+        localStorage.setItem('Authorization', authorizationToken ?? '');
+      }
 
       if (response.status === 201) {
         // 댓글이 성공적으로 작성된 경우
@@ -197,17 +195,17 @@ export default function PostDetail({profile_pic}) {
     try {
       const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/comments/${comment_id}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authorizationToken}`,
           "Content-Type": "application/json",
           "ngrok-skip-browser-warning": "69420",
         }
       });
 
       // authorization 토큰 갱신
-      if(response.headers.get("Authorization")) {
-        const Authorization = response.headers.get("Authorization");
-        localStorage.setItem('Authorization', Authorization ?? '');
-      };
+			if(response.headers.get("newaccesstoken")) {
+				setAuthorizationToken(response.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
 
         // 댓글이 성공적으로 삭제된 경우
         const updatedComments = comments.filter(comment => comment.id !== comment_id);
@@ -237,7 +235,7 @@ export default function PostDetail({profile_pic}) {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authorizationToken}`,
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -245,26 +243,26 @@ export default function PostDetail({profile_pic}) {
       );
 
       // authorization 토큰 갱신
-      if(response.headers.get("Authorization")) {
-        const Authorization = response.headers.get("Authorization");
-        localStorage.setItem('Authorization', Authorization ?? '');
-      };
+			if(response.headers.get("newaccesstoken")) {
+				setAuthorizationToken(response.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
 
       if (response.status === 201) {
         // 업데이트된 게시글을 서버에서 다시 가져오기
         const updatedResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authorizationToken}`,
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
         });
 
         // authorization 토큰 갱신
-        if(updatedResponse.headers.get("Authorization")) {
-					const Authorization = updatedResponse.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization ?? '');
-				};
+			if(updatedResponse.headers.get("newaccesstoken")) {
+				setAuthorizationToken(updatedResponse.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
 
         setBlogData(updatedResponse.data); // 업데이트된 게시글로 상태 업데이트
         setIsEditing(false);
@@ -293,17 +291,17 @@ export default function PostDetail({profile_pic}) {
         body: editedComments[comment_id],
       }, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${authorizationToken}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
       });
 
       // authorization 토큰 갱신
-      if(response.headers.get("Authorization")) {
-        const Authorization = response.headers.get("Authorization");
-        localStorage.setItem('Authorization', Authorization ?? '');
-      };
+			if(response.headers.get("newaccesstoken")) {
+				setAuthorizationToken(response.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
 
       const updatedComments = comments.map(comment => {
         if (comment.id === comment_id) {
