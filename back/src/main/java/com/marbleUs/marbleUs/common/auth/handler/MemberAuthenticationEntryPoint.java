@@ -69,7 +69,7 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
             //새로운 액세스 토큰 응답 헤더에 담아 전송
 
-            response.setHeader("Authorization",accessToken);
+            response.setHeader("NewAccessToken",accessToken);
 
 
         } else {
