@@ -58,18 +58,17 @@
 
 |메인|도시 정보|
 | --- | --- |
-|  |  |
+| ![메인](https://github.com/codestates-seb/seb45_main_023/assets/129928230/f4c0b35e-fab3-4f11-9921-7ac58ad10c76) | <img width="1360" alt="모달" src="https://github.com/codestates-seb/seb45_main_023/assets/129928230/ace7abb5-039d-4591-bf9e-df8ac85187d7"> |
 | 로그인 | 회원 가입 |
-|  |  |
+| <img width="1060" alt="로그인" src="https://github.com/codestates-seb/seb45_main_023/assets/129928230/f0edc220-6389-47ec-9c96-836dc41897fa"> | <img width="1060" alt="회원가입" src="https://github.com/codestates-seb/seb45_main_023/assets/129928230/caa3cc55-6ae8-41eb-93ce-f15830adf30b"> |
 | 마이페이지 - 기본 | 마이페이지 - 로그 |
-|  |  |
+| <img width="1059" alt="마이페이지" src="https://github.com/codestates-seb/seb45_main_023/assets/129928230/2137d3e1-67b9-4b5d-a816-db19f5403a58"> | <img width="1061" alt="마이페이지_로그" src="https://github.com/codestates-seb/seb45_main_023/assets/129928230/7b3a61d5-1f0b-4ffa-b2f3-a491af59d908"> |
 | 마이페이지 - 도장 | 마이페이지 - 책갈피 |
-|  |  |
-| 마이페이지 - 책갈피 | 게시판 |
-|  |  |
+| <img width="1061" alt="마이페이지_스탬프" src="https://github.com/codestates-seb/seb45_main_023/assets/129928230/63294679-c56e-44b3-a8f6-b93fda0848db"> | <img width="1056" alt="마이페이지_북마크" src="https://github.com/codestates-seb/seb45_main_023/assets/129928230/c345220a-e1a7-4c27-905a-b80cc143dec7"> |
+| 마이페이지 - 미션 | 게시판 |
+| <img width="1054" alt="마이페이지_미션" src="https://github.com/codestates-seb/seb45_main_023/assets/129928230/793fced2-0339-4260-91e4-857b329eb2d1"> | <img width="1040" alt="게시판" src="https://github.com/codestates-seb/seb45_main_023/assets/129928230/48da8ce6-0c06-4c6e-b7ab-5bad6e0a2fe4"> |
 | 게시글 | 댓글 |
-|  |  |
-
+| <img width="1040" alt="글상세" src="https://github.com/codestates-seb/seb45_main_023/assets/129928230/388159a7-8d86-4668-b49f-f45f8a0c5136"> | <img width="953" alt="댓글" src="https://github.com/codestates-seb/seb45_main_023/assets/129928230/d12fccca-9387-42a3-aa3e-4603ff22ebb1"> |
 </div>
   
 
