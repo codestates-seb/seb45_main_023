@@ -12,7 +12,7 @@ export default function MypageNotice({ nickname, nationality, password }) {
   const info = useRecoilValue(userInfo);
   const [data, setData] = useRecoilState(User);
   const [errors, setErrors] = useRecoilState(validate);
-  const token = useRecoilValue(authorizationTokenState);
+  const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
   // const [patch, setPatch] = useRecoilState(User) << 응답값으로 리렌더링 가능하게 처리
 
   useEffect(() => {
@@ -63,15 +63,15 @@ export default function MypageNotice({ nickname, nationality, password }) {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authorizationToken}`,
           },
         });
 
-				// authorization 토큰 갱신
-				if(response.headers.get("Authorization")) {
-					const Authorization = response.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization ?? '');
-				};
+			// authorization 토큰 갱신
+			if(response.headers.get("newaccesstoken")) {
+				setAuthorizationToken(response.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
 
         setData(response.data);
         setErrors({});

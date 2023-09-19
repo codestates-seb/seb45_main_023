@@ -12,7 +12,7 @@ import MypageHeaderBtn from "../../components/buttons/mypage/MypageHeaderBtn";
 export default function MyBookmark() {
   const info = useRecoilValue(User);
   const [bookmark, setBookmark] = useRecoilState(bookmarkInfo);
-  const token = useRecoilValue(authorizationTokenState)
+  const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
   useEffect(() => {
     const getData = async () => {
       try {
@@ -22,16 +22,16 @@ export default function MyBookmark() {
             headers: {
               'Content-Type': 'application/json',
               'ngrok-skip-browser-warning': '69420',
-              "Authorization": `Bearer ${token}`
+              "Authorization": `Bearer ${authorizationToken}`
             },
           }
         );
         
         // authorization 토큰 갱신
-        if(response.headers.get("Authorization")) {
-					const Authorization = response.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization ?? '');
-				};
+				if(response.headers.get("newaccesstoken")) {
+					setAuthorizationToken(response.headers.get("newaccesstoken"));
+					localStorage.setItem('Authorization', authorizationToken ?? '');
+				}
         setBookmark(response.data.data);
       } catch (err) {
         console.log(err);
