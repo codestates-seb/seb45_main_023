@@ -1,76 +1,75 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { ToSmallButton } from "../../components/Buttons";
-import { useEffect } from "react";
-import axios from "axios";
-import { useRecoilState } from "recoil";
-import { authorizationTokenState } from "../../recoil/logInSignUpState";
-import { User, userInfo } from "../../recoil/mypage";
-import { currentLocationState, beadIndexState } from "../../recoil/main";
-import { locations } from "../../components/mainpage/locations";
 
-import { LogOutButton } from "../../components/LogOutButton";
+// import { useEffect } from "react";
+// import axios from "axios";
+// import { useRecoilState } from "recoil";
+// import { authorizationTokenState } from "../../recoil/logInSignUpState";
+// import { User, userInfo } from "../../recoil/mypage";
+// import { currentLocationState, beadIndexState } from "../../recoil/main";
+// import { locations } from "../../components/mainpage/locations";
+
+import { ToSmallButton } from "../../components/Buttons";
 
 export default function WelcomePage() {
-	const [authorizationToken, setAuthorizationToken] = useRecoilState(
-		authorizationTokenState
-	);
-	const [data, setData] = useRecoilState(User);
-	const [info, setInfo] = useRecoilState(userInfo);
-	const [current, setCurrent] = useRecoilState(currentLocationState);
-	const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
 
-	function findLocationIndex() {
-		const index = locations.findIndex(
-			(location) => location.BLOCK === info.currentLocation
-		);
-		if (index !== -1) {
-			setCurrent(locations[index]);
-			setBeadIndex(current.cityId);
-		}
-	}
+	// const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
+	// const [data, setData] = useRecoilState(User);
+	// const [info, setInfo] = useRecoilState(userInfo);
+	// const [current, setCurrent] = useRecoilState(currentLocationState);
+	// const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
+	// console.log(data);
 
-	useEffect(() => {
-		const getData = async () => {
-			try {
-				const data = await axios.get(
-					`${process.env.REACT_APP_SERVER_URL}/members/me`,
-					{
-						headers: {
-							Authorization: `Bearer ${authorizationToken}`,
-							"ngrok-skip-browser-warning": "69420",
-						},
-					}
-				);
-				setData(data.data);
-				const {
-					id,
-					nickname,
-					email,
-					level,
-					nationality,
-					password,
-					currentLocation,
-					birth,
-				} = data.data;
-				setInfo({
-					id,
-					nickname,
-					email,
-					level,
-					nationality,
-					password,
-					currentLocation,
-					birth,
-				});
-			} catch (err) {
-				console.log(err);
-			}
-		};
+	// function findLocationIndex() {
+	// 	const index = locations.findIndex(
+	// 		(location) => location.BLOCK === info.currentLocation
+	// 	);
+	// 	if (index !== -1) {
+	// 		setCurrent(locations[index]);
+	// 		setBeadIndex(current.cityId);
+	// 	}
+	// }
 
-		getData();
-		findLocationIndex();
-	}, [authorizationToken, setData, setInfo]);
+	// useEffect(() => {
+	// 	const getData = async () => {
+	// 		try {
+	// 			const data = await axios.get(`${process.env.REACT_APP_SERVER_URL}/members/me`,
+	// 				{
+	// 					headers: {
+	// 						Authorization: `Bearer ${authorizationToken}`,
+	// 						"ngrok-skip-browser-warning": "69420",
+	// 					},
+	// 				}
+	// 			);
+	// 			setData(data.data);
+	// 			const {
+	// 				id,
+	// 				nickname,
+	// 				email,
+	// 				level,
+	// 				nationality,
+	// 				password,
+	// 				currentLocation,
+	// 				birth,
+	// 			} = data.data;
+	// 			setInfo({
+	// 				id,
+	// 				nickname,
+	// 				email,
+	// 				level,
+	// 				nationality,
+	// 				password,
+	// 				currentLocation,
+	// 				birth,
+	// 			});
+	// 		} catch (err) {
+	// 			console.log(err);
+	// 		}
+	// 	};
+
+	// 	getData();
+	// 	findLocationIndex();
+	// }, [authorizationToken, setData, setInfo]);
 
 	return (
 		<form className="flex justify-center">
@@ -81,8 +80,6 @@ export default function WelcomePage() {
 						<div className="text-[70px] text-[#0088F8]">MarbleUs</div>
 					</div>
 					<section className="flex gap-[40px]">
-						{/* 로그아웃 버튼 나중에 삭제할 것! (test중...) */}
-						<LogOutButton/>
 						<ToSmallButton
 							linkName="mainpage"
 							Size="lg"
@@ -94,7 +91,7 @@ export default function WelcomePage() {
 							linkName="mypage"
 							Size="lg"
 							iconName="mypage"
-							colorName="purple"
+							colorName="green"
 							title="mypage"
 						/>
 					</section>

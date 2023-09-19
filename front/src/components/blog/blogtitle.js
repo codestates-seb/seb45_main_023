@@ -60,7 +60,7 @@ function BlogHeader({ locationName }) {
       </div>
       <section className="flex gap-[10px] absolute top-0 right-0 mt-4 mr-10">
           <ToSmallButton linkName='mainpage' Size='sm' iconName='mainpage' colorName='orange' title='mainpage'/>
-          <ToSmallButton linkName='mypage' Size='sm' iconName='mypage' colorName='purple' title='mypage'/>
+          <ToSmallButton linkName='mypage' Size='sm' iconName='mypage' colorName='green' title='mypage'/>
       </section>
     </div>
   );

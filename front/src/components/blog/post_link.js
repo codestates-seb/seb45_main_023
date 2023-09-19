@@ -1,28 +1,21 @@
 import { useNavigate } from 'react-router-dom'
-import { useParams } from 'react-router-dom';
-import { BlogList } from "../../recoil/blog";
-import { useRecoilValue } from "recoil";
+import parse from 'html-react-parser';
 
 export default function PostLink({
   title,
   body,
   profile_pic,
   nickname,
-  city_id,
+  cityId,
+  postId,
   createdAt,
   modifiedAt,
   tags,
 }) {
   const navigate = useNavigate();
-  const { cityId, blogId } = useParams();
-  // const bloginfo = useRecoilValue(BlogList);
-  // const blogId = bloginfo.id;
-
 
   const handlePostClick = () => {
-    console.log(blogId)
-    console.log(title)
-    navigate(`/blogdetail/${blogId}/${cityId}`);
+    navigate(`/blogdetail/${postId}/${cityId}`);
   }
 
   return (
@@ -45,15 +38,14 @@ export default function PostLink({
         </div>
       </div>
       <div className='MiddleSection'>
-        {body.length > 200 ? body.slice(0, 200) + '...' : body}
+        {parse(body.length > 200 ? body.slice(0, 200) + '...' : body)}
       </div>
       <div className='BottomSection flex justify-between items-center'>
         <div className='user_info flex items-center'>
-          <img src={profile_pic} alt='profile_pic' className='mr-2' />
           {nickname}
         </div>
         <div className='user_createdat'>
-          {createdAt ? `${createdAt}` : `${modifiedAt}에 수정`}
+          {modifiedAt ? `${modifiedAt}` : `${createdAt}`}
         </div>
       </div>
     </div>

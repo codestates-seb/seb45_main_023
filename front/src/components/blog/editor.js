@@ -2,9 +2,14 @@ import React, {useState} from 'react'
 import axios from 'axios';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { useRecoilState } from "recoil";
+import { authorizationTokenState } from "../../recoil/logInSignUpState";
 
 const Editor = ({body, setBody, setImageArr}) => {
     const [flag, setFlag] = useState(false);
+    const [authorizationToken, setAuthorizationToken] = useRecoilState(
+		authorizationTokenState
+	);
     // const [imageArr, setImageArr] = useState([]);
 
     const customUploadAdapter = (loader, setImageArr) => { 
@@ -15,8 +20,9 @@ const Editor = ({body, setBody, setImageArr}) => {
                     loader.file.then( (image) => {
                         formData.append("image", image);
     
-                        axios.post(`https://b95e-116-126-166-12.ngrok-free.app/blogs/upload-images`, formData, {
+                        axios.post(`${process.env.REACT_APP_SERVER_URL}/blogs/upload-images`, formData, {
                             headers: {
+                                Authorization: `Bearer ${authorizationToken}`,
                                 'ngrok-skip-browser-warning': '69420'
                             }
                         })
@@ -27,9 +33,9 @@ const Editor = ({body, setBody, setImageArr}) => {
                             }
     
                             try {
-    
-                                const imageResponse = await axios.get(`https://b95e-116-126-166-12.ngrok-free.app/blogs/print-image?name=${res.data.name}`, {
+                                const imageResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/print-image?name=${res.data.name}`, {
                                     headers: {
+                                        Authorization: `Bearer ${authorizationToken}`,
                                         'ngrok-skip-browser-warning': '69420'
                                     }
                                 });
@@ -71,7 +77,7 @@ const Editor = ({body, setBody, setImageArr}) => {
             onChange={(event, editor) => {
                 const data = editor.getData();
                 setBody(data);
-               // console.log( { event, editor, data } );
+               console.log( { event, editor, data } );
             }}
             onBlur={(event, editor) => {
                 //console.log('Blur.', editor);

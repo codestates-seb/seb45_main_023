@@ -9,11 +9,18 @@ import Editor from '../../components/blog/editor';
 import { userInfo } from "../../recoil/mypage";
 import { useRecoilValue } from "recoil";
 
+import { useRecoilState } from "recoil";
+import { authorizationTokenState } from "../../recoil/logInSignUpState";
+
 export default function BlogWrite() {
   const navigate = useNavigate();
   const {cityId} = useParams();
   const userinfo = useRecoilValue(userInfo);
   const userId = userinfo.id;
+
+  const [authorizationToken, setAuthorizationToken] = useRecoilState(
+		authorizationTokenState
+	);
 
   const [selectedTag, setSelectedTag] = useState([]); // 태그
 
@@ -48,26 +55,18 @@ export default function BlogWrite() {
     }
 
     try {
-      const response = await axios.post(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${userId}/${cityId}?image-names=${imageArr}`, postData, {
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/blogs/${userId}/${cityId}?image-names=${imageArr}`, postData, {
         headers: {
+          Authorization: `Bearer ${authorizationToken}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420'
         },
       });
 
       console.log('게시물 글쓰기 성공:', response.data);
-      console.log(cityId);
-      console.log('title : ' + blogTitle);
-      console.log('content : ' + blogContent);
-      console.log(selectedTag);
       navigate(`/blogdetail/${response.data.id}/${cityId}`);
     } catch (error) {
       console.error('게시물 글쓰기 실패:', error);
-      console.log(cityId);
-      console.log('title : ' + blogTitle);
-      console.log('content : ' + blogContent);
-      console.log(selectedTag);
-      console.log(userId);
     }
   }
 
@@ -99,8 +98,8 @@ export default function BlogWrite() {
           <h1 className="text-xl font-bold pt-10">
             Tag
           </h1>
-          <div className="tag_list">
-            <div className="tag_container pt-3 flex justify-between">
+          <div>
+            <div className="pt-3 flex justify-between">
               <div className="tag_left">
                 {availableTag.map((tag) => (
                   <Tag 

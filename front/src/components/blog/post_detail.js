@@ -1,66 +1,97 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Tag from "../../components/blog/tag";
 import { useParams, useNavigate } from 'react-router-dom';
+import { FaEdit, FaTrashAlt, FaCheck, FaTimes, FaEye } from "react-icons/fa";
+
+import { authorizationTokenState } from "../../recoil/logInSignUpState";
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import parse from 'html-react-parser';
+import { useRecoilValue } from 'recoil';
+
+import { userInfo } from "../../recoil/mypage";
+import BlogPagenation from '../mypage/BlogPagination';
 
 
-export default function PostDetail({
-  title,
-  body,
-  profile_pic,
-  member_id,
-  // comments,
-  // city_id,
-  tags,
-  createdAt,
-  modifiedAt,
-}) {
+export default function PostDetail({profile_pic}) {
 
   const [blogData, setBlogData] = useState('');
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(blogData.title);
   const [editedBody, setEditedBody] = useState(blogData.body);
+  const [editedTags, setEditedTags] = useState(blogData.tags);
+
+  
+  const [isEditingComment, setIsEditingComment] = useState(false);
+
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editedComments, setEditedComments] = useState({});
+
+  const [page, setPage] = useState(1);
+
+  const availableTag = [
+    "인기글",
+    "음식",
+    "숙소",
+    "교통",
+    "쇼핑",
+    "관광지",
+    "액티비티",
+  ];
   
   const navigate = useNavigate();
 
   const {blogId, cityId} = useParams();
+  const userinfo = useRecoilValue(userInfo);
+  const userId = userinfo.id;
 
-  useEffect(() => {
-    // 서버에서 댓글 목록을 가져오는 함수
-    const fetchComments = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axios.get(`${process.env.REACT_APP_TEST_URL}/comments/blogs/${blogId}?page=1&size=10`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': '69420',
-          },
-        }); // axios로 GET 요청
-        setComments(response.data.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error('댓글 불러오기 실패:', error);
-      } finally {
-        setIsLoading(false);
-      } 
-    };
+  const token = useRecoilValue(
+    authorizationTokenState
+  );
 
-    fetchComments();
-  }, [blogId]); // blog_id가 변경될 때마다 실행
+  const toggleTag = (tag) => {
+    setEditedTags(prevTags => {
+      if (prevTags.includes(tag)) {
+        return prevTags.filter(t => t !== tag);
+      } else {
+        return [...prevTags, tag];
+      }
+    });
+  };
+  
+
+  const fetchComments = async () => {
+    // 서버에서 댓글 불러오기
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/blogs/${blogId}?page=1&size=10`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+          "Authorization": `Bearer ${token}`
+        },
+      }); // axios로 GET 요청
+      setComments(response.data.data);
+      console.log('댓글 불러오기 성공: ', response.data);
+    } catch (error) {
+      console.error('댓글 불러오기 실패:', error);
+    } finally {
+    } 
+  };
+
 
   useEffect(() => {
     // 서버에서 특정 게시물 가져오기
     const fetchBlogPost = async () => {
       try {
-        const response = await axios.get(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${blogId}`, {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`, {
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -68,13 +99,14 @@ export default function PostDetail({
         setBlogData(response.data);
         console.log("게시물 가져오기 성공 : ", response.data);
         console.log("게시물 가져오기 성공2 : ", response.data.images);
+        fetchComments();
       } catch (error) {
         console.error('게시물 가져오기 실패 : ', error);
       }
     };
 
     fetchBlogPost();
-  }, [blogId]);
+  }, []);
 
   if (!blogData) {
     return <div>Loading...</div>;
@@ -85,8 +117,9 @@ export default function PostDetail({
     try {
       const imageNames = blogData.images.map(image => image.name);
 
-      const response = await axios.delete(`https://b95e-116-126-166-12.ngrok-free.app/blogs/${blogId}?names=${imageNames}`, {
+      const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}?names=${imageNames}`, {
         headers: {
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
@@ -107,10 +140,11 @@ export default function PostDetail({
   const handleCommentSubmit = async () => {
     // 작성한 댓글 서버로 보내기
     try {
-      const response = await axios.post(`${process.env.REACT_APP_TEST_URL}/comments/${blogId}/${member_id}`, {
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/comments/${blogId}/${userId}`, {
         body: newComment,
       }, {
         headers: {
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
@@ -119,9 +153,9 @@ export default function PostDetail({
       if (response.status === 201) {
         // 댓글이 성공적으로 작성된 경우
         setNewComment(''); // 입력 필드 초기화
-        // 서버에서 댓글 목록을 다시 가져올 수도 있음 (선택 사항)
+        fetchComments();
         console.log('댓글 작성 성공');
-        console.log(response.data.id);
+        console.log(response.data);
       } else {
         console.error('댓글 작성 실패');
       }
@@ -133,17 +167,16 @@ export default function PostDetail({
   const handleCommentDelete = async (comment_id) => {
     // 댓글 삭제
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_TEST_URL}/comments/${comment_id}`);
-
-      if (response.status === 201) {
+      const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/comments/${comment_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
         // 댓글이 성공적으로 삭제된 경우
-        const updatedComments = comments.filter(comment => comment.comment_id !== comment_id);
+        const updatedComments = comments.filter(comment => comment.id !== comment_id);
         setComments(updatedComments); // 업데이트된 댓글 목록으로 상태 업데이트
-      } else {
-        console.error('댓글 삭제 실패');
-      }
-    } catch (error) {
-      console.error('댓글 삭제 실패:', error);
+      } catch (error) {
+        console.error('댓글 삭제 실패:', comments, error);
     }
   };
 
@@ -152,18 +185,21 @@ export default function PostDetail({
 
     setEditedTitle(blogData.title);
     setEditedBody(blogData.body);
+    setEditedTags(blogData.tags);
   };
-  
+
   const handleSaveEdit = async () => {
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_TEST_URL}/blogs/${blogId}`,
+        `${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`,
         {
           title: editedTitle,
           body: editedBody,
+          tags: editedTags,
         },
         {
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -171,11 +207,16 @@ export default function PostDetail({
       );
   
       if (response.status === 201) {
-        setBlogData({
-          ...blogData,
-          title: editedTitle,
-          body: editedBody,
+        // 업데이트된 게시글을 서버에서 다시 가져오기
+        const updatedResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+          },
         });
+  
+        setBlogData(updatedResponse.data); // 업데이트된 게시글로 상태 업데이트
         setIsEditing(false);
       } else {
         console.error('게시물 수정 실패');
@@ -186,57 +227,121 @@ export default function PostDetail({
   };
   
 
+  const handleCommentEdit = (comment_id) => {
+    setEditingCommentId(comment_id);
+    const commentToEdit = comments.find(comment => comment.id === comment_id);
+    setEditedComments({
+      ...editedComments,
+      [comment_id]: commentToEdit.body,
+    });
+    setIsEditingComment(true);  
+  };
+  
+  const handleCommentEditSave = async (comment_id) => {
+    try {
+      await axios.patch(`${process.env.REACT_APP_SERVER_URL}/comments/${comment_id}`, {
+        body: editedComments[comment_id],
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+        },
+      });
+  
+      const updatedComments = comments.map(comment => {
+        if (comment.id === comment_id) {
+          return { ...comment, body: editedComments[comment_id] };
+        }
+        return comment;
+      });
+      setComments(updatedComments);
+      setIsEditingComment(false);
+    } catch (error) {
+      console.error('댓글 수정 실패:', error);
+    }
+  };
+  
+  
+  
+  const handleCommentEditCancel = () => {
+    setEditingCommentId(null);
+    setIsEditingComment(false);
+  };
+  
+  
+  
+
 
   return (
     <div className='PostContainer'>
       {isEditing ? (
-      <div>
-        <h1 className="text-xl font-bold pt-10">
-            Title
-        </h1>
-        <input
-          type="text"
-          value={editedTitle}
-          className="border border-gray-300 px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-          onChange={(e) => setEditedTitle(e.target.value)}
-        />
-        <h1 className="text-xl font-bold pt-10">
-            Content
-        </h1>
         <div>
-          <CKEditor
-            editor={ClassicEditor}
-            data={editedBody}
-            onReady={(editor) => {
-              
-            }}
-            onChange={(event, editor) => {
-              const data = editor.getData();
-              setEditedBody(data);
-            }}
+          <h1 className="text-xl font-bold pt-10">
+              Title
+          </h1>
+          <input
+            type="text"
+            value={editedTitle}
+            className="border border-gray-300 px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+            onChange={(e) => setEditedTitle(e.target.value)}
           />
-          </div>
-            <button 
-              onClick={handleSaveEdit} 
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mr-2 mt-4"
-            >
-              저장
-            </button>
-            <button 
-              onClick={() => setIsEditing(false)} 
-              className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 mt-4"
-            >
-              취소
-            </button>
+          <h1 className="text-xl font-bold pt-10">
+              Content
+          </h1>
+          <div>
+            <CKEditor
+              editor={ClassicEditor}
+              data={editedBody}
+              onReady={(editor) => {
+                
+              }}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setEditedBody(data);
+              }}
+            />
+            <h1 className="text-xl font-bold pt-10">
+              Tag
+            </h1>
+            </div>
+            <div className="pt-3">
+              {availableTag.map((tag) => (
+                <Tag 
+                  key={tag}
+                  tagName={tag}
+                  isSelected={editedTags.includes(tag)}
+                  onClick={() => toggleTag(tag)}
+                />
+              ))}
+            </div>
+            <div className='text-right'>
+              <button 
+                onClick={handleSaveEdit} 
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mr-2 mt-4"
+              >
+                저장
+              </button>
+              <button 
+                onClick={() => setIsEditing(false)} 
+                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 mt-4"
+              >
+                취소
+              </button>
+            </div>
       </div>
     ) : (
       <>
-      <div className='TitleSection pb-3'>
+      <div className='TitleSection flex justify-between items-center pb-3'>
         <h2 className='post_title text-2xl font-bold'>{blogData.title}</h2>
+        <div className="flex items-center">
+          <FaEye className="mr-2" />
+          {blogData.view}
+        </div>
       </div>
       <div className='UserSection flex justify-between items-center pb-3'>
-        <div className='user_createdat flex items-center'>
-          {blogData.modifiedAt ? `${blogData.modifiedAt}에 수정` : `${blogData.createdAt}`}
+        <div className='user_createdat'>
+          {blogData.modifiedAt ? `${blogData.modifiedAt}` : `${blogData.createdAt}`}
         </div>
         <div className='user_info flex items-center'>
           <img src={profile_pic} alt='profile_pic' className='mr-2' />
@@ -265,13 +370,11 @@ export default function PostDetail({
         삭제하기
       </button>
 
-      <button onClick={handleEditClick} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 float-right mt-2">
+      <button onClick={handleEditClick} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 float-right mt-2 mr-2">
        수정하기
       </button>
-      </>
-    )}
 
-    <div className="comment_form mt-4">
+      <div className="comment_form mt-6">
       <h4 className="comment_form_heading text-lg font-semibold mb-2">댓글</h4>
     <div className='comment_write flex items-center space-x-2'>
       <textarea 
@@ -288,25 +391,49 @@ export default function PostDetail({
         </div>
       </div>
 
-      <div>
-      {/* 댓글 목록 표시 */}
-        <h3>댓글</h3> 
+      {comments.length > 0 && (
+        <div className='mt-4'>
           <ul>
-          {isLoading ? (
-            <p>댓글을 불러오는 중...</p>
-          ) : (
-            comments.map((comment, index) => (
-              <li key={index} className='mb-2'>
-                <strong>{comment.nickname}</strong>: {comment.body}
-                <button onClick={() => handleCommentDelete(index)}>삭제</button>
-              </li>
-            ))
-          )}
-        </ul>
-      </div>
-
+          {comments.slice((page-1) * 5, page*5).map((comment, index) => (
+            <li key={index} className='mb-2'>
+              {isEditingComment && editingCommentId === comment.id ? (
+                <div className="flex items-center">
+                  <textarea
+                    rows='3'
+                    value={editedComments[comment.id] || comment.body}
+                    onChange={(e) => setEditedComments({
+                      ...editedComments,
+                      [comment.id]: e.target.value,
+                    })}
+                    className="w-[500px] h-[50px] mr-2 border border-black rounded"
+                  />
+                  <FaCheck onClick={() => handleCommentEditSave(comment.id)} className="cursor-pointer mr-2"/>
+                  <FaTimes onClick={handleCommentEditCancel} className="cursor-pointer" />
+                </div>
+              ) : (
+                <div className="flex items-center">
+                  <strong className="flex-shrink-0">{blogData.member.nickname}:</strong>
+                  <span>{comment.body}</span>
+                  <div className="ml-auto flex items-center space-x-2">
+                    <FaEdit onClick={() => handleCommentEdit(comment.id)} className="cursor-pointer"/>
+                    <FaTrashAlt onClick={() => handleCommentDelete(comment.id)} className="cursor-pointer"/>
+                  </div>
+                </div>
+              )}
+            </li>
+          ))}
+          </ul>
+        </div>
+      )}
+      <BlogPagenation 
+      	itemPerPage={5} 
+        totalItemsCount={comments.length} 
+        renderItemCount={Math.ceil(comments.length / 5)}
+        page={page}
+        setPage={setPage}
+      />
+      </>
+    )}
     </div>
-
-    
   )
 }

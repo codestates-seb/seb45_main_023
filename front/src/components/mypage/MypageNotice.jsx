@@ -2,16 +2,17 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { Edit, User, userInfo, validate } from '../../recoil/mypage';
 import { Button } from '../Buttons';
 import axios from 'axios';
-import { Link, Route } from 'react-router-dom';
-import { RouteConst } from '../../interface/RouteConst';
 import { useEffect } from 'react';
 import AdminButton from '../AdminButton';
+import { authorizationTokenState } from '../../recoil/logInSignUpState';
+import WithdrawButton from '../buttons/mypage/WithdrawButton';
 
 export default function MypageNotice({ nickname, nationality, password, birth }) {
   const [isEdit, setIsEdit] = useRecoilState(Edit);
   const info = useRecoilValue(userInfo);
   const [data, setData] = useRecoilState(User);
   const [errors, setErrors] = useRecoilState(validate);
+  const token = useRecoilValue(authorizationTokenState)
   // const [patch, setPatch] = useRecoilState(User) << 응답값으로 리렌더링 가능하게 처리
 
   useEffect(() => {
@@ -71,16 +72,13 @@ export default function MypageNotice({ nickname, nationality, password, birth })
   const handlePost = () => {
     const patchData = async () => {
       try {
-        const response = await axios.patch(
-					`${process.env.REACT_APP_SERVER_URL}/members/${info.id}`,
-					request,
-					{
-						headers: {
-							"Content-Type": "application/json",
-							"ngrok-skip-browser-warning": "69420",
-						},
-					}
-				);
+        const response = await axios.patch(`${process.env.REACT_APP_SERVER_URL}/members/${info.id}`, request, {
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+            "Authorization": `Bearer ${token}`
+          },
+        });
         setData(response.data);
         setErrors({});
       } catch (err) {
@@ -100,22 +98,11 @@ export default function MypageNotice({ nickname, nationality, password, birth })
           This passport is only valid on this site unless otherwise endorsed.
         </div>
       </div>
-      <div className="flex justify-center bg-white h-[7rem] pb-2">
-        <Link to={RouteConst.main}>
-          <button className="mr-8 w-[10rem]">
-            <Button text={'메인페이지로'} color={'blue'} />
-          </button>
-        </Link>
-        <Link to={RouteConst.login}>
-          <button className="mr-8 w-[10rem]">
-            <Button text={'로그아웃'} color={'blue'} />
-          </button>
-        </Link>
-        <button className="ml-4 w-[10rem]" onClick={handleEdit}>
+      <div className="flex justify-center bg-white h-[7rem] pb-2 gap-[50px]">
+        <button className="w-[10rem] h-[64px]" onClick={handleEdit}>
           {isEdit ? <Button text={'수정완료'} color={'blue'} /> : <Button text={'개인정보수정'} color={'blue'} />}
         </button>
-
-        <AdminButton />
+        <WithdrawButton />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useRecoilState } from "recoil";
 import Board from "../../components/mainpage/board";
-import PassportIcon from "../../components/PassportIcon";
+import PassportIcon from "../../components/buttons/mainpage/PassportIcon";
 import { User, userInfo } from "../../recoil/mypage";
 import { locations } from "../../components/mainpage/locations";
 import { useEffect } from "react";
