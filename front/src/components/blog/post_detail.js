@@ -26,10 +26,6 @@ export default function PostDetail({profile_pic}) {
   const [editedTags, setEditedTags] = useState(blogData.tags);
   const [editedImage, setEditedImage] = useState(blogData.images);
   const [imageArr, setImageArr] = useState([]);
-
-  console.log(editedImage);
-  console.log("imageArr : ", imageArr);
-
   
   const [isEditingComment, setIsEditingComment] = useState(false);
 
@@ -54,6 +50,7 @@ export default function PostDetail({profile_pic}) {
   const {blogId, cityId} = useParams();
   const userinfo = useRecoilValue(userInfo);
   const userId = userinfo.id;
+  const userNickname = userinfo.nickname;
 
   const token = useRecoilValue(
     authorizationTokenState
@@ -125,7 +122,7 @@ export default function PostDetail({profile_pic}) {
 
     fetchBlogPost();
     console.log('imageArr2', imageArr);
-  }, [page, imageArr]);
+  }, [page]);
 
   if (!blogData) {
     return <div>Loading...</div>;
@@ -224,25 +221,15 @@ export default function PostDetail({profile_pic}) {
     setIsEditing(true);
 
     setEditedTitle(blogData.title);
-    setEditedBody(blogData.body);
+    setEditedBody(blogData.body); //img url => 있는지
     setEditedTags(blogData.tags);
-    setEditedImage(blogData.images);
+    setEditedImage(blogData.images); // for 
   };
 
   const handleSaveEdit = async () => {
-    const array = [];
-    const originImage = (arr) => {
-      arr.map((item) => {
-        return(
-          array.push(item.name)
-        )
-      })
-    }
-    originImage(editedImage);
-    console.log("array 찍을거", array)
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}?image-names=${[...array, ...imageArr]}`,
+        `${process.env.REACT_APP_SERVER_URL}/blogs/${blogId}?image-names=${imageArr}`,
         {
           title: editedTitle,
           body: editedBody,
@@ -286,8 +273,6 @@ export default function PostDetail({profile_pic}) {
       }
     } catch (error) {
       console.error('게시물 수정 실패:', error);
-      console.log('editedimage', editedImage);
-      console.log('imagearr', imageArr);
     }
   };
   
@@ -432,13 +417,17 @@ export default function PostDetail({profile_pic}) {
         ))}
       </div>
 
-      <button onClick={handlePostDelete} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 float-right mt-2">
-        삭제하기
-      </button>
+      {userId === blogData.member.id && (
+          <div>
+            <button onClick={handlePostDelete} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 float-right mt-2">
+              삭제하기
+            </button>
+            <button onClick={handleEditClick} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 float-right mt-2 mr-2">
+              수정하기
+            </button>
+          </div>
+        )}
 
-      <button onClick={handleEditClick} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 float-right mt-2 mr-2">
-       수정하기
-      </button>
 
       <div className="comment_form mt-6">
       <h4 className="comment_form_heading text-lg font-semibold mb-2">댓글</h4>
@@ -478,12 +467,14 @@ export default function PostDetail({profile_pic}) {
                 </div>
               ) : (
                 <div className="flex items-center">
-                  <strong className="flex-shrink-0">{blogData.member.nickname}:</strong>
+                  <strong className="flex-shrink-0">{userNickname}:</strong>
                   <span>{comment.body}</span>
+                  {userNickname === comment.nickname && (
                   <div className="ml-auto flex items-center space-x-2">
                     <FaEdit onClick={() => handleCommentEdit(comment.id)} className="cursor-pointer"/>
                     <FaTrashAlt onClick={() => handleCommentDelete(comment.id)} className="cursor-pointer"/>
                   </div>
+                  )}
                 </div>
               )}
             </li>
@@ -503,4 +494,3 @@ export default function PostDetail({profile_pic}) {
     </div>
   )
 }
-

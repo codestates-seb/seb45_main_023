@@ -40,29 +40,12 @@ const Editor = ({body, setBody, imageArr, setImageArr}) => {
                                 setFlag(true);
                                 setImageArr(prevImageArr => [...prevImageArr, res.data.name]); 
                             }
-    
-                            // try {
-    
-                            //     const imageResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/blogs/print-image?name=${res.data.name}`, {
-                            //         headers: {
-                            //             Authorization: `Bearer ${token}`,
-                            //             'ngrok-skip-browser-warning': '69420'
-                            //         }
-                            //     });
-
-
                                 // authorization 토큰 갱신
-                                if(imageResponse.headers.get("Authorization")) {
-                                    const Authorization = imageResponse.headers.get("Authorization");
+                                if(res.headers.get("Authorization")) {
+                                    const Authorization = res.headers.get("Authorization");
                                     localStorage.setItem('Authorization', Authorization ?? '');
                                 };
 
-                            //     resolve({
-                            //         default: imageResponse.path // 이미지 URL을 가져옴
-                            //     });
-                            // } catch (error) {
-                            //     console.log(setImageArr);
-                            // }
                             console.log(res.data.name);
                         })
                         .catch((err) => reject(err));
