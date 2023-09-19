@@ -45,7 +45,7 @@ function Modal({ city }) {
 					request,
 					{
 						headers: {
-							Authorization : "Bearer " + localStorage.getItem("Authorization"),
+							Authorization: "Bearer " + localStorage.getItem("Authorization"),
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
 						},
@@ -68,7 +68,7 @@ function Modal({ city }) {
 					`${process.env.REACT_APP_SERVER_URL}/cities/${city.cityId}`,
 					{
 						headers: {
-							Authorization : "Bearer " + localStorage.getItem("Authorization"),
+							Authorization: "Bearer " + localStorage.getItem("Authorization"),
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
 						},
@@ -93,7 +93,7 @@ function Modal({ city }) {
 					`${process.env.REACT_APP_SERVER_URL}/missions/${info.id}/${city.cityId}`,
 					{
 						headers: {
-							Authorization : "Bearer " + localStorage.getItem("Authorization"),
+							Authorization: "Bearer " + localStorage.getItem("Authorization"),
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
 						},
@@ -115,10 +115,10 @@ function Modal({ city }) {
 		const fetchMissions = async () => {
 			try {
 				const response = await axios.get(
-					`${process.env.REACT_APP_SERVER_URL}/missions/member-mission/${info.id}`,
+					`${process.env.REACT_APP_SERVER_URL}/missions/${info.id}/${city.cityId}`,
 					{
 						headers: {
-							Authorization : "Bearer " + localStorage.getItem("Authorization"),
+							Authorization: "Bearer " + localStorage.getItem("Authorization"),
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
 						},

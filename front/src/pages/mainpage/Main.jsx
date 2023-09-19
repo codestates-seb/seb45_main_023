@@ -12,7 +12,6 @@ import {
 	modalState,
 } from "../../recoil/main";
 import { authorizationTokenState } from "../../recoil/logInSignUpState";
-import GetData from "../../components/GetData";
 import axios from "axios";
 
 export default function Main() {
