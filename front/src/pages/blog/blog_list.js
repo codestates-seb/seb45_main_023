@@ -25,13 +25,13 @@ export default function Bloglist() {
 	const userinfo = useRecoilValue(userInfo);
 	const userId = userinfo.id;
 	const {cityId} = useParams();
-
+	
 	const [authorizationToken, setAuthorizationToken] = useRecoilState(
 		authorizationTokenState
-	);
-
-  const availableTag = ['인기글', '음식', '숙소', '교통', '쇼핑', '관광지', '액티비티'];
-
+		);
+		
+		const availableTag = ['인기글', '음식', '숙소', '교통', '쇼핑', '관광지', '액티비티'];
+		
   const toggleTag = (tag) => {
     if (selectedTag.includes(tag)) {
       setSelectedTag(selectedTag.filter((t) => t !== tag));

@@ -47,6 +47,8 @@ export default function BlogWrite() {
 		}
 	};
   
+  
+
   const handleSave = async () => {
     const postData = {
       title: blogTitle,
