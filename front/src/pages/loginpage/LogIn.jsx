@@ -92,6 +92,7 @@ export default function LogInPage() {
 
 			// 로그인 성공 시 AuthorizationToken 을 받아옴
 			const Authorization = response.headers.authorization;
+			console.log(Authorization);
 
 			// 상태로 AuthorizationToken 저장
 			setAuthorizationToken(Authorization);

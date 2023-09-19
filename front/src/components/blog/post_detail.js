@@ -31,6 +31,7 @@ export default function PostDetail({profile_pic}) {
 
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editedComments, setEditedComments] = useState({});
+  const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
 
   const [page, setPage] = useState(1);
   const [commentpage, setCommentPage] = useState('');
@@ -51,8 +52,6 @@ export default function PostDetail({profile_pic}) {
   const userinfo = useRecoilValue(userInfo);
   const userId = userinfo.id;
   const userNickname = userinfo.nickname;
-  
-  const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
     
   const toggleTag = (tag) => {
     setEditedTags(prevTags => {
@@ -75,7 +74,6 @@ export default function PostDetail({profile_pic}) {
           'ngrok-skip-browser-warning': '69420',
         },
       }); 
-
 
 			// authorization 토큰 갱신
 			if(response.headers.get("newaccesstoken")) {
@@ -103,11 +101,11 @@ export default function PostDetail({profile_pic}) {
           },
         });
 
-      // authorization 토큰 갱신
-			if(response.headers.get("newaccesstoken")) {
-				setAuthorizationToken(response.headers.get("newaccesstoken"));
-				localStorage.setItem('Authorization', authorizationToken ?? '');
-			}
+        // authorization 토큰 갱신
+        if (response.headers.get('newaccesstoken')) {
+          setAuthorizationToken(response.headers.get('newaccesstoken'));
+          localStorage.setItem('Authorization', authorizationToken ?? '');
+        }
 
         setBlogData(response.data);
         console.log("게시물 가져오기 성공 : ", response.data);
@@ -119,8 +117,34 @@ export default function PostDetail({profile_pic}) {
     };
 
     fetchBlogPost();
-    console.log('imageArr2', imageArr);
+    
+    //해당 유저의 미션 데이터 불러오기
+    const getData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/missions/${blogData.member.id}/${cityId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+            Authorization: `Bearer ${authorizationToken}`,
+          },
+        });
+
+        // authorization 토큰 갱신
+        if (response.headers.get('newaccesstoken')) {
+          setAuthorizationToken(response.headers.get('newaccesstoken'));
+          localStorage.setItem('Authorization', authorizationToken ?? '');
+        }
+
+        console.log('qwewqe', response.data);
+        setMission(response.data);
+      } catch (err) {
+        console.log('err', err);
+      }
+    };
+
+    getData();
   }, [page]);
+
 
   if (!blogData) {
     return <div>Loading...</div>;
@@ -140,10 +164,11 @@ export default function PostDetail({profile_pic}) {
       });
 
       // authorization 토큰 갱신
-			if(response.headers.get("newaccesstoken")) {
-				setAuthorizationToken(response.headers.get("newaccesstoken"));
-				localStorage.setItem('Authorization', authorizationToken ?? '');
-			}
+
+      if (response.headers.get('newaccesstoken')) {
+        setAuthorizationToken(response.headers.get('newaccesstoken'));
+        localStorage.setItem('Authorization', authorizationToken ?? '');
+      }
 
       if (response.status === 200) {
         alert('게시물이 성공적으로 삭제되었습니다.');
@@ -168,11 +193,10 @@ export default function PostDetail({profile_pic}) {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
-      });
 
       // authorization 토큰 갱신
-      if(response.headers.get("newaccesstoken")) {
-        setAuthorizationToken(response.headers.get("newaccesstoken"));
+      if (response.headers.get('newaccesstoken')) {
+        setAuthorizationToken(response.headers.get('newaccesstoken'));
         localStorage.setItem('Authorization', authorizationToken ?? '');
       }
 
@@ -243,10 +267,10 @@ export default function PostDetail({profile_pic}) {
       );
 
       // authorization 토큰 갱신
-			if(response.headers.get("newaccesstoken")) {
-				setAuthorizationToken(response.headers.get("newaccesstoken"));
-				localStorage.setItem('Authorization', authorizationToken ?? '');
-			}
+      if (response.headers.get('newaccesstoken')) {
+        setAuthorizationToken(response.headers.get('newaccesstoken'));
+        localStorage.setItem('Authorization', authorizationToken ?? '');
+      }
 
       if (response.status === 201) {
         // 업데이트된 게시글을 서버에서 다시 가져오기
@@ -259,10 +283,10 @@ export default function PostDetail({profile_pic}) {
         });
 
         // authorization 토큰 갱신
-			if(updatedResponse.headers.get("newaccesstoken")) {
-				setAuthorizationToken(updatedResponse.headers.get("newaccesstoken"));
-				localStorage.setItem('Authorization', authorizationToken ?? '');
-			}
+        if (updatedResponse.headers.get('newaccesstoken')) {
+          setAuthorizationToken(updatedResponse.headers.get('newaccesstoken'));
+          localStorage.setItem('Authorization', authorizationToken ?? '');
+        }
 
         setBlogData(updatedResponse.data); // 업데이트된 게시글로 상태 업데이트
         setIsEditing(false);
@@ -298,7 +322,7 @@ export default function PostDetail({profile_pic}) {
       });
 
       // authorization 토큰 갱신
-			if(response.headers.get("newaccesstoken")) {
+			if (response.headers.get("newaccesstoken")) {
 				setAuthorizationToken(response.headers.get("newaccesstoken"));
 				localStorage.setItem('Authorization', authorizationToken ?? '');
 			}
@@ -322,9 +346,34 @@ export default function PostDetail({profile_pic}) {
     setEditingCommentId(null);
     setIsEditingComment(false);
   };
-  
-  
-  
+  //미션 클리어 하는 로직
+  const handleClear = () => {
+    const postData = async () => {
+      try {
+        const request = await axios.patch(
+          `${process.env.REACT_APP_SERVER_URL}/missions/mission-complete/${mission[0].id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': '69420',
+              Authorization: `${authorizationToken}`,
+            },
+          }
+        );
+
+        // authorization 토큰 갱신
+        if (request.headers.get('newaccesstoken')) {
+          setAuthorizationToken(request.headers.get('newaccesstoken'));
+          localStorage.setItem('Authorization', authorizationToken ?? '');
+        }
+
+        console.log(request.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    postData();
+  };
 
 
   return (
@@ -415,6 +464,14 @@ export default function PostDetail({profile_pic}) {
         ))}
       </div>
 
+          {userinfomation.roles[0] === 'ADMIN' ? (
+            <button
+              onClick={handleClear}
+              className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 float-right mt-2 mr-2"
+            >
+              미션 승인
+            </button>
+          ) : null}
       {userId === blogData.member.id && (
           <div>
             <button onClick={handlePostDelete} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 float-right mt-2">
