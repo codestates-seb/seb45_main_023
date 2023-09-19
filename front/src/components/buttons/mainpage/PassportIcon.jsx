@@ -1,18 +1,18 @@
 import { useRecoilValue } from "recoil";
-import { authorizationTokenState } from "../recoil/logInSignUpState";
+import { authorizationTokenState } from "../../../recoil/logInSignUpState";
 import { Link } from "react-router-dom";
 
-import PassportImage from "../assets/passportImage.png";
+import PassportImage from "../../../assets/passportImage.png";
 
 export default function PassportIcon() {
 	const authorizationToken = useRecoilValue(authorizationTokenState);
 
 	return (
-		<div className="fixed bottom-48 right-48 cursor-pointer">
+		<div className="fixed bottom-52 right-58 cursor-pointer">
 			{authorizationToken ? (
 				<Link to="/mypage">
 					<section
-						className="flex w-32 h-66 p-6 flex-col justify-center items-end gap-3 rounded-r-1 shadow-xl"
+						className="flex w-34 h-69 p-6 flex-col justify-center items-end gap-3 rounded-r-1 shadow-xl"
 						style={{
 							color: "#EFF0ED",
 							backgroundColor: "#293676",

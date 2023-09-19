@@ -1,21 +1,21 @@
 import { useNavigate } from 'react-router-dom'
-import { useParams } from 'react-router-dom';
+import parse from 'html-react-parser';
 
 export default function PostLink({
   title,
   body,
   profile_pic,
-  member_id,
-  city_id,
-  created_at,
-  modified_at,
-  tags
+  nickname,
+  cityId,
+  postId,
+  createdAt,
+  modifiedAt,
+  tags,
 }) {
   const navigate = useNavigate();
-  const blog_id = useParams().blogId;
 
   const handlePostClick = () => {
-    navigate(`/blogdetail/${blog_id}`);
+    navigate(`/blogdetail/${postId}/${cityId}`);
   }
 
   return (
@@ -38,15 +38,14 @@ export default function PostLink({
         </div>
       </div>
       <div className='MiddleSection'>
-        {body.length > 200 ? body.slice(0, 200) + '...' : body}
+        {parse(body.length > 200 ? body.slice(0, 200) + '...' : body)}
       </div>
       <div className='BottomSection flex justify-between items-center'>
         <div className='user_info flex items-center'>
-          <img src={profile_pic} alt='profile_pic' className='mr-2' />
-          {member_id}
+          {nickname}
         </div>
         <div className='user_createdat'>
-          {modified_at ? `${modified_at}에 수정` : `${created_at}`}
+          {modifiedAt ? `${modifiedAt}` : `${createdAt}`}
         </div>
       </div>
     </div>

@@ -1,23 +1,28 @@
 import { useRecoilState } from "recoil";
 import { authorizationTokenState } from "../../recoil/logInSignUpState";
+import { useNavigate } from "react-router-dom";
 
 export default function MyTokens () {
+    const navigate = useNavigate();
     const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
 
+    // URL 매개변수 생성하고, 전달하기
     const urlParams = new URLSearchParams(window.location.search);
-    const Authorization = urlParams.get('Authorization');
+    const Authorization = urlParams.get('access_token');
     
-    // local에 authorizationToken 저장하기
+    console.log('Authorization 잘 응답 받아왔는지 : ', Authorization);
+
+    // local에 authorizationToken 저장, 확인하기
     localStorage.setItem('Authorization', Authorization ?? '');
+    console.log(localStorage.getItem('Authorization'));
 
-    // local에 저장된 authorizationToken을 상태값에 저장하기
+    // authorizationToken을 상태값에 저장, 확인하기
     setAuthorizationToken(Authorization);
-
-    // authorizationToken 상태 값 확인
-    console.log(authorizationToken);
+    console.log('authorizationToken 상태 값 : ', authorizationToken);
 
     // 로그인 완료 후 웰컴페이지로 이동
-    window.location.replace('/welcome');
+    // window.location.replace(`${process.env.REACT_APP_SERVER_URL}/welcome`);
+    navigate('/welcome');
     console.log('Login Success!');
     return null;
 }

@@ -1,4 +1,5 @@
-import {FindMethodButton, ToSmallButton} from "../../../components/Buttons";
+import {ToSmallButton} from "../../../components/Buttons";
+import {FindMethodButton} from "../../../components/buttons/findpage/FindMethodButton";
 
 export default function FindEmail () {
     return (

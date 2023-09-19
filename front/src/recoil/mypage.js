@@ -33,6 +33,9 @@ export const sidebar = atom({
 export const userInfo = atom({
   key: 'info',
   default: {
+    currentLocation: 'BLOCK_0',
+    email: '',
+    level: 0,
     nickname: '',
     nationality: '',
     password: '',
@@ -56,3 +59,33 @@ export const bookmarkInfo = atom({
     },
   ],
 });
+
+export const validate = atom({
+  key: 'validate',
+  default: {},
+});
+
+export const stamps = atom({
+  key: 'stamps',
+  default: [],
+});
+
+export const PageInfo = atom({
+  key: 'pageinfo',
+  default: {
+    page: 1,
+    size: 0,
+    totalElements: 0,
+    totalPages: 0,
+  },
+});
+export const CommentInfo = atom({
+	key: 'commentinfo',
+	default: {
+	  page: 1,
+	  size: 0,
+	  totalElements: 0,
+	  totalPages: 0,
+	},
+  });
+  

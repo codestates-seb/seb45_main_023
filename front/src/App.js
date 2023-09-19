@@ -1,7 +1,8 @@
-import React from 'react';
 import './App.css';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { RouteConst } from './interface/RouteConst';
+
 import Main from './pages/mainpage/Main';
 import MyPage from './pages/mypage/MyPage';
 import MyBookmark from './pages/mypage/MyBookmark';
@@ -12,7 +13,6 @@ import MyStamp from './pages/mypage/MyStamp';
 import Bloglist from './pages/blog/blog_list';
 import Blogwrite from './pages/blog/blog_write';
 import Blogdetail from './pages/blog/blog_detail';
-import Blogedit from './pages/blog/blog_edit';
 
 import LogInPage from './pages/loginpage/LogIn';
 import SignUpPage from './pages/signuppage/SignUp';
@@ -39,9 +39,7 @@ function App() {
         <Route path={RouteConst.blog_list} element={<Bloglist />} />
         <Route path={RouteConst.blog_write} element={<Blogwrite />} />
         <Route path={RouteConst.blog_detail} element={<Blogdetail />} />
-        <Route path={RouteConst.blog_edit} element={<Blogedit />} />
 
-        <Route path={RouteConst.login} element={<LogInPage />} />
         <Route path={RouteConst.login} element={<LogInPage />} />
         <Route path={RouteConst.signup} element={<SignUpPage />} />
         <Route path={RouteConst.welcome} element={<WelcomePage />} />

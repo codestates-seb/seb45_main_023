@@ -1,23 +1,34 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { CardButton } from "../Buttons";
 import { User, bookmarkInfo } from "../../recoil/mypage";
 import axios from "axios";
+import { authorizationTokenState } from "../../recoil/logInSignUpState";
 
 export default function CardList({ start, end }) {
+
 	const data = useRecoilValue(bookmarkInfo);
 	console.log(data);
 	const info = useRecoilValue(User);
+	const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
 	const handleRemoveBookmark = async () => {
 		try {
 			const request = await axios.patch(
 				`${process.env.REACT_APP_SERVER_URL}/members/${info.id}/no-bookmark/${data.id}`,
 				{
 					headers: {
+						"Authorization": `Bearer ${authorizationToken}`,
 						"Content-Type": "application/json",
 						"ngrok-skip-browser-warning": "69420",
 					},
 				}
 			);
+
+			// authorization 토큰 갱신
+			if(request.headers.get("newaccesstoken")) {
+				setAuthorizationToken(request.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
+
 			console.log(request);
 		} catch (err) {
 			console.log(err);

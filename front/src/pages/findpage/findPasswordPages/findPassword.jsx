@@ -1,26 +1,35 @@
-import {FindMethodButton} from "../../../components/Buttons";
+import { ToSmallButton } from "../../../components/Buttons";
+import { FindMethodButton } from "../../../components/buttons/findpage/FindMethodButton";
 
 export default function FindPassword () {
     return (
-        <div className="flex justify-center items-center h-[100vh] border-2 border-solid border-red-500">
-            <form className="flex flex-col justify-center items-center w-[30rem] h-[50rem] shadow-xss rounded-[2rem] bg-[#F6F8FA]">
-                <div>
-                    비밀번호 찾기 페이지
+        <div className="flex justify-center items-center h-[100vh]">
+            <form className="flex flex-col  items-center w-[30rem] h-[50rem] shadow-xss rounded-[2rem] bg-[#F6F8FA]">
+                <div className='flex justify-between items-center w-[100%] px-[40px] mt-[20px] mb-[100px]'>
+                    <span className="font-bold text-black text-[24px]">
+                        MarbleUs
+                    </span>
+                    <div className='flex gap-[8px]'>
+                        <ToSmallButton linkName='mainpage' Size='sm' iconName='mainpage' colorName='orange' title='mainpage'/>
+                        <ToSmallButton linkName='loginpage' Size='sm' iconName='loginpage' colorName='blue' title='loginpage'/>
+                    </div>
                 </div>
-                <div className="flex flex-col justify-center items-center gap-[30px]">
-                    <FindMethodButton text='성명, 전화번호, 생년월일로 찾기' linkName='passwordMethod1'/>
-                    <FindMethodButton text='닉네임, 전화번호, 생년월일로 찾기' linkName='passwordMethod2'/>
+                <div className="flex flex-col justify-center items-center font-semibold text-gray-800">
+                    <div className="text-[30px]">
+                        비밀번호 찾기
+                    </div>
+                    <div className="text-[20px] mb-[110px]">
+                        ( Find Your Password )
+                    </div>
                 </div>
+                <div className="flex flex-col justify-center items-center gap-[80px]">
+                    <FindMethodButton text='Method1' linkName='passwordMethod1'/>
+                    <FindMethodButton text='Method2' linkName='passwordMethod2'/>
+                </div>
+                <footer className="text-gray-600 relative bottom-[-170px]">
+                    <i class="fa-regular fa-copyright"></i> MarbleUs Corp. All rights reserved.
+                </footer>
             </form>
         </div>
     )
 };
-// 이메일 찾기 방법
-// 1. 성명 + 전화번호 + 생년월일 
-// 2. 닉네임 + 전화번호 + 생년월일 
-
-// <label htmlFor="email" className="font-medium text-[16px] block mb-[7px]">
-//     이메일 / E-mail
-// </label>
-// <input type="email" name="email" placeholder="example@example.com" className=" w-[300px] h-[30px] bg-white text-[#6C6C6C] border-2 border-[#D7D7D7] rounded-[10px] pl-[14px]">
-// </input> 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import "./Dice.css";
-import { diceValueState } from "../../../recoil/main";
+import { diceControlState, diceValueState } from "../../../recoil/main";
 
 const DICE_SIDES = {
 	FRONT: "1",
@@ -45,29 +45,45 @@ function Side({ direction, isVisible }) {
 }
 
 function Dice({ onRollDice }) {
-	const [diceValue, setDiceValue] = useRecoilState(diceValueState); // diceValueState를 상태로 사용
+	const [diceValue, setDiceValue] = useRecoilState(diceValueState);
 	const [visibleSide, setVisibleSide] = useState(DICE_SIDES.FRONT);
 	const [diceAnimationClass, setDiceAnimationClass] = useState("dice");
+	const [diceControl, setDiceControl] = useRecoilState(diceControlState);
 
 	useEffect(() => {
 		if (diceValue !== undefined) {
 			if (diceValue >= 1) {
+				setDiceControl(false);
+
 				setDiceAnimationClass("dice-fast");
 				setTimeout(() => {
 					setDiceAnimationClass("dice-stop");
 					setVisibleSide(diceValue.toString());
-				}, 3000);
+				}, 2000);
 			} else {
 				setDiceAnimationClass("dice");
 			}
 		}
 		DICE_SIDES.FRONT = diceValue;
-	}, [diceValue]);
+	}, [diceValue, setDiceControl]);
 
 	const rollDiceHandler = async () => {
-		const newValue = Math.floor(Math.random() * 6) + 1;
-		setDiceValue(newValue); // 주사위 값을 업데이트
-		return newValue; // 주사위 값 반환
+		if (!diceControl) {
+			return;
+		} else {
+			// 주사위 굴리기 시작
+			const newValue = Math.floor(Math.random() * 6) + 1;
+			setDiceValue(newValue);
+
+			// 주사위 굴리기가 완료되면 diceControl을 다시 true로 설정
+			setTimeout(() => {
+				setDiceControl(false);
+			}, 6000);
+
+			setDiceControl(true);
+
+			return newValue;
+		}
 	};
 
 	return (

@@ -23,7 +23,7 @@ const data = [
         profile_pic: '/profile.png',
         member_id: 2,
         // comments,
-        city_id: 2,
+        city_id: 1,
         created_at: '2023.08.302',
         modified_at: '2023.09.012',
         blog_id: 2,
