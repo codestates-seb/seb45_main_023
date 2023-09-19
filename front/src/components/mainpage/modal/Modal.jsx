@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
 	beadIndexState,
 	modalState,
@@ -21,7 +21,7 @@ function Modal({ city }) {
 	const [diceControl, setDiceControl] = useRecoilState(diceControlState);
 	const [current, setcurrent] = useRecoilState(currentLocationState);
 	const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
-	const authorizationToken = useRecoilState(authorizationTokenState);
+	const token = useRecoilValue(authorizationTokenState);
 
 	const [cityInfo, setCityInfo] = useState("");
 	const [missions, setMissions] = useState([]);
@@ -45,7 +45,7 @@ function Modal({ city }) {
 						headers: {
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
-							Authorization: `Bearer ${authorizationToken}`,
+							Authorization: `Bearer ${token}`,
 						},
 					}
 				);
@@ -79,7 +79,7 @@ function Modal({ city }) {
 						headers: {
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
-							Authorization: `Bearer ${authorizationToken}`,
+							Authorization: `Bearer ${token}`,
 						},
 					}
 				);
@@ -98,7 +98,7 @@ function Modal({ city }) {
 						headers: {
 							"Content-Type": "application/json",
 							"ngrok-skip-browser-warning": "69420",
-							Authorization: `Bearer ${authorizationToken}`,
+							Authorization: `Bearer ${token}`,
 						},
 					}
 				);
@@ -187,7 +187,7 @@ function Modal({ city }) {
 							</div>
 							<div className="relative flex-1 flex flex-col m-10 p-10 bg-white bg-opacity-80 rounded-lg shadow-md">
 								<div className="flex flex-col w-full h-3/5 min-w-[380px] justify-around">
-									{authorizationToken === "" ? (
+									{token === "" ? (
 										<MissionCard mission={missions[0]} level={1} />
 									) : (
 										<MissionCard mission={missions[0]} level={1} />
@@ -197,7 +197,7 @@ function Modal({ city }) {
 									<MissionCard mission={missions[3]} level={4} />
 								</div>
 								<section className="absolute right-10 bottom-18 flex flex-col gap-4 justify-end">
-									{authorizationToken === "" ? (
+									{token === "" ? (
 										<Link to="/login">
 											<ToPageCustomButton
 												text={"로그인 화면으로"}
