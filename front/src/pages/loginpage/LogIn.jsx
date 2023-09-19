@@ -168,7 +168,7 @@ export default function LogInPage() {
 									placeholder="example@example.com"
 									className="w-[75%] h-[40px] mt-[14px] bg-[#F2F2F2] text-[#6C6C6C] 
                                     rounded-[10px] pl-[15px] mb-[26px]"
-									disabled={isLoading || authorizationToken}
+									disabled={isLoading || authorizationToken || localStorage.getItem("Authorization")}
 								></input>
 								{errors.email && (
 									<p className="text-red-500 mt-[-24px]">{errors.email}</p>
@@ -189,7 +189,7 @@ export default function LogInPage() {
 									placeholder="••••••••"
 									className="w-[75%] h-[40px] mt-[14px] bg-[#F2F2F2] text-[#6C6C6C] 
                                     rounded-[10px] pl-[15px]"
-									disabled={isLoading || authorizationToken}
+									disabled={isLoading || authorizationToken || localStorage.getItem("Authorization")}
 								></input>
 								{errors.password && (
 									<p className="text-red-500">{errors.password}</p>
@@ -224,11 +224,11 @@ export default function LogInPage() {
 							<button
 								type="submit"
 								className={`w-[170px] h-[170px] rounded-full text-white bg-sky-400 flex justify-center items-center hover:bg-[#0088F8] active:bg-gray-100 active:text-[#0088F8] animate-pulse hover:animate-none transition shadow-md duration-300 ease-in-out ${
-									isLoading || authorizationToken
+									isLoading || authorizationToken || localStorage.getItem("Authorization")
 										? "opacity-50 cursor-not-allowed bg-gray-200 hover:bg-gray-200 active:bg-gray-200 active:text-white "
 										: ""
 								}`}
-								disabled={isLoading || authorizationToken}
+								disabled={isLoading || authorizationToken || localStorage.getItem("Authorization")}
 							>
 								{!authorizationToken && isLoading ? (
 									<i className="fa-solid fa-spinner animate-spin text-[100px] rotate-[-45deg]" />
