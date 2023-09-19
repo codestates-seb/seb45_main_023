@@ -21,11 +21,11 @@ export default function SignUpPage() {
 	const [email, setEmail] = useRecoilState(emailState);
 	const [password, setPassword] = useRecoilState(passwordState);
 	const [confirmPassword, setConfirmPassword] =
-		useRecoilState(confirmPasswordState);
+	useRecoilState(confirmPasswordState);
 	const [nationality, setNationality] = useRecoilState(nationalityState);
 	const [birthDate, setBirthDate] = useRecoilState(birthDateState);
 	const [agreement, setAgreement] = useRecoilState(agreementState);
-	const authorizationToken = useRecoilValue(authorizationTokenState);
+	const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [errors, setErrors] = useState({});
@@ -120,10 +120,10 @@ export default function SignUpPage() {
 			);
 
 			// authorization 토큰 갱신
-			if(response.headers.get("Authorization")) {
-				const Authorization = response.headers.get("Authorization");
-				localStorage.setItem('Authorization', Authorization ?? '');
-			};
+			if(response.headers.get("newaccesstoken")) {
+				setAuthorizationToken(response.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
 
 			console.log(response.data);
 

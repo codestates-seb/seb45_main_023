@@ -8,12 +8,13 @@ import { useRecoilValue } from 'recoil';
 import { User } from '../../recoil/mypage';
 import { authorizationTokenState } from '../../recoil/logInSignUpState';
 import MypageHeaderBtn from '../../components/buttons/mypage/MypageHeaderBtn';
+import { useRecoilState } from 'recoil';
 
 export default function MyMission() {
   const info = useRecoilValue(User);
   const [mission, setMission] = useState('');
-  const token = useRecoilValue(authorizationTokenState);
-  console.log(mission);
+  const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
+  // console.log(mission);
   useEffect(() => {
     const getData = async () => {
       try {
@@ -21,17 +22,17 @@ export default function MyMission() {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authorizationToken}`,
           },
         });
 
         // authorization 토큰 갱신
-        if (response.headers.get('Authorization')) {
-          const Authorization = response.headers.get('Authorization');
-          localStorage.setItem('Authorization', Authorization ?? '');
-        }
+				if(response.headers.get("newaccesstoken")) {
+					setAuthorizationToken(response.headers.get("newaccesstoken"));
+					localStorage.setItem('Authorization', authorizationToken ?? '');
+				}
 
-        console.log(response.data);
+        // console.log(response.data);
         setMission(response.data);
       } catch (err) {
         console.log('err', err);
@@ -53,14 +54,14 @@ export default function MyMission() {
 						},
 					}
 				);
-				
-				// authorization 토큰 갱신
-				if(request.headers.get("Authorization")) {
-					const Authorization = request.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization ?? '');
-				};
+				  
+        // authorization 토큰 갱신
+				if(request.headers.get("newaccesstoken")) {
+					setAuthorizationToken(request.headers.get("newaccesstoken"));
+					localStorage.setItem('Authorization', authorizationToken ?? '');
+				}
 
-        console.log(request.data);
+        // console.log(request.data);
       } catch (err) {
         console.log(err);
       }

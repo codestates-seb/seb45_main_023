@@ -57,10 +57,10 @@ export default function Bloglist() {
 				);
 
 				// authorization 토큰 갱신
-				if(response.headers.get("Authorization")) {
-					const Authorization = response.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization ?? '');
-				};
+				if(response.headers.get("newaccesstoken")) {
+					setAuthorizationToken(response.headers.get("newaccesstoken"));
+					localStorage.setItem('Authorization', authorizationToken ?? '');
+				}
 
 				setPosts(response.data.data);
 				console.log(posts)
@@ -94,11 +94,10 @@ export default function Bloglist() {
             );
 
 			// authorization 토큰 갱신
-			if(response.headers.get("Authorization")) {
-				const Authorization = response.headers.get("Authorization");
-				localStorage.setItem('Authorization', Authorization ?? '');
-			};
-
+			if(response.headers.get("newaccesstoken")) {
+				setAuthorizationToken(response.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
 
             setBookmarkedPosts(bookmarkedPosts.filter((id) => id !== blog_id));
             console.log("북마크 삭제 성공");
@@ -109,17 +108,17 @@ export default function Bloglist() {
                 {
                     headers: {
                         Authorization: `Bearer ${authorizationToken}`,
-												"Content-Type": "application/json",
+						"Content-Type": "application/json",
                         "ngrok-skip-browser-warning": "69420",
                     },
                 }
             );
 
 			// authorization 토큰 갱신
-			if(response.headers.get("Authorization")) {
-				const Authorization = response.headers.get("Authorization");
-				localStorage.setItem('Authorization', Authorization ?? '');
-			};
+			if(response.headers.get("newaccesstoken")) {
+				setAuthorizationToken(response.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
 
             setBookmarkedPosts([...bookmarkedPosts, blog_id]);
             console.log("북마크 추가 성공");
