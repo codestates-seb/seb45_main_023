@@ -15,12 +15,12 @@
   
   | BE 팀장 | BE | BE |
 | --- | --- | --- |
-|  |  |  |
+| ![상아](https://github.com/codestates-seb/seb45_main_023/assets/129928230/73762193-9c9d-4894-9775-889b92352cd4) |  | ![수정](https://github.com/codestates-seb/seb45_main_023/assets/129928230/b62eba93-d571-49bc-808e-3ef5eae2c283) |
 | [조상아](https://github.com/SalguJam) | [전우현](https://github.com/JohnWJun) | [김수정](https://github.com/KSJ-0) |
 
 | FE | FE | FE | FE |
 | --- | --- | --- | --- |
-|  |  |  |  |
+| ![세민](https://github.com/codestates-seb/seb45_main_023/assets/129928230/713cee27-07f7-4389-bfa3-3371e57a9b11) | ![우주](https://github.com/codestates-seb/seb45_main_023/assets/129928230/56abbd8b-248e-43cf-aedb-c8e4ed3466f0) |  |  |
 | [김세민](https://github.com/3kiein) | [김우주](https://github.com/ghvhdh333) | [문경선](https://github.com/dalsun) | [정회엽](https://github.com/toystory23) |
 
 <br>
