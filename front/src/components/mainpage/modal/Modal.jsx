@@ -50,10 +50,10 @@ function Modal({ city }) {
 				);
 	
 				// authorization 토큰 갱신
-				if(response.headers.get("Authorization")) {
-					const Authorization = response.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization ?? '');
-				  }
+				if(response.headers.get("newaccesstoken")) {
+					setAuthorizationToken(response.headers.get("newaccesstoken"));
+					localStorage.setItem('Authorization', authorizationToken ?? '');
+				}
 
 			} catch (err) {
 				console.log("patchLocation" + err);
@@ -72,12 +72,12 @@ function Modal({ city }) {
 						},
 					}
 				);
-	
-				// authorization 토큰 갱신
-				if(response.headers.get("Authorization")) {
-					const Authorization = response.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization ?? '');
-				};
+
+			// authorization 토큰 갱신
+			if(response.headers.get("newaccesstoken")) {
+				setAuthorizationToken(response.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
 
 				setCityInfo(response.data);
 			} catch (err) {
@@ -97,12 +97,12 @@ function Modal({ city }) {
 						},
 					}
 				);
-	
-			  // authorization 토큰 갱신
-			  if(response.headers.get("Authorization")) {
-				const Authorization = response.headers.get("Authorization");
-				localStorage.setItem('Authorization', Authorization ?? '');
-			  };
+
+				// authorization 토큰 갱신
+				if(response.headers.get("newaccesstoken")) {
+					setAuthorizationToken(response.headers.get("newaccesstoken"));
+					localStorage.setItem('Authorization', authorizationToken ?? '');
+				}
 
 			} catch (err) {
 				console.error("postMission", err);
@@ -123,12 +123,12 @@ function Modal({ city }) {
 						},
 					}
 				);
-	
-			  // authorization 토큰 갱신
-			  if(response.headers.get("Authorization")) {
-				const Authorization = response.headers.get("Authorization");
-				localStorage.setItem('Authorization', Authorization ?? '');
-			  };
+
+				// authorization 토큰 갱신
+				if(response.headers.get("newaccesstoken")) {
+					setAuthorizationToken(response.headers.get("newaccesstoken"));
+					localStorage.setItem('Authorization', authorizationToken ?? '');
+				}
 
 				if (Array.isArray(response.data)) {
 					// response.data가 배열인지 확인

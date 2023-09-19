@@ -24,10 +24,10 @@ export const LogOutButton = () => {
           )
 
           // authorization 토큰 갱신
-          if(response.headers.get("Authorization")) {
-            const Authorization = response.headers.get("Authorization");
-            localStorage.setItem('Authorization', Authorization ?? '');
-          };
+          if(response.headers.get("newaccesstoken")) {
+            setAuthorizationToken(response.headers.get("newaccesstoken"));
+            localStorage.setItem('Authorization', authorizationToken ?? '');
+          }
 
           if (response.status === 200) {
             // 로컬 스토리지에서 사용자 정보 삭제 (선택사항)

@@ -19,11 +19,12 @@ export default function MyPage() {
   const [birth, setBirth] = useState(data.birth);
   const token = useRecoilValue(authorizationTokenState);
   const [_, setVisibleLinks] = useRecoilState(sidebar);
+  const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
   console.log(token);
   useEffect(() => {
     const getData = async () => {
       try {
-        const data = await axios.get(`${process.env.REACT_APP_SERVER_URL}/members/me`, {
+        const data = await axios.get(`${process.env.REACT_APP_SERVER_URL}/members/${data.email}`, {
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
@@ -32,10 +33,10 @@ export default function MyPage() {
         });
 
         // authorization 토큰 갱신
-        if(data.headers.get("Authorization")) {
-					const Authorization = data.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization ?? '');
-				};
+				if(data.headers.get("newaccesstoken")) {
+					setAuthorizationToken(data.headers.get("newaccesstoken"));
+					localStorage.setItem('Authorization', authorizationToken ?? '');
+				}
 
         setData(data.data);
         const { nickname, nationality, password, birth, id } = data.data;

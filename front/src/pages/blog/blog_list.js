@@ -7,7 +7,7 @@ import { NegativeButton } from "../../components/Buttons";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { BlogList } from "../../recoil/blog";
-// import { bookmarkedPostsState } from "../../recoil/blog";
+import { bookmarkedPostsState } from "../../recoil/blog";
 import { useParams, useNavigate } from "react-router-dom";
 import BlogPagenation from "../../components/mypage/BlogPagination";
 import { userInfo } from "../../recoil/mypage";
@@ -18,20 +18,20 @@ export default function Bloglist() {
 	const [selectedTag, setSelectedTag] = useState([]); // 태그
 	const [filteredPosts, setFilteredPosts] = useState([]);
 	const [posts, setPosts] = useRecoilState(BlogList);
-	const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
+	const [bookmarkedPosts, setBookmarkedPosts] = useRecoilState(bookmarkedPostsState);
 	const [page, setPage] = useState(1);
 	const navigate = useNavigate();
 	
 	const userinfo = useRecoilValue(userInfo);
 	const userId = userinfo.id;
 	const {cityId} = useParams();
-
+	
 	const [authorizationToken, setAuthorizationToken] = useRecoilState(
 		authorizationTokenState
-	);
-
-  const availableTag = ['인기글', '음식', '숙소', '교통', '쇼핑', '관광지', '액티비티'];
-
+		);
+		
+		const availableTag = ['인기글', '음식', '숙소', '교통', '쇼핑', '관광지', '액티비티'];
+		
   const toggleTag = (tag) => {
     if (selectedTag.includes(tag)) {
       setSelectedTag(selectedTag.filter((t) => t !== tag));
@@ -57,10 +57,10 @@ export default function Bloglist() {
 				);
 
 				// authorization 토큰 갱신
-				if(response.headers.get("Authorization")) {
-					const Authorization = response.headers.get("Authorization");
-					localStorage.setItem('Authorization', Authorization ?? '');
-				};
+				if(response.headers.get("newaccesstoken")) {
+					setAuthorizationToken(response.headers.get("newaccesstoken"));
+					localStorage.setItem('Authorization', authorizationToken ?? '');
+				}
 
 				setPosts(response.data.data);
 				console.log(posts)
@@ -79,32 +79,33 @@ export default function Bloglist() {
     setFilteredPosts(filtered);
   }, [selectedTag]);
 
+	console.log("Token" , authorizationToken)
+
 	const handleBookmarkToggle = async (blog_id) => {
     try {
         if (bookmarkedPosts.includes(blog_id)) {
-            const response = await axios.patch( // 나중에 delete를 바꾸고 숫자를 userId로 바꾸기
-                `${process.env.REACT_APP_SERVER_URL}/members/10/no-bookmark/${blog_id}`, 
+            const response = await axios.delete(
+                `${process.env.REACT_APP_SERVER_URL}/members/${userId}/no-bookmark/${blog_id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${authorizationToken}`,
-						"Content-Type": "application/json",
+												"Content-Type": "application/json",
                         "ngrok-skip-browser-warning": "69420",
                     },
                 }
             );
 
 			// authorization 토큰 갱신
-			if(response.headers.get("Authorization")) {
-				const Authorization = response.headers.get("Authorization");
-				localStorage.setItem('Authorization', Authorization ?? '');
-			};
-
+			if(response.headers.get("newaccesstoken")) {
+				setAuthorizationToken(response.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
 
             setBookmarkedPosts(bookmarkedPosts.filter((id) => id !== blog_id));
             console.log("북마크 삭제 성공");
         } else {
             const response = await axios.patch(
-                `${process.env.REACT_APP_SERVER_URL}/members/10/bookmark/${blog_id}`,
+                `${process.env.REACT_APP_SERVER_URL}/members/${userId}/bookmark/${blog_id}`,
                 null,
                 {
                     headers: {
@@ -116,13 +117,14 @@ export default function Bloglist() {
             );
 
 			// authorization 토큰 갱신
-			if(response.headers.get("Authorization")) {
-				const Authorization = response.headers.get("Authorization");
-				localStorage.setItem('Authorization', Authorization ?? '');
-			};
+			if(response.headers.get("newaccesstoken")) {
+				setAuthorizationToken(response.headers.get("newaccesstoken"));
+				localStorage.setItem('Authorization', authorizationToken ?? '');
+			}
 
             setBookmarkedPosts([...bookmarkedPosts, blog_id]);
             console.log("북마크 추가 성공");
+						console.log("bookmark", bookmarkedPosts);
         }
     } catch (error) {
         console.error("북마크 토글 에러 : ", authorizationToken, error);
@@ -134,7 +136,7 @@ export default function Bloglist() {
 	return (
 		<div className="relative">
 			<BlogHeader />
-			<div className="relative h-[1200px] bg-gray-100 opacity-70 rounded-t-lg shadow-lg mt-[-100px] ml-10 mr-10">
+			<div className="relative h-[1300px] bg-gray-100 opacity-70 rounded-t-lg shadow-lg mt-[-100px] ml-10 mr-10">
 				<div className="tag_list m-10">
 					<div className="tag_container pt-10 flex justify-between">
 						<div className="tag_left">
