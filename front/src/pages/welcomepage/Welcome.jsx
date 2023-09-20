@@ -1,9 +1,11 @@
 import { ToSmallButton } from "../../components/Buttons";
+import GetData from "../../components/GetData";
 
 export default function WelcomePage() {
+	GetData();
 	return (
-		<form className="flex justify-center">
-			<div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-[2rem] pb-4 bg-[#F6F8FA]">
+		<form className="flex justify-center items-center h-screen">
+			<div className="flex flex-col items-center w-[50rem] h-[50rem] shadow-xss rounded-[2rem] bg-[#F6F8FA]">
 				<section className="flex flex-col justify-center items-center h-[100vh]">
 					<div className="flex flex-col justify-center items-center text-[60px] font-bold mb-[50px]">
 						<div className="">Welcome to</div>
@@ -26,7 +28,7 @@ export default function WelcomePage() {
 						/>
 					</section>
 				</section>
-				<footer className="text-gray-600">
+				<footer className="text-gray-600 mb-[14px]">
 					<i class="fa-regular fa-copyright"></i> MarbleUs Corp. All rights
 					reserved.
 				</footer>
