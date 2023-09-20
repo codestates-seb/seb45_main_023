@@ -89,7 +89,7 @@ public class SecurityConfiguration {
                 .logout()
                 .logoutUrl("/logout")
                 .addLogoutHandler(new CustomLogoutHandler(redisServiceUtil,extractor))
-                .logoutSuccessUrl("/login"); //http://marbleus-s3.s3-website.ap-northeast-2.amazonaws.com/login
+                .logoutSuccessUrl("/");
         return http.build();
     }
 
