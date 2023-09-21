@@ -59,7 +59,7 @@ export default function BlogWrite() {
     try {
       const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/blogs/${userId}/${cityId}?image-names=${imageArr}`, postData, {
         headers: {
-          Authorization: `Bearer ${authorizationToken}`,
+          Authorization : "Bearer " + localStorage.getItem("Authorization"),
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420'
         },

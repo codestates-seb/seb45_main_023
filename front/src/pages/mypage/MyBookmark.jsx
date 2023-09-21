@@ -22,7 +22,7 @@ export default function MyBookmark() {
             headers: {
               'Content-Type': 'application/json',
               'ngrok-skip-browser-warning': '69420',
-              "Authorization": `Bearer ${authorizationToken}`
+              Authorization : "Bearer " + localStorage.getItem("Authorization"),
             },
           }
         );

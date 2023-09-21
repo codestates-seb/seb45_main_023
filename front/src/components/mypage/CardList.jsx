@@ -16,7 +16,7 @@ export default function CardList({ start, end }) {
 				`${process.env.REACT_APP_SERVER_URL}/members/${info.id}/no-bookmark/${data.id}`,
 				{
 					headers: {
-						"Authorization": `Bearer ${authorizationToken}`,
+						Authorization : "Bearer " + localStorage.getItem("Authorization"),
 						"Content-Type": "application/json",
 						"ngrok-skip-browser-warning": "69420",
 					},

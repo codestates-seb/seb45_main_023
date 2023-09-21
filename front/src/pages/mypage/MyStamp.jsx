@@ -41,7 +41,7 @@ export default function MyStamp() {
       try {
         const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/missions/stamps/${info.id}`, {
           headers: {
-            Authorization: `Bearer ${authorizationToken}`,
+            Authorization : "Bearer " + localStorage.getItem("Authorization"),
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
