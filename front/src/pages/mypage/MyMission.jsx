@@ -14,7 +14,7 @@ export default function MyMission() {
   const info = useRecoilValue(User);
   const [mission, setMission] = useState('');
   const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
-  // console.log(mission);
+  console.log(mission);
   useEffect(() => {
     const getData = async () => {
       try {
@@ -61,7 +61,7 @@ export default function MyMission() {
 					localStorage.setItem('Authorization', authorizationToken ?? '');
 				}
 
-        // console.log(request.data);
+        console.log(request.data);
       } catch (err) {
         console.log(err);
       }
@@ -71,7 +71,7 @@ export default function MyMission() {
   return (
     <>
       <MypageHeaderBtn />
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-[5rem]">
         <TopSidebar />
         <BottomSidebar />
         <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white">
