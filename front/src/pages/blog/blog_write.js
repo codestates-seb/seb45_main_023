@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Tag from "../../components/blog/tag";
 import BlogHeader from "../../components/blog/blogtitle";
-import { NegativeButton } from "../../components/Buttons";
+import { NegativeButton, NegativeCustomButton } from "../../components/Buttons";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -79,10 +79,14 @@ export default function BlogWrite() {
     }
   }
 
+  const handleBack = () => {
+    navigate(`/bloglist/${cityId}`);
+  }
+
   return (
     <div className="relative">
       <BlogHeader />
-      <div className="relative h-[800px] bg-gray-100 opacity-70 rounded-t-lg shadow-lg mt-[-100px] ml-10 mr-10" >
+      <div className="relative h-full min-h-[1000px] bg-gray-100 opacity-70 rounded-t-lg shadow-lg mt-[-100px] ml-10 mr-10" >
       <div className="write_list m-10">
         <div className="title_container">
           <h1 className="text-xl font-bold pt-10">
@@ -108,7 +112,7 @@ export default function BlogWrite() {
             Tag
           </h1>
           <div>
-            <div className="pt-3 flex justify-between">
+            <div className="pt-3 pb-10 flex justify-between">
               <div className="tag_left">
                 {availableTag.map((tag) => (
                   <Tag 
@@ -121,10 +125,16 @@ export default function BlogWrite() {
               </div>
               <div className="tag_right">
                 <button 
-                  className="w-[100px] h-[50px] text-[10px]"
+                  className="mr-2 text-[13px]"
+                  onClick={handleBack}
+                >
+                  <NegativeCustomButton text={"취소"} colorName="green"/>
+                </button>
+                <button 
+                  className="text-[13px]"
                   onClick={handleSave}
                 >
-                  <NegativeButton text={"글 쓰기"} />
+                  <NegativeCustomButton text={"완료"} colorName="blue"/>
                 </button>
               </div>
             </div>

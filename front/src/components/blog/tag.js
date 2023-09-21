@@ -14,7 +14,7 @@ const Tag = ({ tagName, onClick, isSelected }) => {
 
   return (
     <button
-      className={`Tag w-[100px] h-[50px] text-[10px] mr-2 ${isSelected ? tagSelected : tagColors[tagName]}`}
+      className={`Tag w-[100px] h-[60px] text-[12px] mr-2 ${isSelected ? tagSelected : tagColors[tagName]}`}
       onClick={onClick}
     >
       {tagName}

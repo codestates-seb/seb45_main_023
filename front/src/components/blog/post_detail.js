@@ -12,6 +12,7 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 import { User, userInfo } from '../../recoil/mypage';
 import BlogPagenation from '../mypage/BlogPagination';
 import Editor from './editor';
+import formatDateTime from './formatDataTime';
 
 export default function PostDetail({ profile_pic }) {
   const userinfomation = useRecoilValue(User);
@@ -424,7 +425,7 @@ export default function PostDetail({ profile_pic }) {
           </div>
           <div className="UserSection flex justify-between items-center pb-3">
             <div className="user_createdat">
-              {blogData.modifiedAt ? `${blogData.modifiedAt}` : `${blogData.createdAt}`}
+              {blogData.modifiedAt ? formatDateTime(blogData.modifiedAt) : formatDateTime(blogData.createdAt)}
             </div>
             <div className="user_info flex items-center">
               <img src={profile_pic} alt="profile_pic" className="mr-2" />
@@ -468,7 +469,7 @@ export default function PostDetail({ profile_pic }) {
               </button>
               <button
                 onClick={handleEditClick}
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 float-right mt-2 mr-2"
+                className="bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded-md float-right mt-2 mr-2"
               >
                 수정하기
               </button>
@@ -489,7 +490,7 @@ export default function PostDetail({ profile_pic }) {
               ></textarea>
               <button
                 onClick={handleCommentSubmit}
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                className="bg-blue-400 hover:bg-blue-500 w-[90px] h-[88px] text-white px-4 py-2 rounded-md"
               >
                 작성
               </button>
