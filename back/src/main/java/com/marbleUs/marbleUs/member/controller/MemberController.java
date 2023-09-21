@@ -45,6 +45,7 @@ public class MemberController {
     public ResponseEntity postMember(@RequestBody MemberDto.Register register){
 
 
+
         Member memberToSave = service.create(mapper.memberRegisterToMember(register));
 
         return new ResponseEntity<>(mapper.memberToResponse(memberToSave),HttpStatus.CREATED);

@@ -27,6 +27,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -88,8 +89,9 @@ public class SecurityConfiguration {
                 .oauth2Login(oauth2 -> oauth2.successHandler(new OAuth2memberSuccessHandler(jwtTokenizer,authorityUtils,memberService,redisServiceUtil,extractor,memberVerifier,nickNameGenerator,passwordEncoder)))
                 .logout()
                 .logoutUrl("/logout")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
                 .addLogoutHandler(new CustomLogoutHandler(redisServiceUtil,extractor))
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("http://marbleus-s3.s3-website.ap-northeast-2.amazonaws.com"); //http://marbleus-s3.s3-website.ap-northeast-2.amazonaws.com/login
         return http.build();
     }
 
