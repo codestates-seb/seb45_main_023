@@ -136,7 +136,7 @@ export default function Bloglist() {
 	return (
 		<div className="relative">
 			<BlogHeader />
-			<div className="relative h-[1300px] bg-gray-100 opacity-70 rounded-t-lg shadow-lg mt-[-100px] ml-10 mr-10">
+			<div className="relative h-full min-h-[1300px] bg-gray-100 opacity-70 rounded-t-lg shadow-lg mt-[-100px] ml-10 mr-10">
 				<div className="tag_list m-10">
 					<div className="tag_container pt-10 flex justify-between">
 						<div className="tag_left">
@@ -150,7 +150,7 @@ export default function Bloglist() {
 							))}
 						</div>
 						<div className="tag_right">
-							<button className="w-[100px] h-[50px] text-[10px]"
+							<button className="w-[100px] h-[50px] text-[13px]"
 							onClick={() => navigate(`/blogwrite/${userId}/${cityId}`)}
 							>
 								<NegativeButton text={"글 쓰기"} />

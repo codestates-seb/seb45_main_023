@@ -51,8 +51,10 @@ function BlogHeader({ locationName }) {
           </div>
           {weather && (
             <div className='flex flex-col justify-center items-center ml-[-10px] gap-[4px] '>
-              {weather.rainProbability < 50 ? (
+              {weather.rainProbability < 25 ? (
                 <img src="/sun.png" alt="sun" width="30" height="30" />
+              ) : weather.rainProbability < 60 ? (
+                <img src="/cloudy.png" alt="cloudy" width="30" height="30" />
               ) : (
                 <img src="/rain.png" alt="rain" width="30" height="30" />
               )}
