@@ -27,9 +27,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -82,7 +84,11 @@ public class MemberService {
         Optional.ofNullable(member.getNationality())
                 .ifPresent( nationality -> findMember.setNationality(nationality));
         Optional.ofNullable(member.getNickname())
-                .ifPresent( nickname -> findMember.setNickname(nickname));
+                .ifPresent( nickname -> {
+                        Optional<Member> member2 = memberRepository.findByNickname(nickname);
+                        if(member2.isPresent()) throw new BusinessLogicException(ExceptionCode.NICKNAME_EXIST);
+                        findMember.setNickname(nickname);
+                });
 
         Optional.ofNullable(member.getCurrentLocation())
                 .ifPresent( location -> {
@@ -222,12 +228,16 @@ public class MemberService {
 
         PageRequest pageRequest = PageRequest.of(page-1, size, Sort.by("createdAt").descending());
 
+        List<Long> myBookmarks = findMember.getBookmarks();
         List<Blog> bookMarks = findMember.getBookmarks().stream().map(id->{
-            Blog findBlog = blogRepository.findById(id).get();
-            return findBlog;
+            Optional<Blog> findBlog = blogRepository.findById(id);
+            if (findBlog.isEmpty()) {
+                myBookmarks.remove(id);
+            }
+            return findBlog.orElse(null);
         }).collect(Collectors.toList());
-
-        return new PageImpl<>(bookMarks,pageRequest,bookMarks.size());
+        List<Blog> result = bookMarks.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        return new PageImpl<>(result,pageRequest,bookMarks.size());
     }
 
     public void addBookMark(Long memberId, Long loginMember ,Long blogId) {

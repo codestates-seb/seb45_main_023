@@ -20,4 +20,7 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
 
     @Query("SELECT m from Member m WHERE m.memberStatus = :memberStatus")
     List<Member> findAllByMemberStatus(Member.Status memberStatus);
+
+    @Query("SELECT m from Member m WHERE m.nickname = :nickname")
+    Optional<Member> findByNickname(String nickname);
 }

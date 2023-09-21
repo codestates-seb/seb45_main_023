@@ -23,6 +23,7 @@ public enum ExceptionCode {
     MISSION_ALREADY_ASSIGNED(403, "Mission already assigned" ),
     MISSION_NOT_COMPLETE(403, "Doesnt exist complete mission"),
 
+    NICKNAME_EXIST(409,"Nickname already exist"),
     CHATROOM_NOT_EXIST(404,"Chatroom not exist"),
     STAMP_NOT_EXIST(404,"Stamp not exist" );
 
