@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { RouteConst } from '../../interface/RouteConst';
 
 export default function StampTable({ topData, bottomData }) {
+  console.log(topData);
+  console.log(bottomData);
   
   return (
     <div className="flex flex-col justify-center max-w-screen-sm mx-auto p-4 h-[25rem] space-x-10">

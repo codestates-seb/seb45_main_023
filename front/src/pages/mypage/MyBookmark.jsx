@@ -42,7 +42,7 @@ export default function MyBookmark() {
   return (
     <>
       <MypageHeaderBtn />
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-[5rem]">
         <TopSidebar />
         <BottomSidebar />
         <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white">
