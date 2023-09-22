@@ -168,7 +168,7 @@ export default function LogInPage() {
 									placeholder="example@example.com"
 									className="w-[75%] h-[40px] mt-[14px] bg-[#F2F2F2] text-[#6C6C6C] 
                                     rounded-[10px] pl-[15px] mb-[26px]"
-									disabled={isLoading || authorizationToken || localStorage.getItem("Authorization")}
+									disabled={isLoading || authorizationToken}
 								></input>
 								{errors.email && (
 									<p className="text-red-500 mt-[-24px]">{errors.email}</p>
