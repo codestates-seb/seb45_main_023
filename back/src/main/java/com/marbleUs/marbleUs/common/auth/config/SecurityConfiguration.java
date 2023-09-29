@@ -91,7 +91,7 @@ public class SecurityConfiguration {
                 .logoutUrl("/logout")
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
                 .addLogoutHandler(new CustomLogoutHandler(redisServiceUtil,extractor))
-                .logoutSuccessUrl("http://marbleus-s3.s3-website.ap-northeast-2.amazonaws.com"); //http://marbleus-s3.s3-website.ap-northeast-2.amazonaws.com/login
+                .logoutSuccessUrl("http://marbleus-s3.s3-website.ap-northeast-2.amazonaws.com");
         return http.build();
     }
 
@@ -119,10 +119,11 @@ public class SecurityConfiguration {
 
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, memberService,redisServiceUtil,extractor);  // (2-4)
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, memberService,redisServiceUtil,extractor);
             jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");  //기본 로그인 시도 주소 프론트에서 이 URL로 로그인을 시도한다.       //
 
             builder.addFilter(jwtAuthenticationFilter);
+            builder.addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
             builder.addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
         }
 
