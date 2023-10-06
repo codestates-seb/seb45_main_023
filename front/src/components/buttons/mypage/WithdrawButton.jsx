@@ -31,7 +31,7 @@ export default function WithdrawButton() {
                 const response = await axios.delete(`${process.env.REACT_APP_SERVER_URL}/members/withdraw/${userId}`, 
                     {
                         headers: {
-                                Authorization: `Bearer ${authorizationToken}`, 
+                                Authorization : "Bearer " + localStorage.getItem("Authorization"),
                                 "Content-Type": "application/json",
                                 "ngrok-skip-browser-warning": "69420",
                             },

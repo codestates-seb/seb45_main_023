@@ -46,18 +46,20 @@ function BlogHeader({ locationName }) {
       <img src={`${cityImage}`} alt="region_img" className="w-full h-70" />
       <div className="absolute top-0 left-10 w-[300px] h-[150px] bg-gray-100 opacity-70 rounded-b-lg flex items-center">
         <div className="flex flex-row items-center justify-center w-full">
-          <div className="mr-2">
+          <div className="mr-8">
             <LocationTitle currentLocation={locationName} />
           </div>
           {weather && (
-            <div>
-              {weather.rainProbability < 50 ? (
-                <img src="/sun.png" alt="sun" width="25" height="25" />
+            <div className='flex flex-col justify-center items-center ml-[-10px] gap-[4px] '>
+              {weather.rainProbability < 25 ? (
+                <img src="/sun.png" alt="sun" width="30" height="30" />
+              ) : weather.rainProbability < 60 ? (
+                <img src="/cloudy.png" alt="cloudy" width="30" height="30" />
               ) : (
-                <img src="/rain.png" alt="rain" width="25" height="25" />
+                <img src="/rain.png" alt="rain" width="30" height="30" />
               )}
-              <p>{weather.minTemp}/{weather.maxTemp}</p>
-              <p>{weather.rainProbability}%</p>
+              <p className='font-semibold'>{weather.minTemp} / {weather.maxTemp} ℃</p>
+              <p className='font-semibold ml-[-10px]'>💧 {weather.rainProbability} %</p>
             </div>
           )}
         </div>

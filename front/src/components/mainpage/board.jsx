@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useCallback, useEffect, useState, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import City from "./city/City";
 import { locations, moveOrder } from "./locations";
 import Bead from "./Bead";
@@ -14,6 +14,8 @@ import {
 	modalState,
 	currentLocationState,
 } from "../../recoil/main";
+import axios from "axios";
+import { authorizationTokenState } from "../../recoil/logInSignUpState";
 
 const ANIMATION_INTERVAL = 800;
 
@@ -24,6 +26,7 @@ const Board = () => {
 	const [beadIndex, setBeadIndex] = useRecoilState(beadIndexState);
 	const [diceControl, setDiceControl] = useRecoilState(diceControlState);
 	const [current, setCurrent] = useRecoilState(currentLocationState);
+	const token = useRecoilValue(authorizationTokenState);
 
 	// 도시 컴포넌트 렌더링
 	const renderLocations = (locations) => {
@@ -128,6 +131,30 @@ const Board = () => {
 		return "여기가 어디지";
 	};
 
+	if (info.currentLocation !== "BLOCK_0") {
+		const checkMissions = async () => {
+			try {
+				const response = await axios.get(
+					`${process.env.REACT_APP_SERVER_URL}/missions/member-mission/${info.id}`,
+					{
+						headers: {
+							"Content-Type": "application/json",
+							"ngrok-skip-browser-warning": "69420",
+							Authorization: `Bearer ${token}`,
+						},
+					}
+				);
+				if (response.data[0].isComplete) {
+					setDiceControl(true);
+				} else {
+					setDiceControl(false);
+				}
+			} catch (err) {
+				console.error("checkMissions", err);
+			}
+		};
+	}
+
 	setCurrent(getCurrentLocation());
 
 	return (
@@ -165,7 +192,7 @@ const Board = () => {
 			{/* 도시 라인 */}
 			<div className="m-20 shadow-lg">
 				<section
-					className="absolute bottom-0 right-0 z-10 pl-5 pr-5 bg-orange-50 col-span-4 row-span-1 w-screen flex items-center justify-between"
+					className="absolute bottom-0 right-0 z-10 pl-5 pr-5 bg-slate-50 col-span-4 row-span-1 w-screen flex items-center justify-between"
 					style={{
 						minWidth: "870px",
 					}}
@@ -173,7 +200,7 @@ const Board = () => {
 					{renderLocations(locations.slice(0, 6).reverse())}
 				</section>
 				<section
-					className="absolute left-0 bottom-0 pb-44 pt-42 pl-5 bg-orange-50 col-span-1 row-span-6 flex flex-col-reverse h-screen items-center justify-between"
+					className="absolute left-0 bottom-0 pb-44 pt-42 pl-5 bg-slate-50 col-span-1 row-span-6 flex flex-col-reverse h-screen items-center justify-between"
 					style={{
 						minHeight: "900px",
 					}}
@@ -181,7 +208,7 @@ const Board = () => {
 					{renderLocations(locations.slice(6, 10))}
 				</section>
 				<section
-					className="absolute top-0 left-0 z-10 pl-5 pr-5 bg-orange-50 col-span-4 row-span-1 flex w-screen items-center justify-between"
+					className="absolute top-0 left-0 z-10 pl-5 pr-5 bg-slate-50 col-span-4 row-span-1 flex w-screen items-center justify-between"
 					style={{
 						minWidth: "870px",
 					}}
@@ -189,7 +216,7 @@ const Board = () => {
 					{renderLocations(locations.slice(10, 16))}
 				</section>
 				<section
-					className="absolute right-0 top-0 pb-44 pt-42 pr-5 bg-orange-50 col-span-1 row-span-5 flex flex-col items-center h-screen justify-between"
+					className="absolute right-0 top-0 pb-44 pt-42 pr-5 bg-slate-50 col-span-1 row-span-5 flex flex-col items-center h-screen justify-between"
 					style={{
 						minHeight: "900px",
 					}}

@@ -14,6 +14,7 @@ export default function MyStamp() {
   const topData = stamp.slice(0, 10);
   const bottomData = stamp.slice(10, 20);
   const [authorizationToken, setAuthorizationToken] = useRecoilState(authorizationTokenState);
+  console.log(stamp);
   const cityName = [
     '서울특별시',
     '부산광역시',
@@ -40,7 +41,7 @@ export default function MyStamp() {
       try {
         const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/missions/stamps/${info.id}`, {
           headers: {
-            Authorization: `Bearer ${authorizationToken}`,
+            Authorization : "Bearer " + localStorage.getItem("Authorization"),
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
           },
@@ -64,7 +65,7 @@ export default function MyStamp() {
   return (
     <>
       <MypageHeaderBtn />
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-[5rem]">
         <TopSidebar />
         <BottomSidebar />
         <div className="flex flex-col items-center w-[50rem] h-[50rem] mt-[3rem] shadow-xss rounded-t-[2rem] bg-white">

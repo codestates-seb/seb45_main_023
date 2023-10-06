@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import parse from 'html-react-parser';
+import formatDateTime from './formatDataTime';
 
 export default function PostLink({
   title,
@@ -45,7 +46,7 @@ export default function PostLink({
           {nickname}
         </div>
         <div className='user_createdat'>
-          {modifiedAt ? `${modifiedAt}` : `${createdAt}`}
+        {modifiedAt ? formatDateTime(modifiedAt) : formatDateTime(createdAt)}
         </div>
       </div>
     </div>
