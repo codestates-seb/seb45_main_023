@@ -34,7 +34,7 @@ public class LoginUserIdArgumentResolver implements HandlerMethodArgumentResolve
     @Override // 파라미터를 해석하여 값을 반환하는 역할
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); // 사용자 인증 정보
-        // 익명이면 -1L 리턴
+        // 익명이면 0L 리턴
         if(principal.equals("anonymousUser")){
             return 0L;
         }

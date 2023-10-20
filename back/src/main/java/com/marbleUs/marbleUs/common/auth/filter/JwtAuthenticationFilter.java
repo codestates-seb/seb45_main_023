@@ -51,7 +51,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
 
-        return authenticationManager.authenticate(authenticationToken);  // (3-4)
+        return authenticationManager.authenticate(authenticationToken);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         memberService.saveMember(findMember);
 
 
-        response.setHeader("Authorization", accessToken);  //
+        response.setHeader("Authorization", accessToken);
 //        response.setHeader("Refresh", refreshToken);
     }
 

@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
@@ -50,11 +51,15 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         var oAuth2User = (OAuth2User) authentication.getPrincipal();
 
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
-        String birth = String.valueOf(oAuth2User.getAttributes().get("email"));
+//        String birth = String.valueOf(oAuth2User.getAttributes().get("email"));
 //        String profilePic = String.valueOf(oAuth2User.getAttributes().get("picture"));
         List<String> authorities = authorityUtils.createRoles(email);
         if (!memberVerifier.verifyExistMember(email)) {saveMember(email, authorities);}
 
+        //로그인 히스토리 생성
+        Member findMember = memberService.findMemberByEmail(email);
+        findMember.setLastLogin(LocalDateTime.now());
+        memberService.saveMember(findMember);
 
         log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
         log.info("Member Sign Up Process 1 :: Member is created!:: " + email );
