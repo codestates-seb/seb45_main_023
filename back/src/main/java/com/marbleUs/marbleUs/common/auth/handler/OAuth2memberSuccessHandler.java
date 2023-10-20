@@ -5,6 +5,8 @@ package com.marbleUs.marbleUs.common.auth.handler;
 
 import com.marbleUs.marbleUs.common.auth.jwt.JwtTokenizer;
 import com.marbleUs.marbleUs.common.auth.utils.CustomAuthorityUtils;
+import com.marbleUs.marbleUs.common.exception.BusinessLogicException;
+import com.marbleUs.marbleUs.common.exception.ExceptionCode;
 import com.marbleUs.marbleUs.common.redis.service.RedisServiceUtil;
 import com.marbleUs.marbleUs.common.redis.tools.ClientIpExtractor;
 import com.marbleUs.marbleUs.common.tools.generator.NickNameGenerator;
@@ -56,10 +58,14 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         List<String> authorities = authorityUtils.createRoles(email);
         if (!memberVerifier.verifyExistMember(email)) {saveMember(email, authorities);}
 
+
         //로그인 히스토리 생성
         Member findMember = memberService.findMemberByEmail(email);
+        if (memberVerifier.verifyIsMemberActive(findMember)){
         findMember.setLastLogin(LocalDateTime.now());
         memberService.saveMember(findMember);
+        } else {throw new BusinessLogicException(ExceptionCode.MEMBER_INACTIVE);
+        }
 
         log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
         log.info("Member Sign Up Process 1 :: Member is created!:: " + email );
@@ -131,6 +137,7 @@ public class OAuth2memberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     }
 
     private void saveMember(String email, List<String> authorities) {
+
         memberVerifier.verifyExistsEmail(email);
             Member member = new Member();
             String nickName = nickNameGenerator.randomNickNameGenerator(NickNameGenerator.adjectives,NickNameGenerator.animals);
