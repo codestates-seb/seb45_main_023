@@ -20,7 +20,7 @@ public class MemberStatusGenerator {
 
 
 
-    @Scheduled(cron = "0 0 * * * *", zone = "Asia/Seoul")// Run every day
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")// Run every day
 //    @Scheduled(cron ="0 * * * * *")
     private void updateMemberStatus() {
         LocalDateTime thresholdDate = LocalDateTime.now().minus(1, ChronoUnit.YEARS); //inactive member if last login date is passed more than 1 year
